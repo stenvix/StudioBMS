@@ -1,0 +1,27 @@
+﻿@model RegisterViewModel
+@{
+    Layout = "Authorize/BaseForm";
+    ViewData["Title"] = "Register";
+}
+<form asp-controller="Account" asp-action="Register">
+    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+    <div class="form-group">
+        <input class="form-control" asp-for="Email" placeholder="E-Mail"/>
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <input class="form-control" asp-for="Password" placeholder="Password"/>
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <input class="form-control" asp-for="ConfirmPassword" placeholder="Password confirm"/>
+        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <div class="col-xs-6 col-xs-offset-3">
+            <button type="submit" class="btn btn-primary btn-lg btn-block">
+                Register now
+            </button>
+        </div>
+    </div>
+</form>

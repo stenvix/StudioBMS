@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.4</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\StudioBMS.Core\StudioBMS.Core.csproj" />
+    <ProjectReference Include="..\StudioBMS.Database\StudioBMS.Database.csproj" />
+  </ItemGroup>
+
+</Project>

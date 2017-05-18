@@ -1,0 +1,41 @@
+﻿@model LoginViewModel
+@{
+    Layout = "Authorize/BaseForm";
+    ViewData["Title"] = "Log in";
+}
+
+<form asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+    <fieldset>
+        <div class="form-group">
+            <input asp-for="Email" class="form-control" placeholder="E-Mail"/>
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input asp-for="Password" class="form-control" placeholder="Password"/>
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+        <div class="checkbox">
+            <label>
+                <input asp-for="RememberMe"/>
+                Remember me
+            </label>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-6 col-xs-offset-3">
+                    <button type="submit" class="btn btn-block btn-primary btn-lg">
+                        @ViewData["Title"]
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-12 text-center">
+                    <a asp-action="ForgotPassword"> Forgot password?</a>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+</form>

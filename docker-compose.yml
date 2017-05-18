@@ -1,0 +1,8 @@
+version: '2'
+
+services:
+  studiobms:
+    image: studiobms
+    build:
+      context: ./StudioBMS
+      dockerfile: Dockerfile
