@@ -2,7 +2,6 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using StudioBMS.Core.Entities.Base;
 using StudioBMS.Core.Entities.IdentityBase;
 using StudioBMS.Database.Context;
 

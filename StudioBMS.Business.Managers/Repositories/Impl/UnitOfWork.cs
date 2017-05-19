@@ -10,8 +10,7 @@ namespace StudioBMS.Business.Managers.Repositories.Impl
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private IPersonRepository _personRepository;
-        private IUserStore<Person> _personStore;
+        private PersonRepository _personRepository;
 
         public UnitOfWork(StudioContext context)
         {
@@ -20,12 +19,8 @@ namespace StudioBMS.Business.Managers.Repositories.Impl
 
         private StudioContext Context { get; }
 
-        public IUserStore<Person> PersonStore => _personStore ??
-                                                 (IUserStore<Person>) (_personRepository =
-                                                     new PersonRepository(Context));
-
-        public IPersonRepository PersonRepository => _personRepository ??
-                                                     (_personRepository = new PersonRepository(Context));
+        public PersonRepository PersonStore => _personRepository ?? (_personRepository = new PersonRepository(Context));
+        
 
         public Task SaveChanges()
         {

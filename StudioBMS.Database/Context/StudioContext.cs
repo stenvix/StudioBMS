@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using StudioBMS.Core.Entities;
-using StudioBMS.Core.Entities.Base;
 using StudioBMS.Core.Entities.IdentityBase;
 
 namespace StudioBMS.Database.Context

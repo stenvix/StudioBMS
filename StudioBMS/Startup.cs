@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using StudioBMS.Database.Context;
 using StudioBMS.Services;
 using StudioBMS.Business.Infrastructure;
+using StudioBMS.Business.Managers.Identity;
 
 namespace StudioBMS
 {
@@ -37,6 +39,7 @@ namespace StudioBMS
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
                     b => b.MigrationsAssembly("StudioBMS")));
 
+            services.AddRouting(config => { config.LowercaseUrls = true; });
             services.AddMvc();
 
             // Add application services.
@@ -47,12 +50,12 @@ namespace StudioBMS
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, StudioContext context)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, StudioContext context, PersonModelManager manager)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-            Initializer.DbInitialize(context);
+            Initializer.DbInitialize(context,manager);
 
             if (env.IsDevelopment())
             {
@@ -73,6 +76,8 @@ namespace StudioBMS
 
             app.UseMvc(routes =>
             {
+                routes.MapRoute("areaRoute",
+                    "{area:exists}/{controller=Home}/{action=Index}");
                 routes.MapRoute(
                     "default",
                     "{controller=Home}/{action=Index}/{id?}");
