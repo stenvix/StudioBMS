@@ -1,4 +1,4 @@
-﻿@using Microsoft.ApplicationInsights.AspNetCore
+@using Microsoft.ApplicationInsights.AspNetCore
 @inject JavaScriptSnippet JavaScriptSnippet
 <!DOCTYPE html>
 <html>
@@ -35,13 +35,16 @@
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 <li>
-                    <a asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                    <a asp-area="" asp-controller="Home" asp-action="Index">Головна</a>
                 </li>
                 <li>
-                    <a asp-area="" asp-controller="Home" asp-action="About">About</a>
+                    <a asp-area="" asp-controller="Home" asp-action="About">Про програму</a>
                 </li>
                 <li>
-                    <a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a>
+                    <a asp-area="" asp-controller="Home" asp-action="Contact">Контакти</a>
+                </li>
+                <li>
+                    <a asp-area="Settings" asp-controller="AccountSettings" asp-action="Index">Налаштування</a>
                 </li>
             </ul>
             @await Html.PartialAsync("_LoginPartial")

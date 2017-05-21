@@ -10,6 +10,7 @@ namespace StudioBMS.Models.AccountViewModels
 
         [Required]
         [DataType(DataType.Password)]
+        [Display(Name = "Password", ResourceType = typeof(Resources.DataAnnotations))]
         public string Password { get; set; }
 
         [Display(Name = "Remember me?")]

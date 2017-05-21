@@ -1,0 +1,51 @@
+@using System.Globalization
+@model PersonModel
+@{
+    const string title = "Налаштування";
+    ViewData["Title"] = title;
+    ViewData["H1"] = title;
+}
+<div class="row">
+    <div class="col-xs-12">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="row form-group">
+                    <div class="col-md-6">
+                        <div>Current Culture: @CultureInfo.CurrentCulture.Name</div>
+                        <div>Current UI Culture: @CultureInfo.CurrentUICulture.DisplayName</div>
+                        <label asp-for="LastName"></label>
+                        <input type="text" asp-for="LastName" placeholder="Прізвище" class="form-control"/>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="FirstName"></label>
+                        <input type="text" asp-for="FirstName" placeholder="Ім'я" class="form-control" />
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-6">
+                        <label asp-for="UserName"></label>
+                        <input type="text" asp-for="UserName" placeholder="E-Mail" class="form-control" />
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="PhoneNumber"></label>
+                        <input type="text" asp-for="PhoneNumber" placeholder="Номер телефону" class="form-control"/>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-xs-3">
+                        <button class="btn btn-link btn-block">Змінити пароль</button>
+                    </div>
+                    <div class="col-xs-3 col-xs-offset-6">
+                        <button class="btn btn-primary btn-block">Зберегти</button>
+                    </div>
+                </div>
+                @*<div class="row form-group">
+                    <div class="col-md-6">
+                        <input type="text" placeholder="Phone Number" class="form-control" />
+                    </div>
+                </div>*@
+            </div>
+        </div>
+    </div>
+
+</div>

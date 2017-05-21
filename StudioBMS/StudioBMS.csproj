@@ -13,6 +13,7 @@
     <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Localization.AspNetCore.TagHelpers" Version="0.3.0" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore" Version="1.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="1.1.2" />
@@ -34,9 +35,31 @@
     <ProjectReference Include="..\StudioBMS.Business.Infrastructure\StudioBMS.Business.Infrastructure.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Areas\Calendar\" />
-    <Folder Include="Areas\Clients\" />
-    <Folder Include="Areas\Settings\" />
+    <Folder Include="Areas\Calendar\Controllers\" />
+    <Folder Include="Areas\Calendar\Views\" />
+    <Folder Include="Areas\Clients\Controllers\" />
+    <Folder Include="Areas\Clients\Views\" />
+    <Folder Include="Areas\Settings\Controllers\" />
+    <Folder Include="Views\Shared\Dashboard\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Resources\DataAnnotations.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>DataAnnotations.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\DataAnnotations.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>DataAnnotations.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\DataAnnotations.uk-UA.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\AccountViewModels\LoginViewModel.uk.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

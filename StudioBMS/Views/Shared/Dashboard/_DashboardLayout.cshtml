@@ -1,0 +1,210 @@
+@using Microsoft.ApplicationInsights.AspNetCore
+@inject JavaScriptSnippet JavaScriptSnippet
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - StudioBMS</title>
+
+    <environment names="Development">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/lib/bootstrap-theme-cosmo/cosmo.min.css" />
+        <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.min.css" />
+        <link rel="stylesheet" href="~/lib/metisMenu/dist/metisMenu.css" />
+        <link rel="stylesheet" href="~/css/site.css" />
+    </environment>
+    <environment names="Staging,Production">
+        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+    </environment>
+    @Html.Raw(JavaScriptSnippet.FullScript)
+</head>
+<body>
+    <div class="wrapper">
+        <nav class="navbar navbar-inverse nav">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" asp-area="Settings" asp-controller="AccountSettings" , asp-action="Index">StudioBMS</a>
+            </div>
+            <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" id="logoutForm" class="navbar-right">
+                <ul class="nav navbar-nav navbar-right collapse navbar-collapse">
+                    <li>
+                        <a asp-area="Settings" asp-controller="AccountSettings" asp-action="Index">Налаштування</a>
+                    </li>
+                    <li>
+                        <a href="#" onclick="document.getElementById('logoutForm').submit();"> Вихід </a>
+                    </li>
+                </ul>
+            </form>
+
+            <div class="navbar-default sidebar" role="navigation">
+                <div class="sidebar-nav navbar-collapse collapse">
+                    <ul class="nav in metismenu" id="side-menu">
+                        <li>
+                            <a href="#"><i class="fa fa-calendar"></i> Календар</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-shopping-cart "></i> Замовлення</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-bar-chart"></i> Статистика</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-address-card"></i> Клієнти</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-users"></i> Працівники</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-briefcase"></i> Послуги</a>
+                        </li>
+                        @*<li>
+                                <a href="#" class="has-arrow">
+                                    <span class="fa fa-bar-chart-o fa-fw"></span>
+                                    Charts
+                                </a>
+                                <ul class="nav nav-second-level collapse">
+                                    <li>
+                                        <a href="#">Flot Charts</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Morris.js Charts</a>
+                                    </li>
+                                </ul>
+                                <!-- /.nav-second-level -->
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-table fa-fw"></i> Tables</a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-edit fa-fw"></i> Forms</a>
+                            </li>
+                            <li>
+                                <a href="#" class="has-arrow">
+                                    <i class="fa fa-wrench fa-fw"></i> UI Elements
+                                </a>
+                                <ul class="nav nav-second-level collapse">
+                                    <li>
+                                        <a href="#">Panels and Wells</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Buttons</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Notifications</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Typography</a>
+                                    </li>
+                                    <li>
+                                        <a href="#"> Icons</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Grid</a>
+                                    </li>
+                                </ul>
+                                <!-- /.nav-second-level -->
+                            </li>
+                            <li>
+                                <a href="#" class="has-arrow">
+                                    <i class="fa fa-sitemap fa-fw"></i> Multi-Level Dropdown
+                                </a>
+                                <ul class="nav nav-second-level collapse">
+                                    <li>
+                                        <a href="#">Second Level Item</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Second Level Item</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="has-arrow">Third Level</a>
+                                        <ul class="nav nav-third-level collapse">
+                                            <li>
+                                                <a href="#">Third Level Item</a>
+                                            </li>
+                                            <li>
+                                                <a href="#">Third Level Item</a>
+                                            </li>
+                                            <li>
+                                                <a href="#">Third Level Item</a>
+                                            </li>
+                                            <li>
+                                                <a href="#">Third Level Item</a>
+                                            </li>
+                                        </ul>
+                                        <!-- /.nav-third-level -->
+                                    </li>
+                                </ul>
+                                <!-- /.nav-second-level -->
+                            </li>
+                            <li>
+                                <a href="#" class="has-arrow"><i class="fa fa-files-o fa-fw"></i> Sample Pages</a>
+                                <ul class="nav nav-second-level collapse">
+                                    <li>
+                                        <a href="blank.html">Blank Page</a>
+                                    </li>
+                                    <li>
+                                        <a href="login.html">Login Page</a>
+                                    </li>
+                                </ul>
+                                <!-- /.nav-second-level -->
+                            </li>*@
+                    </ul>
+                </div>
+                <!-- /.sidebar-collapse -->
+            </div>
+        </nav>
+        <div class="page-wrapper">
+            <div class="container-fluid">
+                @if (ViewData["H1"] != null)
+                {
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <h2>@ViewData["H1"]</h2>
+                            <hr/>
+                        </div>
+                    </div>
+                }
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+    <environment names="Development">
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="~/lib/metisMenu/dist/metisMenu.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
+                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                asp-fallback-test="window.jQuery"
+                crossorigin="anonymous"
+                integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
+        </script>
+        <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
+                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+                crossorigin="anonymous"
+                integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
+        </script>
+        <script src="~/js/site.min.js" asp-append-version="true"></script>
+    </environment>
+    <script>
+        $(document).ready(function () {
+            $("#side-menu").metisMenu();
+        });
+    </script>
+    @RenderSection("Scripts", false)
+
+</body>
+</html>

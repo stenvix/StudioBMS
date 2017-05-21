@@ -11,7 +11,6 @@ using StudioBMS.Business.DTO.Models;
 using StudioBMS.Business.DTO.Profiles;
 using StudioBMS.Business.Identity.Models;
 using StudioBMS.Business.Managers.Identity;
-using StudioBMS.Business.Managers.Identity.Helpers;
 using StudioBMS.Business.Managers.Identity.Stores;
 using StudioBMS.Business.Managers.Repositories.Impl;
 using StudioBMS.Database.Context;
@@ -40,7 +39,7 @@ namespace StudioBMS.Business.Infrastructure
 
         public static void DbInitialize(StudioContext context, PersonModelManager manager)
         {
-            Task.Run(() =>
+            Task.Run(async () =>
             {
                 var relationalDatabaseCreator = context.GetService<IDatabaseCreator>() as RelationalDatabaseCreator;
                 var existed = relationalDatabaseCreator != null && relationalDatabaseCreator.Exists();
@@ -51,17 +50,17 @@ namespace StudioBMS.Business.Infrastructure
 
                 context.Initialize();
 
-                //var email = "sa@test.com";
-                //var password = "Admin123!";
-                //var person = new PersonModel { UserName = email, Email = email };
-                //var result = await manager.CreateAsync(person, password);
+                var email = "sa@test.com";
+                var password = "Admin123!";
+                var person = new PersonModel { UserName = email, Email = email };
+                var result = await manager.CreateAsync(person, password);
 
-                //if (!result.Succeeded)
-                //    throw new ArgumentNullException($"Database fail to initialize person:{nameof(context)}");
-                //result = await manager.AddToRoleAsync(person, "manager");
+                if (!result.Succeeded)
+                    throw new ArgumentNullException($"Database fail to initialize person:{nameof(context)}");
+                result = await manager.AddToRoleAsync(person, "manager");
 
-                //if (!result.Succeeded)
-                //    throw new ArgumentNullException($"Database fail to initialize person role:{nameof(context)}");
+                if (!result.Succeeded)
+                    throw new ArgumentNullException($"Database fail to initialize person role:{nameof(context)}");
             });
         }
     }

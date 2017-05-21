@@ -1,7 +1,7 @@
-﻿@model LoginViewModel
+@model LoginViewModel
 @{
     Layout = "Authorize/BaseForm";
-    ViewData["Title"] = "Log in";
+    ViewData["Title"] = "Вхід";
 }
 
 <form asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
@@ -12,13 +12,14 @@
             <span asp-validation-for="Email" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <input asp-for="Password" class="form-control" placeholder="Password"/>
+            <label asp-for="Password"></label>
+            <input asp-for="Password" class="form-control" placeholder="Пароль"/>
             <span asp-validation-for="Password" class="text-danger"></span>
         </div>
         <div class="checkbox">
             <label>
                 <input asp-for="RememberMe"/>
-                Remember me
+                Запам'ятати
             </label>
         </div>
         <div class="form-group">
@@ -33,7 +34,7 @@
         <div class="form-group">
             <div class="row">
                 <div class="col-xs-12 text-center">
-                    <a asp-action="ForgotPassword"> Forgot password?</a>
+                    <a asp-action="ForgotPassword"> Забули пароль?</a>
                 </div>
             </div>
         </div>
