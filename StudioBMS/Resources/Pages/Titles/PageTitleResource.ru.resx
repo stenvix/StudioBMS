@@ -123,11 +123,17 @@
   <data name="Clients" xml:space="preserve">
     <value>Клиенты</value>
   </data>
+  <data name="LogIn" xml:space="preserve">
+    <value>Вход</value>
+  </data>
   <data name="LogOut" xml:space="preserve">
     <value>Выход</value>
   </data>
   <data name="Orders" xml:space="preserve">
     <value>Заказы</value>
+  </data>
+  <data name="Registration" xml:space="preserve">
+    <value>Регистрация</value>
   </data>
   <data name="Save" xml:space="preserve">
     <value>Сохранить</value>
@@ -137,6 +143,9 @@
   </data>
   <data name="Settings" xml:space="preserve">
     <value>Настройки</value>
+  </data>
+  <data name="SignUp" xml:space="preserve">
+    <value>Зарегистрироваться</value>
   </data>
   <data name="Statistics" xml:space="preserve">
     <value>Статистика</value>

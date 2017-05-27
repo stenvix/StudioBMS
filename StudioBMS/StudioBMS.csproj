@@ -12,6 +12,13 @@
     <UserSecretsId>aspnet-StudioBMS-19164f04-f787-4003-9658-aa0edc0b646c</UserSecretsId>
     <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Resources\Areas\**" />
+    <Content Remove="Resources\Areas\**" />
+    <EmbeddedResource Remove="Resources\Areas\**" />
+    <None Remove="Resources\Areas\**" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Localization.AspNetCore.TagHelpers" Version="0.3.0" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.0" />
@@ -43,7 +50,6 @@
     <Folder Include="Areas\Clients\Controllers\" />
     <Folder Include="Areas\Clients\Views\" />
     <Folder Include="Areas\Settings\Controllers\" />
-    <Folder Include="Resources\Areas\" />
     <Folder Include="Views\Shared\Dashboard\" />
   </ItemGroup>
   <ItemGroup>

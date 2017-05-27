@@ -1,7 +1,7 @@
 @model RegisterViewModel
+@inject IHtmlLocalizer<PageTitleResource> TitleLocalizer
 @{
     Layout = "Authorize/BaseForm";
-    ViewData["Title"] = "Реєстрація";
 }
 <form asp-controller="Account" asp-action="Register">
     <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
@@ -20,7 +20,7 @@
     <div class="form-group">
         <div class="col-xs-6 col-xs-offset-3">
             <button type="submit" class="btn btn-primary btn-lg btn-block">
-                Register now
+               @TitleLocalizer["SignUp"]
             </button>
         </div>
     </div>

@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using StudioBMS.Business.DTO.Models;
@@ -22,7 +21,6 @@ namespace StudioBMS.Controllers
         private readonly ILogger _logger;
         private readonly PersonModelSignInManager _signInManager;
         private readonly ISmsSender _smsSender;
-        private readonly IStringLocalizer<AccountController> _stringLocalizer;
         private readonly PersonModelManager _userManager;
 
         public AccountController(
@@ -31,14 +29,13 @@ namespace StudioBMS.Controllers
             IOptions<IdentityCookieOptions> identityCookieOptions,
             IEmailSender emailSender,
             ISmsSender smsSender,
-            ILoggerFactory loggerFactory, IStringLocalizer<AccountController> stringLocalizer)
+            ILoggerFactory loggerFactory)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _externalCookieScheme = identityCookieOptions.Value.ExternalCookieAuthenticationScheme;
             _emailSender = emailSender;
             _smsSender = smsSender;
-            _stringLocalizer = stringLocalizer;
             _logger = loggerFactory.CreateLogger<AccountController>();
         }
 
@@ -50,9 +47,7 @@ namespace StudioBMS.Controllers
         {
             // Clear the existing external cookie to ensure a clean login process
             await HttpContext.Authentication.SignOutAsync(_externalCookieScheme);
-
             ViewData["ReturnUrl"] = returnUrl;
-            ViewData["Title"] = _stringLocalizer["LogIn"];
             return View();
         }
 
