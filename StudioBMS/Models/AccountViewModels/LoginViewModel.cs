@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using StudioBMS.Business.DTO.Properties;
 
 namespace StudioBMS.Models.AccountViewModels
 {
@@ -12,8 +11,7 @@ namespace StudioBMS.Models.AccountViewModels
         [Required]
         [DataType(DataType.Password)]
         public string Password { get; set; }
-
-        [Display(Name = nameof(RememberMe), ResourceType = typeof(DataAnnotations))]
+        
         public bool RememberMe { get; set; }
     }
 }

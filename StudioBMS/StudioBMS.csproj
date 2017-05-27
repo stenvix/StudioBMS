@@ -50,6 +50,7 @@
     <Folder Include="Areas\Clients\Controllers\" />
     <Folder Include="Areas\Clients\Views\" />
     <Folder Include="Areas\Settings\Controllers\" />
+    <Folder Include="Areas\Workshops\Controllers\" />
     <Folder Include="Views\Shared\Dashboard\" />
   </ItemGroup>
   <ItemGroup>
@@ -62,23 +63,14 @@
     <EmbeddedResource Update="Resources\Messages\MessageResource.uk.resx">
       <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Models\DTO\PersonModelResource.en.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+    <EmbeddedResource Update="Resources\Models\ModelResource.en.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Models\DTO\PersonModelResource.ru.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+    <EmbeddedResource Update="Resources\Models\ModelResource.ru.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Models\DTO\PersonModelResource.uk.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Models\ViewModels\ChangePasswordViewModel\ChangePasswordViewModelResource.en.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Models\ViewModels\ChangePasswordViewModel\ChangePasswordViewModelResource.ru.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Models\ViewModels\ChangePasswordViewModel\ChangePasswordViewModelResource.uk.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+    <EmbeddedResource Update="Resources\Models\ModelResource.uk.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\Pages\Titles\PageTitleResource.uk.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -87,15 +79,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\Pages\Titles\PageTitleResource.ru.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Account\Authorize\LoginForm.en.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Account\Authorize\LoginForm.ru.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Account\Authorize\LoginForm.uk.resx">
       <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
   </ItemGroup>

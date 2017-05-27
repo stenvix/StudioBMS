@@ -123,6 +123,9 @@
   <data name="Clients" xml:space="preserve">
     <value>Клієнти</value>
   </data>
+  <data name="Journal" xml:space="preserve">
+    <value>Журнал</value>
+  </data>
   <data name="LogIn" xml:space="preserve">
     <value>Вхід</value>
   </data>

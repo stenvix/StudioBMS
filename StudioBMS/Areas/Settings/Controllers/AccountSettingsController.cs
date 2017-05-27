@@ -1,10 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Authorization;
-using Microsoft.AspNetCore.Mvc.Localization;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using StudioBMS.Business.DTO.Models;
@@ -23,6 +20,12 @@ namespace StudioBMS.Areas.Settings.Controllers
         private readonly IEmailSender _emailSender;
         private readonly string _externalCookieScheme;
         private readonly ILogger _logger;
+
+        private readonly Dictionary<MessageType, string> _messages = new Dictionary<MessageType, string>
+        {
+            {MessageType.Success, "PasswordUpdated"}
+        };
+
         private readonly PersonModelSignInManager _signInManager;
         private readonly PersonModelManager _userManager;
 
@@ -39,18 +42,13 @@ namespace StudioBMS.Areas.Settings.Controllers
             _emailSender = emailSender;
             _logger = loggerFactory.CreateLogger<ManageController>();
         }
-        private readonly Dictionary<MessageType, string> _messages =new Dictionary<MessageType, string>
-        {
-            {MessageType.Success, "PasswordUpdated"}
-        };
 
         [HttpGet]
         public IActionResult Index(MessageType? message)
         {
             if (message.HasValue)
-            {
-                ViewData["Message"] =  new MessageViewModel{Message = _messages[message.Value], Type = MessageType.Success};
-            }
+                ViewData["Message"] =
+                    new MessageViewModel {Message = _messages[message.Value], Type = MessageType.Success};
             return View();
         }
 
@@ -78,7 +76,7 @@ namespace StudioBMS.Areas.Settings.Controllers
                 AddErrors(result);
                 return View(model);
             }
-            return RedirectToAction(nameof(Index), new { Message = MessageType.Danger});
+            return RedirectToAction(nameof(Index), new {Message = MessageType.Danger});
         }
 
 
@@ -87,11 +85,10 @@ namespace StudioBMS.Areas.Settings.Controllers
             foreach (var error in result.Errors)
                 ModelState.AddModelError(string.Empty, error.Description);
         }
+
         private Task<PersonModel> GetCurrentUserAsync()
         {
             return _userManager.GetUserAsync(HttpContext.User);
         }
-
-
     }
 }
