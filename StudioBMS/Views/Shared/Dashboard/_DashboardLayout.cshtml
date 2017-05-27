@@ -1,5 +1,10 @@
 @using Microsoft.ApplicationInsights.AspNetCore
+@using StudioBMS.Messages
+@using StudioBMS.Pages.Titles
 @inject JavaScriptSnippet JavaScriptSnippet
+@inject IHtmlLocalizer<MessageResource> MessageLocalizer
+@inject IHtmlLocalizer<PageTitleResource> TitleLocalizer
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,6 +15,7 @@
 
     <environment names="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/lib/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
         <link rel="stylesheet" href="~/lib/bootstrap-theme-cosmo/cosmo.min.css" />
         <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.min.css" />
         <link rel="stylesheet" href="~/lib/metisMenu/dist/metisMenu.css" />
@@ -38,10 +44,10 @@
             <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" id="logoutForm" class="navbar-right">
                 <ul class="nav navbar-nav navbar-right collapse navbar-collapse">
                     <li>
-                        <a asp-area="Settings" asp-controller="AccountSettings" asp-action="Index">Налаштування</a>
+                        <a asp-area="Settings" asp-controller="AccountSettings" asp-action="Index">@TitleLocalizer["Settings"]</a>
                     </li>
                     <li>
-                        <a href="#" onclick="document.getElementById('logoutForm').submit();"> Вихід </a>
+                        <a href="#" onclick="document.getElementById('logoutForm').submit();">@TitleLocalizer["LogOut"]</a>
                     </li>
                 </ul>
             </form>
@@ -50,22 +56,25 @@
                 <div class="sidebar-nav navbar-collapse collapse">
                     <ul class="nav in metismenu" id="side-menu">
                         <li>
-                            <a href="#"><i class="fa fa-calendar"></i> Календар</a>
+                            <a href="#"><i class="fa fa-calendar"></i> @TitleLocalizer["[D]Календар"]</a>
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-shopping-cart "></i> Замовлення</a>
+                            <a href="#"><i class="fa fa-shopping-cart "></i> @TitleLocalizer["Orders"]</a>
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-bar-chart"></i> Статистика</a>
+                            <a href="#"><i class="fa fa-bar-chart"></i> @TitleLocalizer["Statistics"]</a>
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-address-card"></i> Клієнти</a>
+                            <a href="#"><i class="fa fa-address-card"></i> @TitleLocalizer["Clients"]</a>
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-users"></i> Працівники</a>
+                            <a href="#"><i class="fa fa-users"></i> @TitleLocalizer["Workers"]</a>
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-briefcase"></i> Послуги</a>
+                            <a href="#"><i class="fa fa-briefcase"></i> @TitleLocalizer["Services"]</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-building"></i> @TitleLocalizer["Workshops"]</a>
                         </li>
                         @*<li>
                                 <a href="#" class="has-arrow">
@@ -170,7 +179,18 @@
                     <div class="row">
                         <div class="col-xs-12">
                             <h2>@ViewData["H1"]</h2>
-                            <hr/>
+                            <hr />
+                            @{
+                                var message = (MessageViewModel)ViewData["Message"];
+                                if (message!=null && !string.IsNullOrEmpty(message.Message))
+                                {
+                                    <div class="alert @message.GetClass()">
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <p>@MessageLocalizer[message.Message]!</p>
+                                    </div>    
+                                }
+                            }
+                            
                         </div>
                     </div>
                 }
@@ -180,7 +200,9 @@
     </div>
     <environment names="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script type="text/javascript" src="~/lib/moment/min/moment.min.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script type="text/javascript" src="~/lib/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
         <script src="~/lib/metisMenu/dist/metisMenu.js"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
     </environment>

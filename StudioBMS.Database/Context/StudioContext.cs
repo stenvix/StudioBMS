@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Reflection;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using StudioBMS.Core.Configurations.Base.Implementations;
 using StudioBMS.Core.Entities;
 using StudioBMS.Core.Entities.IdentityBase;
+using StudioBMS.Core.Entities.Interfaces;
 
 namespace StudioBMS.Database.Context
 {
@@ -23,6 +26,7 @@ namespace StudioBMS.Database.Context
             builder.Entity<PersonToken>().ToTable("PersonTokens");
             builder.Entity<Role>().ToTable("Roles");
             builder.Entity<RoleClaim>().ToTable("RoleClaims");
+            builder.AddEntityConfigurationsFromAssembly(typeof(IEntity).GetTypeInfo().Assembly);
         }
     }
 }

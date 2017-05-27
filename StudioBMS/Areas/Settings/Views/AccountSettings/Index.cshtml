@@ -1,7 +1,12 @@
-@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
+@using StudioBMS.Models.DTO
+@using StudioBMS.Pages.Titles
+@inject IHtmlLocalizer<PersonModelResource> Localizer
+@inject IHtmlLocalizer<PageTitleResource> TitleLocalizer
+
 @model PersonModel
 @{
-    const string title = "Налаштування";
+    var title = TitleLocalizer["Settings"];
     ViewData["Title"] = title;
     ViewData["H1"] = title;
 }
@@ -9,41 +14,60 @@
     <div class="col-xs-12">
         <div class="panel panel-default">
             <div class="panel-body">
-                <div class="row form-group">
-                    <div class="col-md-6">
-                        <div>Current Culture: @CultureInfo.CurrentCulture.Name</div>
-                        <div>Current UI Culture: @CultureInfo.CurrentUICulture.DisplayName</div>
-                        <label asp-for="LastName"></label>
-                        <input type="text" asp-for="LastName" placeholder="Прізвище" class="form-control"/>
+                <div class="row">
+                    <div class="col-lg-6 form-group">
+                        <label>@Localizer[nameof(Model.LastName)]</label>
+                        <input type="text" asp-for="LastName" placeholder="@Localizer[nameof(Model.LastName)]" class="form-control" />
                     </div>
-                    <div class="col-md-6">
-                        <label asp-for="FirstName"></label>
-                        <input type="text" asp-for="FirstName" placeholder="Ім'я" class="form-control" />
+                    <div class="col-lg-6 form-group">
+                        <label>@Localizer[nameof(Model.FirstName)]</label>
+                        <input type="text" asp-for="FirstName" placeholder="@Localizer[nameof(Model.FirstName)]" class="form-control" />
                     </div>
                 </div>
                 <div class="row form-group">
-                    <div class="col-md-6">
-                        <label asp-for="UserName"></label>
-                        <input type="text" asp-for="UserName" placeholder="E-Mail" class="form-control" />
+                    <div class="col-lg-6">
+                        <div class="row">
+                            <div class="col-lg-6 form-group">
+                                <label>@Localizer[nameof(Model.Email)]</label>
+                                <input type="text" asp-for="UserName" placeholder="@Localizer[nameof(Model.Email)]" class="form-control" />
+                            </div>
+                            <div class="col-lg-6 form-group">
+                                <label>@Localizer[nameof(Model.PhoneNumber)]</label>
+                                <input type="text" asp-for="PhoneNumber" placeholder="@Localizer[nameof(Model.PhoneNumber)]" class="form-control" />
+                            </div>
+                        </div>
+
                     </div>
-                    <div class="col-md-6">
-                        <label asp-for="PhoneNumber"></label>
-                        <input type="text" asp-for="PhoneNumber" placeholder="Номер телефону" class="form-control"/>
+                    <div class="col-lg-6">
+                        <div class="row">
+                            <div class="col-lg-6 form-group">
+                                <label>Мова</label>
+                                <select class="form-control">
+                                    <option>Russian</option>
+                                    <option>English</option>
+                                    <option>Ukrainian</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-6 form-group">
+                                <label>@Localizer[nameof(Model.Birthday)]</label>
+                                <div class="input-group">
+                                    <input asp-for="Birthday" placeholder="@Localizer[nameof(Model.Birthday)]" class="form-control" />
+                                    <span class="input-group-addon">
+                                        <span class="fa fa-calendar"></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="row form-group">
-                    <div class="col-xs-3">
-                        <button class="btn btn-link btn-block">Змінити пароль</button>
+                <div class="row">
+                    <div class="col-xs-3 ">
+                        <a asp-action="ChangePassword" class="btn btn-link btn-block">@TitleLocalizer["ChangePassword"]</a>
                     </div>
                     <div class="col-xs-3 col-xs-offset-6">
-                        <button class="btn btn-primary btn-block">Зберегти</button>
+                        <button class="btn btn-primary btn-block">@TitleLocalizer["Save"]</button>
                     </div>
                 </div>
-                @*<div class="row form-group">
-                    <div class="col-md-6">
-                        <input type="text" placeholder="Phone Number" class="form-control" />
-                    </div>
-                </div>*@
             </div>
         </div>
     </div>

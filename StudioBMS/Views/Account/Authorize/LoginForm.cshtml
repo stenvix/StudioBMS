@@ -1,9 +1,11 @@
+@using Microsoft.AspNetCore.Mvc.Localization
 @model LoginViewModel
+@inject IViewLocalizer Localizer
+
 @{
     Layout = "Authorize/BaseForm";
-    ViewData["Title"] = "Вхід";
+    ViewData["Title"] = Localizer["LogIn"];
 }
-
 <form asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
     <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
     <fieldset>
@@ -12,14 +14,13 @@
             <span asp-validation-for="Email" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="Password"></label>
-            <input asp-for="Password" class="form-control" placeholder="Пароль"/>
+            <input asp-for="Password" class="form-control" placeholder="@Localizer["Password"]"/>
             <span asp-validation-for="Password" class="text-danger"></span>
         </div>
         <div class="checkbox">
             <label>
                 <input asp-for="RememberMe"/>
-                Запам'ятати
+                <label asp-for="RememberMe"></label>
             </label>
         </div>
         <div class="form-group">
@@ -34,7 +35,7 @@
         <div class="form-group">
             <div class="row">
                 <div class="col-xs-12 text-center">
-                    <a asp-action="ForgotPassword"> Забули пароль?</a>
+                    <a asp-action="ForgotPassword"><localize>ForgotPassword</localize>?</a>
                 </div>
             </div>
         </div>
