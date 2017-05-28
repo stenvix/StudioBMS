@@ -12,6 +12,7 @@ using StudioBMS.Business.DTO.Profiles;
 using StudioBMS.Business.Identity.Models;
 using StudioBMS.Business.Managers.Identity;
 using StudioBMS.Business.Managers.Identity.Stores;
+using StudioBMS.Business.Managers.Models.Impl;
 using StudioBMS.Business.Managers.Repositories.Impl;
 using StudioBMS.Database.Context;
 
@@ -32,6 +33,8 @@ namespace StudioBMS.Business.Infrastructure
             var builder = new ContainerBuilder();
             builder.Populate(services);
             builder.RegisterType<UnitOfWork>().AsImplementedInterfaces();
+            builder.RegisterType<WorkshopManager>().AsImplementedInterfaces();
+            builder.RegisterType<TimeTableManager>().AsImplementedInterfaces();
 
             var container = builder.Build();
             return container.Resolve<IServiceProvider>();

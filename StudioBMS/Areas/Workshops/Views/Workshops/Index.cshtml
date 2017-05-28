@@ -1,5 +1,6 @@
 @inject IHtmlLocalizer<PageTitleResource> TitleLocalizer
 @inject IHtmlLocalizer<ModelResource> ModeLocalizer
+@model IList<WorkshopModel>
 @{
     var title = TitleLocalizer["Workshops"];
     ViewData["Title"] = title;
@@ -9,50 +10,7 @@
     <div class="col-xs-12">
         <div class="panel panel-default">
             <div class="panel-body">
-                <div id="table-toolbar">
-                    <button class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Create</button>
-                </div>
-                <table data-toolbar="#table-toolbar"
-                       data-toggle="table"
-                       data-cookie="true"
-                       data-cookie-id-table="pageNumbers"
-                       data-buttons-class="primary"
-                       data-search="true"
-                       data-only-info-pagination="false"
-                       data-pagination="true"
-                       data-page-size="5"
-                       data-classes="table table-no-bordered"
-                       data-show-columns="true"
-                       data-minimum-count-columns="2"
-                       data-show-footer="false"
-                       data-page-list="[5, 10, 25, 50, 100, ALL]"
-                       data-single-select="true"
-                       data-height="740"
-                       data-locale="">
-                    <thead>
-                        <tr>
-                            <th class="col-xs-4">@ModeLocalizer["Address"]</th>
-                            <th class="col-xs-4">@ModeLocalizer["Phone"]</th>
-                            <th class="col-xs-3">@ModeLocalizer["WorkingHours"]</th>
-                            <th class="col-xs-1">@ModeLocalizer["Actions"]</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @for (int i = 0; i < 30; i++)
-                        {
-                            <tr>
-                                <td>1</td>
-                                <td>6</td>
-                                <td>3</td>
-                                <td>
-                                    <a class="btn btn-sm btn-primary"><i class="fa fa-pencil"></i></a>
-                                    <a class="btn btn-sm btn-danger"><i class="fa fa-remove"></i></a>
-
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
+                @Html.Partial("_WorkshopTablePartial", Model)
             </div>
         </div>
     </div>

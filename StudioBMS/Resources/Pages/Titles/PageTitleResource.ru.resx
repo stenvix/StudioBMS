@@ -156,6 +156,9 @@
   <data name="Submit" xml:space="preserve">
     <value>Подтвердить</value>
   </data>
+  <data name="Timetable" xml:space="preserve">
+    <value>Расписание</value>
+  </data>
   <data name="Workers" xml:space="preserve">
     <value>Работники</value>
   </data>

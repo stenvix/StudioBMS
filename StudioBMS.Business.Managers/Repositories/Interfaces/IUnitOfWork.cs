@@ -8,6 +8,8 @@ namespace StudioBMS.Business.Managers.Repositories.Interfaces
     public interface IUnitOfWork : IDisposable
     {
         PersonRepository PersonStore { get; }
+        IWorkshopRepository WorkshopRepository { get;}
+        ITimeTableRepository TimeTableRepository { get; }
         Task SaveChanges();
     }
 }

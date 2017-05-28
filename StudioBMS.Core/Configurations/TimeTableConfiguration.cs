@@ -5,9 +5,9 @@ using StudioBMS.Core.Entities;
 
 namespace StudioBMS.Core.Configurations
 {
-    public class WorkingHourConfiguration : EntityMappingConfiguration<WorkingHour>
+    public class TimeTableConfiguration : EntityMappingConfiguration<TimeTable>
     {
-        public override void Map(EntityTypeBuilder<WorkingHour> b)
+        public override void Map(EntityTypeBuilder<TimeTable> b)
         {
             b.HasKey(i => i.Id);
             b.Property(i => i.Start).HasColumnType("datetime2");

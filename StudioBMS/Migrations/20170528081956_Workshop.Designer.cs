@@ -8,9 +8,10 @@ using StudioBMS.Database.Context;
 namespace StudioBMS.Migrations
 {
     [DbContext(typeof(StudioContext))]
-    partial class StudioContextModelSnapshot : ModelSnapshot
+    [Migration("20170528081956_Workshop")]
+    partial class Workshop
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")

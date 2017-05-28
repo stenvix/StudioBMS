@@ -38,3 +38,7 @@
 #logoutForm {
     margin-right: 0;
 }
+
+.col-actions {
+    padding: 4px 0 0 0!important;
+}

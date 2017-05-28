@@ -1,0 +1,57 @@
+﻿@using System.Globalization
+@inject IHtmlLocalizer<PageTitleResource> TitleLocalizer
+@inject IHtmlLocalizer<ModelResource> ModeLocalizer
+@model IList<TimeTableModel>
+@{
+    var title = TitleLocalizer["Timetable"];
+    ViewData["Title"] = title;
+    ViewData["H1"] = title;
+}
+<div class="row">
+    <div class="col-lg-8 col-lg-offset-2">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th class="col-xs-4">@ModeLocalizer["DayOfWeek"]</th>
+                            <th class="col-xs-3">@ModeLocalizer["Start"]</th>
+                            <th class="col-xs-3">@ModeLocalizer["End"]</th>
+                            <th class="col-xs-2 text-center">@ModeLocalizer["Actions"]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var time in Model)
+                        {
+                            <tr>
+                                <td>@CultureInfo.CurrentCulture.DateTimeFormat.DayNames[(byte)time.WeekDay]</td>
+                                <td>@time.Start.ToString("t")</td>
+                                <td>@time.End.ToString("t")</td>
+                                <td class="col-actions text-center">
+                                    <a asp-area="Workshops"
+                                       asp-controller="Workshops"
+                                       asp-action="TimeForm"
+                                       asp-route-workshopid="@ViewData["workshopId"]"
+                                       asp-route-timeTableId="@time.Id"
+                                       data-ajax="true"
+                                       data-ajax-method="GET"
+                                       data-ajax-mode="replace"
+                                       data-ajax-update="#timeform"
+                                       class="btn btn-primary btn-sm">
+                                        <i class="fa fa-pencil"></i>
+                                    </a>
+                                    <a class="btn btn-danger btn-sm">
+                                        <i class="fa fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <div id="timeform" class="">
+                    @Html.Partial("_TimeTableForm", null,ViewData)
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,60 @@
+﻿@using System.Globalization
+@model TimeTableModel
+@inject IHtmlLocalizer<ModelResource> ModeLocalizer
+@using (Html.BeginForm("TimeFormSubmit", "Workshops", new { area = "Workshops", workshopId = ViewData["workshopId"] }, FormMethod.Post, null, new { @class = "" }))
+{
+    <div class="row">
+        <div class="form-group col-xs-4">
+            @if (Model == null)
+            {
+                <select asp-for="WeekDay" class=" form-control">
+                    @foreach (var day in Enum.GetValues(typeof(DayOfWeek)))
+                    {
+                        <option value="@day">@CultureInfo.CurrentCulture.DateTimeFormat.GetDayName((DayOfWeek) day)</option>
+                    }
+                </select>
+            }
+            else
+            {
+                <select asp-for="WeekDay" class=" form-control" disabled="disabled">
+                    @foreach (var day in Enum.GetValues(typeof(DayOfWeek)))
+                    {
+                        <option value="@day">@CultureInfo.CurrentCulture.DateTimeFormat.GetDayName((DayOfWeek) day)</option>
+                    }
+                </select>
+            }
+        </div>
+        <div class="form-group col-xs-3">
+            <div class="input-group">
+                <input asp-for="Start" asp-format="{0:t}" placeholder="@ModeLocalizer[nameof(Model.Start)]" class="form-control" />
+                <span class="input-group-addon">
+                    <span class="fa fa-calendar"></span>
+                </span>
+            </div>
+        </div>
+        <div class="form-group col-xs-3">
+            <div class="input-group">
+                <input asp-for="End" asp-format="{0:t}" placeholder="@ModeLocalizer[nameof(Model.End)]" class="form-control" />
+                <span class="input-group-addon">
+                    <span class="fa fa-calendar"></span>
+                </span>
+            </div>
+        </div>
+        <div class="form-group btn-group col-xs-2">
+            <button type="submit" class="btn btn-primary">
+                <i class="fa fa-plus"></i>
+            </button>
+            <a asp-area="Workshops"
+               asp-controller="Workshops"
+               asp-action="TimeForm"
+               data-ajax="true"
+               data-ajax-method="GET"
+               data-ajax-mode="replace"
+               data-ajax-update="#timeform"
+               type="button"
+               class="btn btn-danger">
+                <i class="fa fa-remove"></i>
+            </a>
+        </div>
+    </div>
+}

@@ -51,7 +51,6 @@
     <Folder Include="Areas\Clients\Views\" />
     <Folder Include="Areas\Settings\Controllers\" />
     <Folder Include="Areas\Workshops\Controllers\" />
-    <Folder Include="Views\Shared\Dashboard\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Update="Resources\Messages\MessageResource.en.resx">

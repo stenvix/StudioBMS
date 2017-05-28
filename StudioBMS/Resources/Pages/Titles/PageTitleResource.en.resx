@@ -156,6 +156,9 @@
   <data name="Submit" xml:space="preserve">
     <value>Submit</value>
   </data>
+  <data name="Timetable" xml:space="preserve">
+    <value>Timetable</value>
+  </data>
   <data name="Workers" xml:space="preserve">
     <value>Workers</value>
   </data>

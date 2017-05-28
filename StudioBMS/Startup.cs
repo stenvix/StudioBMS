@@ -97,7 +97,7 @@ namespace StudioBMS
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
+                //app.UseDatabaseErrorPage();
                 app.UseBrowserLink();
             }
             else

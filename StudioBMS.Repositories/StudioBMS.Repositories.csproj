@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\StudioBMS.Business.DTO\StudioBMS.Business.DTO.csproj" />
     <ProjectReference Include="..\StudioBMS.Core\StudioBMS.Core.csproj" />
     <ProjectReference Include="..\StudioBMS.Database\StudioBMS.Database.csproj" />
   </ItemGroup>

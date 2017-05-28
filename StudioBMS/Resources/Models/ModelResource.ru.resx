@@ -129,8 +129,14 @@
   <data name="ConfirmPassword" xml:space="preserve">
     <value>Подтвердите новый пароль</value>
   </data>
+  <data name="DayOfWeek" xml:space="preserve">
+    <value>День недели</value>
+  </data>
   <data name="EMail" xml:space="preserve">
     <value>Электронная почта</value>
+  </data>
+  <data name="End" xml:space="preserve">
+    <value>Конец</value>
   </data>
   <data name="FirstName" xml:space="preserve">
     <value>Имя</value>
@@ -158,6 +164,9 @@
   </data>
   <data name="RememberMe" xml:space="preserve">
     <value>Запомнить меня</value>
+  </data>
+  <data name="Start" xml:space="preserve">
+    <value>Начало</value>
   </data>
   <data name="WorkingHours" xml:space="preserve">
     <value>Режим работы</value>

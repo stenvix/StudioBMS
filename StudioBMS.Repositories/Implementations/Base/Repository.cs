@@ -21,17 +21,17 @@ namespace StudioBMS.Repositories.Implementations.Base
         protected DbSet<TEntity> Set { get; }
 
 
-        public Task<IQueryable<TEntity>> GetAsync(CancellationToken cancellationToken = new CancellationToken())
+        public virtual Task<IQueryable<TEntity>> GetAsync(CancellationToken cancellationToken = new CancellationToken())
         {
             return Task.Run(() => Set.AsQueryable(), cancellationToken);
         }
 
-        public Task<TEntity> GetAsync(Guid id, CancellationToken cancellationToken = new CancellationToken())
+        public virtual Task<TEntity> GetAsync(Guid id, CancellationToken cancellationToken = new CancellationToken())
         {
             return Set.FindAsync(new object[] {id}, cancellationToken);
         }
 
-        public async Task<TEntity> CreateAsync(TEntity entity,
+        public virtual async Task<TEntity> CreateAsync(TEntity entity,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             var entry = Context.Entry(entity);
@@ -43,7 +43,7 @@ namespace StudioBMS.Repositories.Implementations.Base
             return (await Set.AddAsync(entity, cancellationToken))?.Entity;
         }
 
-        public Task<TEntity> Update(TEntity entity, CancellationToken cancellationToken = default(CancellationToken))
+        public virtual Task<TEntity> Update(TEntity entity, CancellationToken cancellationToken = default(CancellationToken))
         {
             return Task.Run(() =>
             {
@@ -61,14 +61,14 @@ namespace StudioBMS.Repositories.Implementations.Base
             }, cancellationToken);
         }
 
-        public async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default(CancellationToken))
+        public virtual async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default(CancellationToken))
         {
             var entity = await Set.FindAsync(new object[] {id}, cancellationToken);
             if (entity != null)
-                await Delete(entity, cancellationToken);
+                await DeleteAsync(entity, cancellationToken);
         }
 
-        public Task Delete(TEntity entity, CancellationToken cancellationToken = default(CancellationToken))
+        public virtual Task DeleteAsync(TEntity entity, CancellationToken cancellationToken = default(CancellationToken))
         {
             return Task.Run(() =>
             {
