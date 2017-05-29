@@ -11,9 +11,9 @@ namespace StudioBMS.Core.Configurations
     {
         public override void Map(EntityTypeBuilder<PersonTimetable> b)
         {
-            b.HasKey(i => new {i.PersonId, i.TimeTableId});
+            b.HasKey(i => new {i.PersonId, TimeTableId = i.TimetableId});
             b.HasOne(i => i.Person).WithMany(i => i.PersonTimetables).HasForeignKey(i => i.PersonId);
-            b.HasOne(i => i.Timetable).WithMany(i => i.PersonTimetables).HasForeignKey(i => i.TimeTableId);
+            b.HasOne(i => i.Timetable).WithMany(i => i.PersonTimetables).HasForeignKey(i => i.TimetableId);
         }
     }
 }

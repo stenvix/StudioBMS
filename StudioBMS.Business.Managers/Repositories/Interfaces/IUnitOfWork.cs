@@ -14,6 +14,7 @@ namespace StudioBMS.Business.Managers.Repositories.Interfaces
         IWorkshopRepository WorkshopRepository { get;}
         ITimeTableRepository TimeTableRepository { get; }
         IServiceRepository ServiceRepository { get; }
+        IOrderRepository OrderRepository { get; }
         Task SaveChanges();
     }
 }

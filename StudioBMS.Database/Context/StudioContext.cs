@@ -37,5 +37,9 @@ namespace StudioBMS.Database.Context
         public DbSet<Timetable> TimeTables { get; set; }
         public DbSet<PersonTimetable> PersonTimetables { get; set; }
         public DbSet<Service> Services { get; set; }
+        public DbSet<PersonService> PersonServices { get; set; }
+        public DbSet<OrderService> OrderServices { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderStatus> OrderStatuses { get; set; }
     }
 }

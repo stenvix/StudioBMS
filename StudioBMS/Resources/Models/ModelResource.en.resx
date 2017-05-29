@@ -129,11 +129,20 @@
   <data name="Birthday" xml:space="preserve">
     <value>Birthday</value>
   </data>
+  <data name="Client" xml:space="preserve">
+    <value>Client</value>
+  </data>
   <data name="ConfirmPassword" xml:space="preserve">
     <value>Confirm new password</value>
   </data>
   <data name="Cosmetologist" xml:space="preserve">
     <value>Cosmetologist</value>
+  </data>
+  <data name="Create" xml:space="preserve">
+    <value>Create</value>
+  </data>
+  <data name="Date" xml:space="preserve">
+    <value>Date</value>
   </data>
   <data name="DayOfWeek" xml:space="preserve">
     <value>Day of week</value>
@@ -173,6 +182,9 @@
   </data>
   <data name="Password" xml:space="preserve">
     <value>Password</value>
+  </data>
+  <data name="Performer" xml:space="preserve">
+    <value>Performer</value>
   </data>
   <data name="Phone" xml:space="preserve">
     <value>Phone</value>

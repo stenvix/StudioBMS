@@ -1,4 +1,5 @@
 ﻿@inject IHtmlLocalizer<ModelResource> ModeLocalizer
+@using System.Globalization
 @model IList<PersonModel>
 @{
     Layout = "Dashboard/_TableLayout";
@@ -10,7 +11,7 @@
     <th>@ModeLocalizer["Position"]</th>
     <th>@ModeLocalizer["Phone"]</th>
     <th>@ModeLocalizer["WorkingHours"]</th>
-    <th>@ModeLocalizer["Actions"]</th>
+    <th class="col-xs-2 text-center col-actions">@ModeLocalizer["Actions"]</th>
 }
 
 @section tableBody
@@ -20,11 +21,22 @@
         <tr>
             <td>@worker.FirstName</td>
             <td>@worker.LastName</td>
-            <td>@ModeLocalizer[worker.Role?.Name]</td>
+            <td>
+                @if (worker.Role != null)
+                {
+                    @ModeLocalizer[worker.Role.Name]
+                }
+            </td>
             <td>@worker.PhoneNumber</td>
-            <td>@*@worker.Timetable*@</td>
+            <td>
+                @foreach (var time in worker.TimeTables)
+                {
+                    @Html.Raw($"{CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedDayName(time.WeekDay)} {time.Start:t} - {time.End:t}<br />")
+                }
+            </td>
             <td>
                 <a class="btn btn-sm btn-primary"><i class="fa fa-bar-chart"></i></a>
+                <a class="btn btn-sm btn-primary"><i class="fa fa-clock-o"></i></a>
                 <a class="btn btn-sm btn-primary"><i class="fa fa-pencil"></i></a>
                 <a class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a>
             </td>

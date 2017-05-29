@@ -1,9 +1,40 @@
-﻿@{
+﻿@model IList<OrderModel>
+@inject IHtmlLocalizer<ModelResource> ModeLocalizer
+@{
     Layout = "Dashboard/_TableLayout";
 }
 
+@section tableToolbar
+{
+    <a class="btn btn-primary">
+        <i class="fa fa-plus" aria-hidden="true"></i> @ModeLocalizer["Create"]
+    </a>
+}
+
 @section tableHeader
-{}
+{
+    <th class="col-xs-1">#</th>
+    <th class="col-xs-3">@ModeLocalizer["Client"]</th>
+    <th class="col-xs-3">@ModeLocalizer["Performer"]</th>
+    <th class="col-xs-2">@ModeLocalizer["Date"]</th>
+    <th class="col-xs-1">@ModeLocalizer["Price"]</th>
+    <th class="col-xs-2 text-center col-actions">@ModeLocalizer["Actions"]</th>
+}
 
 @section tableBody
-{}
+{
+    @foreach (var order in Model)
+    {
+        <tr>
+            <td>@order.OrderNumber</td>
+            <td>@order.Customer.LastName @order.Customer.FirstName</td>
+            <td>@order.Performer.LastName @order.Customer.FirstName</td>
+            <td>@order.Date.ToString("g")</td>
+            <td>@order.Price</td>
+            <td>
+                <a class="btn btn-sm btn-primary"><i class="fa fa-pencil"></i></a>
+                <a class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a>
+            </td>
+        </tr>
+    }
+}

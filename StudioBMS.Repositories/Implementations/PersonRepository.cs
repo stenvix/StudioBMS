@@ -15,7 +15,7 @@ namespace StudioBMS.Repositories.Implementations
 
         protected override IEnumerable<Person> Include()
         {
-            return Set.Include(i => i.Roles).ThenInclude(i => i.Role);
+            return Set.Include(i => i.Roles).ThenInclude(i => i.Role).Include(i=>i.PersonTimetables).ThenInclude(i=>i.Timetable);
         }
     }
 }

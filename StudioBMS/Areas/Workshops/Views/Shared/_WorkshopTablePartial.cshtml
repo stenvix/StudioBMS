@@ -11,7 +11,7 @@
     <th class="col-xs-2">@ModeLocalizer["Phone"]</th>
     <th class="col-xs-2">@ModeLocalizer["EMail"]</th>
     <th class="col-xs-2">@ModeLocalizer["WorkingHours"]</th>
-    <th class="col-xs-1 col-actions">@ModeLocalizer["Actions"]</th>
+    <th class="col-xs-2 text-center col-actions">@ModeLocalizer["Actions"]</th>
 }
 
 @section tableBody{
@@ -25,12 +25,12 @@
             <td>@workshop.Email</td>
             <td>
                 @{
-                var weekday = workshop.TimeTables.FirstOrDefault(i=>i.WeekDay == DateTime.Now.DayOfWeek);
-                if (weekday == null)
+                    var weekday = workshop.TimeTables.FirstOrDefault(i => i.WeekDay == DateTime.Now.DayOfWeek);
+                    if (weekday == null)
                     {
-                    weekday = workshop.TimeTables.FirstOrDefault();
+                        weekday = workshop.TimeTables.FirstOrDefault();
                     }
-                    @Html.Raw(CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedDayNames[(byte)weekday.WeekDay]+" ")
+                    @Html.Raw(CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedDayNames[(byte)weekday.WeekDay] + " ")
                     @Html.Raw(weekday.Start.ToString("t") + "-")
                     @Html.Raw(weekday.End.ToString("t"))
                 }
@@ -41,5 +41,5 @@
                 <a class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a>
             </td>
         </tr>
-    }
+                    }
 }

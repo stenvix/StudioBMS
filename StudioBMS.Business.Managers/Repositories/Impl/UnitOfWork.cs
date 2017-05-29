@@ -15,6 +15,7 @@ namespace StudioBMS.Business.Managers.Repositories.Impl
         private IServiceRepository _serviceRepository;
         private IPersonRepository _personRepository;
         private IRoleRepository _roleRepository;
+        private IOrderRepository _orderRepository;
 
         public UnitOfWork(StudioContext context)
         {
@@ -38,5 +39,6 @@ namespace StudioBMS.Business.Managers.Repositories.Impl
         public IServiceRepository ServiceRepository => _serviceRepository ?? (_serviceRepository = new ServiceRepository(Context));
         public IPersonRepository PersonRepository => _personRepository ?? (_personRepository = new PersonRepository(Context));
         public IRoleRepository RoleRepository => _roleRepository ?? (_roleRepository = new RoleRepository(Context));
+        public IOrderRepository OrderRepository => _orderRepository ?? (_orderRepository = new OrderRepository(Context));
     }
 }

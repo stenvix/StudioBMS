@@ -14,9 +14,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Areas\Calendar\**" />
     <Compile Remove="Resources\Areas\**" />
+    <Content Remove="Areas\Calendar\**" />
     <Content Remove="Resources\Areas\**" />
+    <EmbeddedResource Remove="Areas\Calendar\**" />
     <EmbeddedResource Remove="Resources\Areas\**" />
+    <None Remove="Areas\Calendar\**" />
     <None Remove="Resources\Areas\**" />
   </ItemGroup>
   <ItemGroup>
@@ -45,8 +49,6 @@
     <ProjectReference Include="..\StudioBMS.Business.Infrastructure\StudioBMS.Business.Infrastructure.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Areas\Calendar\Controllers\" />
-    <Folder Include="Areas\Calendar\Views\" />
     <Folder Include="Areas\Clients\Controllers\" />
     <Folder Include="Areas\Orders\Controllers\" />
     <Folder Include="Areas\Services\Controllers\" />

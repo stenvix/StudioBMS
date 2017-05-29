@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using StudioBMS.Core.Entities;
 using StudioBMS.Core.Entities.IdentityBase;
 
@@ -7,7 +8,32 @@ namespace StudioBMS.Database.Context
 {
     public static class DatabaseInitializer
     {
-        public static void Initialize(this StudioContext context)
+        public static async void Initialize(this StudioContext context)
+        {
+            await OrderStatuses(context);
+            await PersonRoles(context);
+            await Workshops(context);
+            await Services(context);
+        }
+
+
+        private static async Task OrderStatuses(StudioContext context)
+        {
+            var statuses = new[]
+            {
+                "Active",
+                "Declined",
+                "Done"
+            };
+
+            foreach (var status in statuses)
+            {
+                context.OrderStatuses.Add(new OrderStatus { Name = status });
+            }
+            await context.SaveChangesAsync();
+        }
+
+        private static async Task PersonRoles(StudioContext context)
         {
             var roles = new[]
             {
@@ -26,10 +52,12 @@ namespace StudioBMS.Database.Context
             {
                 var role = new Role { Name = roleName.Normalize(), NormalizedName = roleName.ToUpper().Normalize() };
                 context.Roles.Add(role);
-                context.SaveChanges();
             }
+            await context.SaveChangesAsync();
+        }
 
-            //Init workshops
+        private static async Task Workshops(StudioContext context)
+        {
             var workshop = new Workshop();
             workshop.Title = "FirstPoint";
             workshop.City = "Львів";
@@ -37,7 +65,7 @@ namespace StudioBMS.Database.Context
             workshop.Email = "first@studio.com";
             workshop.PhoneNumber = "0999999999";
             context.Workshops.Add(workshop);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
 
             var timeTables = new List<Timetable>
             {
@@ -55,7 +83,10 @@ namespace StudioBMS.Database.Context
                 context.WorkshopTimetables.Add(new WorkshopTimetable { TimetableId = timeTable.Id, WorkshopId = workshop.Id });
                 context.SaveChanges();
             }
+        }
 
+        private static async Task Services(StudioContext context)
+        {
             var services = new List<Service>
             {
                 new Service{EnName = "Haircuts for women", RuName = "Стрижка женская", UkName = "Стрижка жіноча", Duration = new DateTime().AddHours(1), Price = 12000},
@@ -70,7 +101,7 @@ namespace StudioBMS.Database.Context
             foreach (var service in services)
             {
                 context.Services.Add(service);
-                context.SaveChanges();
+                await context.SaveChangesAsync();
             }
         }
     }

@@ -12,7 +12,8 @@ using StudioBMS.Database.Context;
 
 namespace StudioBMS.Repositories.Implementations
 {
-    public class PersonStoreRepository : UserStore<Person, Role, StudioContext, Guid, PersonClaim, PersonRole, PersonLogin,
+    public class PersonStoreRepository : UserStore<Person, Role, StudioContext, Guid, PersonClaim, PersonRole,
+        PersonLogin,
         PersonToken, RoleClaim>
     {
         public PersonStoreRepository(StudioContext context, IdentityErrorDescriber describer = null) : base(context,
@@ -33,45 +34,34 @@ namespace StudioBMS.Repositories.Implementations
 
         protected override PersonRole CreateUserRole(Person user, Role role)
         {
-            var personRole = new PersonRole {UserId = user.Id, RoleId = role.Id};
-            Context.UserRoles.Add(personRole);
-            Context.SaveChanges();
-            return personRole;
+            return new PersonRole {UserId = user.Id, RoleId = role.Id};
         }
 
         protected override PersonClaim CreateUserClaim(Person user, Claim claim)
         {
-            var personClaim = new PersonClaim {UserId = user.Id, ClaimType = claim.Type, ClaimValue = claim.Value};
-            Context.UserClaims.Add(personClaim);
-            Context.SaveChanges();
-            return personClaim;
+            return new PersonClaim {UserId = user.Id, ClaimType = claim.Type, ClaimValue = claim.Value};
         }
 
         protected override PersonLogin CreateUserLogin(Person user, UserLoginInfo login)
         {
-            var personLogin = new PersonLogin
+            return new PersonLogin
             {
                 UserId = user.Id,
                 LoginProvider = login.LoginProvider,
                 ProviderDisplayName = login.ProviderDisplayName,
                 ProviderKey = login.ProviderKey
             };
-            Context.UserLogins.Add(personLogin);
-            return personLogin;
         }
 
         protected override PersonToken CreateUserToken(Person user, string loginProvider, string name, string value)
         {
-            var personToken = new PersonToken
+            return new PersonToken
             {
                 UserId = user.Id,
                 LoginProvider = loginProvider,
                 Name = name,
                 Value = value
             };
-            Context.UserTokens.Add(personToken);
-            Context.SaveChanges();
-            return personToken;
         }
     }
 }

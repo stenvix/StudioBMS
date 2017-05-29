@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using StudioBMS.Business.DTO.Extensions;
 using StudioBMS.Business.DTO.Models;
 using StudioBMS.Business.Managers.Repositories.Interfaces;

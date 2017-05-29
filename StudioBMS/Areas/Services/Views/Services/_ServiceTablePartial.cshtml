@@ -1,5 +1,4 @@
-﻿@using System.Globalization
-@inject IHtmlLocalizer<ModelResource> ModeLocalizer
+﻿@inject IHtmlLocalizer<ModelResource> ModeLocalizer
 @{
     Layout = "Dashboard/_TableLayout";
 }
@@ -8,7 +7,7 @@
     <th class="col-xs-4">@ModeLocalizer["Title"]</th>
     <th class="col-xs-4">@ModeLocalizer["Duration"]</th>
     <th class="col-xs-3">@ModeLocalizer["Price"]</th>
-    <th class="col-xs-1">@ModeLocalizer["Actions"]</th>
+    <th class="col-xs-2 text-center col-actions">@ModeLocalizer["Actions"]</th>
 }
 
 @section tableBody{
