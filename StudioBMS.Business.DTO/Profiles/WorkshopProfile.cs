@@ -12,6 +12,7 @@ namespace StudioBMS.Business.DTO.Profiles
             CreateMap<Workshop, WorkshopModel>()
                 .ForMember(i => i.TimeTables, o => o.MapFrom(i => i.WorkshopTimetables.Select(r => r.Timetable)));
             CreateMap<WorkshopModel, Workshop>()
+                .ForMember(i=>i.Persons, o=>o.Ignore())
                 .ForMember(i => i.WorkshopTimetables, o => o.Ignore());
         }
     }

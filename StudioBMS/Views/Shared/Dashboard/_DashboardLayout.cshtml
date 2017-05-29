@@ -14,11 +14,13 @@
 
     <environment names="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        @*<link rel="stylesheet" href="~/css/bootstrap.min.css" />*@
         <link rel="stylesheet" href="~/lib/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
         <link rel="stylesheet" href="~/lib/bootstrap-theme-cosmo/cosmo.min.css" />
         <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.min.css" />
         <link rel="stylesheet" href="~/lib/metisMenu/dist/metisMenu.css" />
         <link rel="stylesheet" href="~/lib/bootstrap-table/dist/bootstrap-table.css" />
+        <link rel="stylesheet" href="~/lib/chosen-bootstrap/chosen.bootstrap.css"/>
         <link rel="stylesheet" href="~/css/site.css" />
     </environment>
     <environment names="Staging,Production">
@@ -56,13 +58,13 @@
                 <div class="sidebar-nav navbar-collapse collapse">
                     <ul class="nav in metismenu" id="side-menu">
                         <li>
-                            <a href="#"><i class="fa fa-calendar"></i> @TitleLocalizer["Journal"]</a>
+                            <a asp-area="Journals" asp-controller="Journals" asp-action="Index"><i class="fa fa-calendar"></i> @TitleLocalizer["Journal"]</a>
                         </li>
                         <li>
                             <a asp-area="Orders" asp-controller="Orders" asp-action="Index"><i class="fa fa-shopping-cart "></i> @TitleLocalizer["Orders"]</a>
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-bar-chart"></i> @TitleLocalizer["Statistics"]</a>
+                            <a asp-area="Statistics" asp-controller="Statistics" asp-action="Index"><i class="fa fa-bar-chart"></i> @TitleLocalizer["Statistics"]</a>
                         </li>
                         <li>
                             <a asp-area="Clients" asp-controller="Clients" asp-action="Index"><i class="fa fa-address-card"></i> @TitleLocalizer["Clients"]</a>
@@ -205,12 +207,13 @@
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
         <script type="text/javascript" src="~/lib/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
         <script src="~/lib/metisMenu/dist/metisMenu.js"></script>
-        <script src="~/js/site.js" asp-append-version="true"></script>
         <script src="~/lib/bootstrap-table/dist/bootstrap-table.js"></script>
         <script src="~/lib/bootstrap-table/dist/locale/bootstrap-table-uk-UA.min.js"></script>
         <script src="~/lib/bootstrap-table/dist/locale/bootstrap-table-ru-RU.min.js"></script>
         <script src="~/lib/bootstrap-table/dist/locale/bootstrap-table-en-US.min.js"></script>
         <script src="~/lib/bootstrap-table/dist/extensions/cookie/bootstrap-table-cookie.js"></script>
+        <script src="~/lib/chosen/chosen.jquery.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
     </environment>
     <environment names="Staging,Production">
         <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"

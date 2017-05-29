@@ -110,7 +110,7 @@ namespace StudioBMS.Business.Managers.Identity.Stores
         {
             var userEntity = user.To<Person>();
             await Context.PersonStoreStore.SetPasswordHashAsync(userEntity, passwordHash, cancellationToken);
-            Mapper.Map(userEntity, user);
+            user.PasswordHash = userEntity.PasswordHash;
         }
 
         public Task<string> GetPasswordHashAsync(PersonModel user, CancellationToken cancellationToken)
@@ -132,7 +132,7 @@ namespace StudioBMS.Business.Managers.Identity.Stores
         {
             var userEntity = user.To<Person>();
             await Context.PersonStoreStore.SetPhoneNumberAsync(user.To<Person>(), phoneNumber, cancellationToken);
-            Mapper.Map(userEntity, user);
+            user.PhoneNumber = userEntity.PhoneNumber;
         }
 
         public Task<string> GetPhoneNumberAsync(PersonModel user, CancellationToken cancellationToken)
@@ -150,14 +150,14 @@ namespace StudioBMS.Business.Managers.Identity.Stores
         {
             var userEntity = user.To<Person>();
             await Context.PersonStoreStore.SetPhoneNumberConfirmedAsync(user.To<Person>(), confirmed, cancellationToken);
-            Mapper.Map(userEntity, user);
+            user.PhoneNumberConfirmed = userEntity.PhoneNumberConfirmed;
         }
 
         public async Task SetTwoFactorEnabledAsync(PersonModel user, bool enabled, CancellationToken cancellationToken)
         {
             var userEntity = user.To<Person>();
             await Context.PersonStoreStore.SetTwoFactorEnabledAsync(user.To<Person>(), enabled, cancellationToken);
-            Mapper.Map(userEntity, user);
+            user.TwoFactorEnabled = userEntity.TwoFactorEnabled;
         }
 
         public Task<bool> GetTwoFactorEnabledAsync(PersonModel user, CancellationToken cancellationToken)
@@ -169,7 +169,7 @@ namespace StudioBMS.Business.Managers.Identity.Stores
         {
             var userEntity = user.To<Person>();
             await Context.PersonStoreStore.SetEmailAsync(userEntity, email, cancellationToken);
-            Mapper.Map(userEntity, user);
+            user.Email = userEntity.Email;
         }
 
         public Task<string> GetEmailAsync(PersonModel user, CancellationToken cancellationToken)
@@ -203,7 +203,7 @@ namespace StudioBMS.Business.Managers.Identity.Stores
         {
             var userEntity = user.To<Person>();
             await Context.PersonStoreStore.SetNormalizedEmailAsync(userEntity, normalizedEmail, cancellationToken);
-            Mapper.Map(userEntity, user);
+            user.NormalizedEmail = userEntity.NormalizedEmail;
         }
 
         public Task AddToRoleAsync(PersonModel user, string roleName, CancellationToken cancellationToken)

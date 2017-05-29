@@ -13,6 +13,8 @@ namespace StudioBMS.Business.DTO.Profiles
                 .ForMember(i=>i.Role, o=>o.MapFrom(src=> src.Roles.Select(r=>r.Role).FirstOrDefault()))
                 .ForMember(i=>i.TimeTables, o=>o.MapFrom(src=>src.PersonTimetables.Select(i=>i.Timetable)));
             CreateMap<PersonModel, Person>()
+                .ForMember(i=>i.WorkshopId, o=>o.MapFrom(src=>src.Workshop.Id))
+                .ForMember(i=>i.Workshop, o=>o.Ignore())
                 .ForMember(i=>i.Claims, o=>o.Ignore())
                 .ForMember(i=>i.PersonTimetables, o=>o.Ignore())
                 .ForMember(i=>i.Logins, o=>o.Ignore())

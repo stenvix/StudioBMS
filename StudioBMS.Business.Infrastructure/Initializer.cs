@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
@@ -8,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.DependencyInjection;
+using StudioBMS.Business.DTO.Extensions;
 using StudioBMS.Business.DTO.Models;
 using StudioBMS.Business.DTO.Profiles;
 using StudioBMS.Business.Managers.Identity;
@@ -54,7 +56,9 @@ namespace StudioBMS.Business.Infrastructure
                 if (existed)
                     return;
 
-                context.Initialize();
+                await context.Initialize();
+
+                var workshop = context.Workshops.First().To<WorkshopModel>();
 
                 //Init admin
                 var roleName = "administrator";
@@ -67,7 +71,8 @@ namespace StudioBMS.Business.Infrastructure
                     FirstName = "Valentyn",
                     LastName = "Stepanov",
                     PhoneNumber = "0998877332",
-                    Birthday = new DateTime(1994, 9, 18)
+                    Birthday = new DateTime(1994, 9, 18),
+                    Workshop = workshop
                 };
                 var result = await manager.CreateAsync(person, password);
 
@@ -98,29 +103,77 @@ namespace StudioBMS.Business.Infrastructure
                     context.SaveChanges();
                 }
 
-                //Init client
-                roleName = "client";
-                email = "client@test.com";
-                password = "Client123!";
-                person = new PersonModel
+                //Init employees
+                foreach (var role in context.Roles.Skip(1).ToList())
                 {
-                    FirstName = "Tom",
-                    LastName = "Minnigun",
-                    Birthday = new DateTime(1987, 01,21),
-                    UserName = email,
-                    Email = email,
-                    PhoneNumber = "0999944888"
-                };
+                    email = $"{role.Name}1@test.com";
+                    password = "Worker123!";
+                    person = new PersonModel
+                    {
+                        FirstName = $"{role.Name}First",
+                        LastName = $"{role.Name}Last",
+                        Birthday = new DateTime(1978, 5, 12),
+                        UserName = email,
+                        Email = email,
+                        PhoneNumber = "0991122334",
+                        Workshop = workshop
+                    };
 
-                result = await manager.CreateAsync(person, password);
-                if(!result.Succeeded)
-                    throw new ArgumentException($"Database fail to initialize person: {nameof(context)}");
+                    await manager.CreateAsync(person, password);
+                    person = await manager.FindByEmailAsync(email);
+                    await manager.AddToRoleAsync(person, role.Name);
 
-                person = await manager.FindByEmailAsync(email);
-                result = await manager.AddToRoleAsync(person, roleName);
+                    timeTables = new List<Timetable>
+                    {
+                        new Timetable{Start = new DateTime().AddHours(9), End = new DateTime().AddHours(17), WeekDay = DayOfWeek.Monday},
+                        new Timetable{Start = new DateTime().AddHours(9), End = new DateTime().AddHours(17), WeekDay = DayOfWeek.Tuesday},
+                        new Timetable{Start = new DateTime().AddHours(9), End = new DateTime().AddHours(17), WeekDay = DayOfWeek.Wednesday},
+                        new Timetable{Start = new DateTime().AddHours(9), End = new DateTime().AddHours(17), WeekDay = DayOfWeek.Thursday},
+                        new Timetable{Start = new DateTime().AddHours(9), End = new DateTime().AddHours(17), WeekDay = DayOfWeek.Friday}
+                    };
 
-                if (!result.Succeeded)
-                    throw new ArgumentNullException($"Database fail to initialize person role:{nameof(context)}");
+                    foreach (var timeTable in timeTables)
+                    {
+                        context.TimeTables.Add(timeTable);
+                        await context.SaveChangesAsync();
+                        context.PersonTimetables.Add(new PersonTimetable { TimetableId = timeTable.Id, PersonId = person.Id });
+                    }
+                    await context.SaveChangesAsync();
+
+                    foreach (var service in context.Services)
+                    {
+                        context.PersonServices.Add(new PersonService { PersonId = person.Id, ServiceId = service.Id });
+                    }
+                    context.SaveChanges();
+                }
+
+                //Init clients
+                for (int i = 0; i < 5; i++)
+                {
+                    roleName = "client";
+                    email = $"client{i}@test.com";
+                    password = "Client123!";
+                    person = new PersonModel
+                    {
+                        FirstName = $"Client{i}",
+                        LastName = $"LastClient{i}",
+                        Birthday = new DateTime(1987, 01, 21),
+                        UserName = email,
+                        Email = email,
+                        PhoneNumber = "0999944888",
+                        Workshop = workshop
+                    };
+
+                    result = await manager.CreateAsync(person, password);
+                    if (!result.Succeeded)
+                        throw new ArgumentException($"Database fail to initialize person: {nameof(context)}");
+
+                    person = await manager.FindByEmailAsync(email);
+                    result = await manager.AddToRoleAsync(person, roleName);
+
+                    if (!result.Succeeded)
+                        throw new ArgumentNullException($"Database fail to initialize person role:{nameof(context)}");
+                }
             });
         }
     }

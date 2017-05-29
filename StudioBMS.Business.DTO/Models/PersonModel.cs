@@ -10,8 +10,9 @@ namespace StudioBMS.Business.DTO.Models
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public DateTime Birthday { get; set; }
-        public IList<TimeTableModel> TimeTables { get; set; }
         public RoleModel Role { get; set; }
+        public DateTime Birthday { get; set; }
+        public WorkshopModel Workshop { get; set; }
+        public IList<TimeTableModel> TimeTables { get; set; }
     }
 }

@@ -156,6 +156,9 @@
   <data name="End" xml:space="preserve">
     <value>End</value>
   </data>
+  <data name="English" xml:space="preserve">
+    <value>English</value>
+  </data>
   <data name="FirstName" xml:space="preserve">
     <value>First name</value>
   </data>
@@ -165,11 +168,17 @@
   <data name="Hairdresser" xml:space="preserve">
     <value>Hairdresser</value>
   </data>
+  <data name="Language" xml:space="preserve">
+    <value>Language</value>
+  </data>
   <data name="LastName" xml:space="preserve">
     <value>Last name</value>
   </data>
   <data name="MakeupArtist" xml:space="preserve">
     <value>Makeup artist</value>
+  </data>
+  <data name="Manager" xml:space="preserve">
+    <value>Manager</value>
   </data>
   <data name="Manicurist" xml:space="preserve">
     <value>Manicurist</value>
@@ -201,6 +210,9 @@
   <data name="RememberMe" xml:space="preserve">
     <value>Remember me</value>
   </data>
+  <data name="Russian" xml:space="preserve">
+    <value>Russian</value>
+  </data>
   <data name="Start" xml:space="preserve">
     <value>Start</value>
   </data>
@@ -209,6 +221,9 @@
   </data>
   <data name="Title" xml:space="preserve">
     <value>Title</value>
+  </data>
+  <data name="Ukrainian" xml:space="preserve">
+    <value>Ukrainian</value>
   </data>
   <data name="WorkingHours" xml:space="preserve">
     <value>Working hours</value>

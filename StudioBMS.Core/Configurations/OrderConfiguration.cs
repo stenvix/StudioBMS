@@ -10,6 +10,7 @@ namespace StudioBMS.Core.Configurations
         public override void Map(EntityTypeBuilder<Order> b)
         {
             b.HasKey(i => i.Id);
+            b.Property(i => i.OrderNumber).ValueGeneratedOnAddOrUpdate();
             b.HasOne(i => i.Workshop).WithMany().HasForeignKey(i=>i.WorkshopId).OnDelete(DeleteBehavior.Restrict);
             b.HasOne(i => i.Customer).WithMany().HasForeignKey(i=>i.CustomerId).OnDelete(DeleteBehavior.Restrict);
             b.HasOne(i => i.Performer).WithMany().HasForeignKey(i=>i.PerformerId).OnDelete(DeleteBehavior.Restrict);

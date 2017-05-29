@@ -8,7 +8,7 @@ namespace StudioBMS.Database.Context
 {
     public static class DatabaseInitializer
     {
-        public static async void Initialize(this StudioContext context)
+        public static async Task Initialize(this StudioContext context)
         {
             await OrderStatuses(context);
             await PersonRoles(context);
@@ -39,7 +39,6 @@ namespace StudioBMS.Database.Context
             {
                 "Client",
                 "Manager",
-                "Employee",
                 "Administrator",
                 "Hairdresser",
                 "MakeupArtist",

@@ -16,7 +16,7 @@ namespace StudioBMS.Areas.Clients.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            return View(await _personManager.GetAsync());
+            return View(await _personManager.GetClients());
         }
     }
 }
