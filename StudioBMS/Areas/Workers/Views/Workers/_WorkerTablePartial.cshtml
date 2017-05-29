@@ -1,0 +1,33 @@
+﻿@inject IHtmlLocalizer<ModelResource> ModeLocalizer
+@model IList<PersonModel>
+@{
+    Layout = "Dashboard/_TableLayout";
+}
+
+@section tableHeader{
+    <th>@ModeLocalizer["FirstName"]</th>
+    <th>@ModeLocalizer["LastName"]</th>
+    <th>@ModeLocalizer["Position"]</th>
+    <th>@ModeLocalizer["Phone"]</th>
+    <th>@ModeLocalizer["WorkingHours"]</th>
+    <th>@ModeLocalizer["Actions"]</th>
+}
+
+@section tableBody
+{
+    @foreach (var worker in Model)
+    {
+        <tr>
+            <td>@worker.FirstName</td>
+            <td>@worker.LastName</td>
+            <td>@ModeLocalizer[worker.Role?.Name]</td>
+            <td>@worker.PhoneNumber</td>
+            <td>@*@worker.Timetable*@</td>
+            <td>
+                <a class="btn btn-sm btn-primary"><i class="fa fa-bar-chart"></i></a>
+                <a class="btn btn-sm btn-primary"><i class="fa fa-pencil"></i></a>
+                <a class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a>
+            </td>
+        </tr>
+    }
+}

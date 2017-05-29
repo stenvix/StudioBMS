@@ -20,7 +20,7 @@ namespace StudioBMS.Business.Managers.Models.Impl
 
         public async Task<IList<TimeTableModel>> GetTimeTables(Guid workshopId, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return Mapper.Map<IQueryable<TimeTable>,IList<TimeTableModel>>(await _unitOfWork.TimeTableRepository.ByWorkshop(workshopId, cancellationToken));
+            return Mapper.Map<IQueryable<Timetable>,IList<TimeTableModel>>(await _unitOfWork.TimeTableRepository.ByWorkshop(workshopId, cancellationToken));
         }
     }
 }

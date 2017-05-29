@@ -120,27 +120,15 @@ namespace StudioBMS.Migrations
                     b.ToTable("RoleClaims");
                 });
 
-            modelBuilder.Entity("StudioBMS.Core.Entities.ItemTimeTable", b =>
-                {
-                    b.Property<Guid>("TimeTableId");
-
-                    b.Property<Guid>("WorkshopId");
-
-                    b.Property<Guid>("Id");
-
-                    b.HasKey("TimeTableId", "WorkshopId");
-
-                    b.HasIndex("WorkshopId");
-
-                    b.ToTable("ItemTimeTables");
-                });
-
             modelBuilder.Entity("StudioBMS.Core.Entities.Person", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<int>("AccessFailedCount");
+
+                    b.Property<DateTime>("Birthday")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
@@ -149,6 +137,12 @@ namespace StudioBMS.Migrations
                         .HasMaxLength(256);
 
                     b.Property<bool>("EmailConfirmed");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired();
+
+                    b.Property<string>("LastName")
+                        .IsRequired();
 
                     b.Property<bool>("LockoutEnabled");
 
@@ -185,7 +179,60 @@ namespace StudioBMS.Migrations
                     b.ToTable("Persons");
                 });
 
-            modelBuilder.Entity("StudioBMS.Core.Entities.TimeTable", b =>
+            modelBuilder.Entity("StudioBMS.Core.Entities.PersonService", b =>
+                {
+                    b.Property<Guid>("ServiceId");
+
+                    b.Property<Guid>("PersonId");
+
+                    b.Property<Guid>("Id");
+
+                    b.HasKey("ServiceId", "PersonId");
+
+                    b.HasIndex("PersonId");
+
+                    b.ToTable("PersonService");
+                });
+
+            modelBuilder.Entity("StudioBMS.Core.Entities.PersonTimetable", b =>
+                {
+                    b.Property<Guid>("PersonId");
+
+                    b.Property<Guid>("TimeTableId");
+
+                    b.Property<Guid>("Id");
+
+                    b.HasKey("PersonId", "TimeTableId");
+
+                    b.HasIndex("TimeTableId");
+
+                    b.ToTable("PersonTimetables");
+                });
+
+            modelBuilder.Entity("StudioBMS.Core.Entities.Service", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("Duration");
+
+                    b.Property<string>("EnName")
+                        .IsRequired();
+
+                    b.Property<int>("Price");
+
+                    b.Property<string>("RuName")
+                        .IsRequired();
+
+                    b.Property<string>("UkName")
+                        .IsRequired();
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Services");
+                });
+
+            modelBuilder.Entity("StudioBMS.Core.Entities.Timetable", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
@@ -221,6 +268,21 @@ namespace StudioBMS.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Workshops");
+                });
+
+            modelBuilder.Entity("StudioBMS.Core.Entities.WorkshopTimetable", b =>
+                {
+                    b.Property<Guid>("TimetableId");
+
+                    b.Property<Guid>("WorkshopId");
+
+                    b.Property<Guid>("Id");
+
+                    b.HasKey("TimetableId", "WorkshopId");
+
+                    b.HasIndex("WorkshopId");
+
+                    b.ToTable("WorkshopTimetables");
                 });
 
             modelBuilder.Entity("StudioBMS.Core.Entities.IdentityBase.PersonClaim", b =>
@@ -260,15 +322,41 @@ namespace StudioBMS.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("StudioBMS.Core.Entities.ItemTimeTable", b =>
+            modelBuilder.Entity("StudioBMS.Core.Entities.PersonService", b =>
                 {
-                    b.HasOne("StudioBMS.Core.Entities.TimeTable", "TimeTable")
-                        .WithMany("ItemTimeTables")
+                    b.HasOne("StudioBMS.Core.Entities.Person", "Person")
+                        .WithMany("PersonServices")
+                        .HasForeignKey("PersonId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("StudioBMS.Core.Entities.Service", "Service")
+                        .WithMany("PersonServices")
+                        .HasForeignKey("ServiceId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("StudioBMS.Core.Entities.PersonTimetable", b =>
+                {
+                    b.HasOne("StudioBMS.Core.Entities.Person", "Person")
+                        .WithMany("PersonTimetables")
+                        .HasForeignKey("PersonId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("StudioBMS.Core.Entities.Timetable", "Timetable")
+                        .WithMany("PersonTimetables")
                         .HasForeignKey("TimeTableId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("StudioBMS.Core.Entities.WorkshopTimetable", b =>
+                {
+                    b.HasOne("StudioBMS.Core.Entities.Timetable", "Timetable")
+                        .WithMany("WorkshopTimetables")
+                        .HasForeignKey("TimetableId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("StudioBMS.Core.Entities.Workshop", "Workshop")
-                        .WithMany("ItemTimeTables")
+                        .WithMany("WorkshopTimetables")
                         .HasForeignKey("WorkshopId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

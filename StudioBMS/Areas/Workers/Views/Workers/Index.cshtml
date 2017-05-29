@@ -1,0 +1,16 @@
+﻿@model IList<PersonModel>
+@inject IHtmlLocalizer<PageTitleResource> TitleLocalizer
+@{
+    var title = TitleLocalizer["Workers"];
+    ViewData["Title"] = title;
+    ViewData["H1"] = title;
+}
+<div class="row">
+    <div class="col-xs-12">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                @Html.Partial("_WorkerTablePartial", Model)
+            </div>
+        </div>
+    </div>
+</div>

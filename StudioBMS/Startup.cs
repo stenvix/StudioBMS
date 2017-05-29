@@ -16,6 +16,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using StudioBMS.Business.Infrastructure;
 using StudioBMS.Business.Managers.Identity;
+using StudioBMS.Business.Managers.Models.Interfaces;
 using StudioBMS.Database.Context;
 using StudioBMS.Services;
 

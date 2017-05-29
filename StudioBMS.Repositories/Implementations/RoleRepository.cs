@@ -1,21 +1,14 @@
-﻿using System;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using StudioBMS.Core.Entities.IdentityBase;
+﻿using StudioBMS.Core.Entities.IdentityBase;
 using StudioBMS.Database.Context;
+using StudioBMS.Repositories.Implementations.Base;
+using StudioBMS.Repositories.Interfaces;
 
 namespace StudioBMS.Repositories.Implementations
 {
-    public class RoleRepository : RoleStore<Role, StudioContext, Guid, PersonRole, RoleClaim>
+    public class RoleRepository : Repository<Role>, IRoleRepository
     {
-        public RoleRepository(StudioContext context, IdentityErrorDescriber describer = null) : base(context, describer)
+        public RoleRepository(StudioContext context) : base(context)
         {
-        }
-
-        protected override RoleClaim CreateRoleClaim(Role role, Claim claim)
-        {
-            return new RoleClaim {RoleId = role.Id, ClaimType = claim.Type, ClaimValue = claim.Value};
         }
     }
 }

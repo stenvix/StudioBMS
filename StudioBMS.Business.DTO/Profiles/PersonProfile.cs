@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Linq;
+using AutoMapper;
 using StudioBMS.Business.DTO.Models;
 using StudioBMS.Core.Entities;
 
@@ -8,8 +9,13 @@ namespace StudioBMS.Business.DTO.Profiles
     {
         public PersonProfile()
         {
-            CreateMap<Person, PersonModel>();
-            CreateMap<PersonModel, Person>();
+            CreateMap<Person, PersonModel>()
+                .ForMember(i=>i.Role, o=>o.MapFrom(src=> src.Roles.Select(r=>r.Role).FirstOrDefault()));
+            CreateMap<PersonModel, Person>()
+                .ForMember(i=>i.Claims, o=>o.Ignore())
+                .ForMember(i=>i.PersonTimetables, o=>o.Ignore())
+                .ForMember(i=>i.Logins, o=>o.Ignore())
+                .ForMember(i=>i.Roles, o=>o.Ignore());
         }
     }
 }

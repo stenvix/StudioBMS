@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -21,14 +22,19 @@ namespace StudioBMS.Repositories.Implementations.Base
         protected DbSet<TEntity> Set { get; }
 
 
-        public virtual Task<IQueryable<TEntity>> GetAsync(CancellationToken cancellationToken = new CancellationToken())
+        protected virtual IEnumerable<TEntity> Include()
         {
-            return Task.Run(() => Set.AsQueryable(), cancellationToken);
+            return Set;
+        } 
+
+        public virtual Task<IEnumerable<TEntity>> GetAsync(CancellationToken cancellationToken = new CancellationToken())
+        {
+            return Task.Run(() => Include(), cancellationToken);
         }
 
         public virtual Task<TEntity> GetAsync(Guid id, CancellationToken cancellationToken = new CancellationToken())
         {
-            return Set.FindAsync(new object[] {id}, cancellationToken);
+            return Task.Run(() => Include().FirstOrDefault(i => i.Id == id), cancellationToken);
         }
 
         public virtual async Task<TEntity> CreateAsync(TEntity entity,

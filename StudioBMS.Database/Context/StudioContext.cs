@@ -26,12 +26,16 @@ namespace StudioBMS.Database.Context
             builder.Entity<PersonToken>().ToTable("PersonTokens");
             builder.Entity<Role>().ToTable("Roles");
             builder.Entity<RoleClaim>().ToTable("RoleClaims");
-            builder.Entity<TimeTable>().ToTable("Timetables");
+            builder.Entity<Timetable>().ToTable("Timetables");
+            builder.Entity<PersonRole>().HasOne(i => i.Person).WithMany(i => i.Roles).HasForeignKey(i=>i.UserId);
+            builder.Entity<PersonRole>().HasOne(i => i.Role).WithMany(i => i.Users).HasForeignKey(i=>i.RoleId);
             builder.AddEntityConfigurationsFromAssembly(typeof(IEntity).GetTypeInfo().Assembly);
         }
 
         public DbSet<Workshop> Workshops { get; set; }
-        public DbSet<ItemTimeTable> ItemTimeTables { get; set; }
-        public DbSet<TimeTable> TimeTables { get; set; }
+        public DbSet<WorkshopTimetable> WorkshopTimetables { get; set; }
+        public DbSet<Timetable> TimeTables { get; set; }
+        public DbSet<PersonTimetable> PersonTimetables { get; set; }
+        public DbSet<Service> Services { get; set; }
     }
 }

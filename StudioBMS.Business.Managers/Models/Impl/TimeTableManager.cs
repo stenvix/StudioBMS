@@ -6,7 +6,7 @@ using StudioBMS.Core.Entities;
 
 namespace StudioBMS.Business.Managers.Models.Impl
 {
-    public class TimeTableManager : CrudManager<TimeTableModel, TimeTable>, ITimeTableManager
+    public class TimeTableManager : CrudManager<TimeTableModel, Timetable>, ITimeTableManager
     {
         public TimeTableManager(IUnitOfWork unitOfWork) : base(unitOfWork, unitOfWork.TimeTableRepository)
         {

@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using StudioBMS.Business.DTO.Models;
 using StudioBMS.Business.Identity.Models;
 
 namespace StudioBMS.Business.Managers.Identity.Stores

@@ -9,15 +9,15 @@ using StudioBMS.Repositories.Interfaces;
 
 namespace StudioBMS.Repositories.Implementations
 {
-    public class TimeTableRepository : Repository<TimeTable>, ITimeTableRepository
+    public class TimeTableRepository : Repository<Timetable>, ITimeTableRepository
     {
         public TimeTableRepository(StudioContext context) : base(context)
         {
         }
 
-        public Task<IQueryable<TimeTable>> ByWorkshop(Guid workshopId, CancellationToken cancellationToken = default(CancellationToken))
+        public Task<IQueryable<Timetable>> ByWorkshop(Guid workshopId, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return Task.Run(() => Context.ItemTimeTables.Where(i => i.WorkshopId == workshopId).Select(i => i.TimeTable), cancellationToken);
+            return Task.Run(() => Context.WorkshopTimetables.Where(i => i.WorkshopId == workshopId).Select(i => i.Timetable), cancellationToken);
         }
     }
 }

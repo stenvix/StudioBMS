@@ -1,0 +1,39 @@
+﻿@using System.Globalization
+@inject IHtmlLocalizer<ModelResource> ModeLocalizer
+@{
+    Layout = "Dashboard/_TableLayout";
+}
+@model IList<ServiceModel>
+@section tableHeader{
+    <th class="col-xs-4">@ModeLocalizer["Title"]</th>
+    <th class="col-xs-4">@ModeLocalizer["Duration"]</th>
+    <th class="col-xs-3">@ModeLocalizer["Price"]</th>
+    <th class="col-xs-1">@ModeLocalizer["Actions"]</th>
+}
+
+@section tableBody{
+    @foreach (var service in Model)
+    {
+        <tr>
+            @if (CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "uk")
+            {
+                <td>@service.UkName</td>
+            }
+            @if (CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "ru")
+            {
+                <td>@service.RuName</td>
+            }
+            @if (CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "en")
+            {
+                <td>@service.EnName</td>
+            }
+            <td>@service.Duration.ToString("t")</td>
+            <td>@service.Price</td>
+            <td>
+                <a class="btn btn-sm btn-primary"><i class="fa fa-pencil"></i></a>
+                <a class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a>
+            </td>
+        </tr>
+    }
+
+}

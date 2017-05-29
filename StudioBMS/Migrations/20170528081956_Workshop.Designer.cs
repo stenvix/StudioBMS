@@ -186,7 +186,7 @@ namespace StudioBMS.Migrations
                     b.ToTable("Persons");
                 });
 
-            modelBuilder.Entity("StudioBMS.Core.Entities.TimeTable", b =>
+            modelBuilder.Entity("StudioBMS.Core.Entities.Timetable", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
@@ -263,7 +263,7 @@ namespace StudioBMS.Migrations
 
             modelBuilder.Entity("StudioBMS.Core.Entities.ItemTimeTable", b =>
                 {
-                    b.HasOne("StudioBMS.Core.Entities.TimeTable", "TimeTable")
+                    b.HasOne("StudioBMS.Core.Entities.Timetable", "Timetable")
                         .WithMany("ItemTimeTables")
                         .HasForeignKey("TimeTableId")
                         .OnDelete(DeleteBehavior.Cascade);

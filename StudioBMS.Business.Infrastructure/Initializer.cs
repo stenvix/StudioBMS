@@ -9,7 +9,6 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.DependencyInjection;
 using StudioBMS.Business.DTO.Models;
 using StudioBMS.Business.DTO.Profiles;
-using StudioBMS.Business.Identity.Models;
 using StudioBMS.Business.Managers.Identity;
 using StudioBMS.Business.Managers.Identity.Stores;
 using StudioBMS.Business.Managers.Models.Impl;
@@ -35,6 +34,8 @@ namespace StudioBMS.Business.Infrastructure
             builder.RegisterType<UnitOfWork>().AsImplementedInterfaces();
             builder.RegisterType<WorkshopManager>().AsImplementedInterfaces();
             builder.RegisterType<TimeTableManager>().AsImplementedInterfaces();
+            builder.RegisterType<ServiceManager>().AsImplementedInterfaces();
+            builder.RegisterType<PersonManager>().AsImplementedInterfaces();
 
             var container = builder.Build();
             return container.Resolve<IServiceProvider>();
@@ -53,14 +54,25 @@ namespace StudioBMS.Business.Infrastructure
 
                 context.Initialize();
 
+                var roleName = "administrator";
                 var email = "sa@test.com";
                 var password = "Admin123!";
-                var person = new PersonModel { UserName = email, Email = email };
+                var person = new PersonModel
+                {
+                    UserName = email,
+                    Email = email,
+                    FirstName = "Valentyn",
+                    LastName = "Stepanov",
+                    Birthday = new DateTime(1994, 9, 18)
+                };
                 var result = await manager.CreateAsync(person, password);
+
 
                 if (!result.Succeeded)
                     throw new ArgumentNullException($"Database fail to initialize person:{nameof(context)}");
-                result = await manager.AddToRoleAsync(person, "manager");
+
+                person = await manager.FindByEmailAsync(email);
+                result = await manager.AddToRoleAsync(person, roleName);
 
                 if (!result.Succeeded)
                     throw new ArgumentNullException($"Database fail to initialize person role:{nameof(context)}");

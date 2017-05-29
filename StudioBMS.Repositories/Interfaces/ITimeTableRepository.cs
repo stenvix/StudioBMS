@@ -7,8 +7,8 @@ using StudioBMS.Core.Entities;
 
 namespace StudioBMS.Repositories.Interfaces
 {
-    public interface ITimeTableRepository : IRepository<TimeTable>
+    public interface ITimeTableRepository : IRepository<Timetable>
     {
-        Task<IQueryable<TimeTable>> ByWorkshop(Guid workshopId, CancellationToken cancellationToken = default(CancellationToken));
+        Task<IQueryable<Timetable>> ByWorkshop(Guid workshopId, CancellationToken cancellationToken = default(CancellationToken));
     }
 }

@@ -65,13 +65,13 @@
                             <a href="#"><i class="fa fa-bar-chart"></i> @TitleLocalizer["Statistics"]</a>
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-address-card"></i> @TitleLocalizer["Clients"]</a>
+                            <a asp-area="Clients" asp-controller="Clients" asp-action="Index"><i class="fa fa-address-card"></i> @TitleLocalizer["Clients"]</a>
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-users"></i> @TitleLocalizer["Workers"]</a>
+                            <a asp-area="Workers" asp-controller="Workers" asp-action="Index"><i class="fa fa-users"></i> @TitleLocalizer["Workers"]</a>
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-briefcase"></i> @TitleLocalizer["Services"]</a>
+                            <a asp-area="Services" asp-controller="Services" asp-action="Index"><i class="fa fa-briefcase"></i> @TitleLocalizer["Services"]</a>
                         </li>
                         <li>
                             <a asp-area="Workshops" asp-controller="Workshops" asp-action="Index"><i class="fa fa-building"></i> @TitleLocalizer["Workshops"]</a>

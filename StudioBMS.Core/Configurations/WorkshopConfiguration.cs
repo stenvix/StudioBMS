@@ -4,7 +4,7 @@ using StudioBMS.Core.Entities;
 
 namespace StudioBMS.Core.Configurations
 {
-    public class WorkshopConfiguration : EntityMappingConfiguration<Workshop>
+    internal class WorkshopConfiguration : EntityMappingConfiguration<Workshop>
     {
         public override void Map(EntityTypeBuilder<Workshop> b)
         {

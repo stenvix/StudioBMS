@@ -1,0 +1,16 @@
+@inject IHtmlLocalizer<PageTitleResource> TitleLocalizer
+@model IList<ServiceModel>
+@{
+    var title = TitleLocalizer["Services"];
+    ViewData["Title"] = title;
+    ViewData["H1"] = title;
+}
+<div class="row">
+    <div class="col-xs-12">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                @Html.Partial("_ServiceTablePartial", Model)
+            </div>
+        </div>
+    </div>
+</div>

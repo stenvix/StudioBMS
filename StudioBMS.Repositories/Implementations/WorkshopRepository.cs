@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -15,9 +16,9 @@ namespace StudioBMS.Repositories.Implementations
         {
         }
 
-        public override Task<IQueryable<Workshop>> GetAsync(CancellationToken cancellationToken = new CancellationToken())
+        public override Task<IEnumerable<Workshop>> GetAsync(CancellationToken cancellationToken = new CancellationToken())
         {
-            return Task.Run(() => Set.Include(i => i.ItemTimeTables).ThenInclude(i => i.TimeTable).AsQueryable(), cancellationToken);
+            return Task.Run(() => Set.Include(i => i.WorkshopTimetables).ThenInclude(i => i.Timetable).AsEnumerable(), cancellationToken);
         }
     }
 }
