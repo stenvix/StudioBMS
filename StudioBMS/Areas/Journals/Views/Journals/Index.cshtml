@@ -3,7 +3,7 @@
 @{
     var workshops = (IList<WorkshopModel>)ViewData["Workshops"];
     var workers = (IList <PersonModel>)ViewData["Workers"];
-    var date = (DateTime)ViewData["Date"];
+    //var date = (DateTime)ViewData["Date"];
     ViewData["Title"] = TitleLocalizer["Journal"];
 }
 <div class="row" style="padding: 10px 0;">
@@ -21,7 +21,7 @@
                 </select>
             </div>
             <div class="col-lg-6">
-                <select class="chosen" multiple="multiple">
+                <select class="chosen" multiple="multiple" data-selmax="4">
                     @foreach (var worker in workers)
                     {
                         <option value="@worker.Id">@worker.LastName @worker.FirstName[0]. (@ModeLocalizer[worker.Role.Name]) </option>

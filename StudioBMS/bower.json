@@ -13,7 +13,8 @@
     "bootstrap-table": "1.11.1",
     "jquery-ajax-unobtrusive": "v3.2.4",
     "chosen": "v1.7.0",
-    "chosen-bootstrap": "1.1.0"
+    "chosen-bootstrap": "1.1.0",
+    "chart.js": "Chart.js#v2.6.0"
   },
   "resolutions": {
     "jquery": ">=1.8",
