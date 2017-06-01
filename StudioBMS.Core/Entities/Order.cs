@@ -19,6 +19,7 @@ namespace StudioBMS.Core.Entities
         public IEnumerable<OrderService> OrderServices { get; set; }
         public DateTime Date { get; set; }
         public long Price { get; set; }
+        public long Balance { get; set; }
         public bool IsPaid { get; set; }
     }
 }

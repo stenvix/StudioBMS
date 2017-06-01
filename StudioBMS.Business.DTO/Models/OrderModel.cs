@@ -13,6 +13,7 @@ namespace StudioBMS.Business.DTO.Models
         public WorkshopModel Workshop { get; set; }
         public PersonModel Performer { get; set; }
         public IList<ServiceModel> Services { get; set; }
+        public double Balance { get; set; }
         public double Price { get; set; }
         public DateTime Date { get; set; }
         public bool IsPaid { get; set; }

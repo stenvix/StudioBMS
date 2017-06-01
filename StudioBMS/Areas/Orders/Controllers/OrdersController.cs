@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StudioBMS.Business.DTO.Extensions;
 using StudioBMS.Business.DTO.Models;
@@ -99,7 +100,7 @@ namespace StudioBMS.Areas.Orders.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("edit/{id}")]
         public async Task<IActionResult> Edit(Guid id)
         {
             var model = await _orderManager.GetAsync(id);
@@ -121,6 +122,20 @@ namespace StudioBMS.Areas.Orders.Controllers
             await _orderManager.UpdateAsync(model);
             return RedirectToAction("Index");
         }
+
+        [HttpGet("pay/{id}")]
+        public IActionResult Payment(Guid id)
+        {
+            return View(new PaymentViewModel{Id = id});
+        }
+
+        [HttpPost("pay")]
+        public async Task<IActionResult> SubmitPayment(PaymentViewModel payment)
+        {
+            await _orderManager.ManageBalance(payment);
+            return RedirectToAction("Index");
+        }
+
 
         [NonAction]
         private bool IsNotInRoles(string[] roles)

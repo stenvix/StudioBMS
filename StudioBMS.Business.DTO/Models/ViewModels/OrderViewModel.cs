@@ -21,6 +21,7 @@ namespace StudioBMS.Business.DTO.Models
         public bool IsPaid { get; set; }
         public int OrderNumber { get; set; }
         public double Price { get; set; }
+        public double Balance { get; set; }
         public Guid Id { get; set; }
     }
 }

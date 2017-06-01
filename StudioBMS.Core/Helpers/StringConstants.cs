@@ -2,8 +2,8 @@
 {
     public static class StringConstants
     {
-        public static string CustomerRole = "Customer";
-        public static string AdministratorRole = "Administrator";
-        public static string ManagerRole = "Manager";
+        public const string CustomerRole = "Customer";
+        public const string AdministratorRole = "Administrator";
+        public const string ManagerRole = "Manager";
     }
 }

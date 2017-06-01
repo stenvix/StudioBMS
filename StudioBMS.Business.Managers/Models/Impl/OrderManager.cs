@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using StudioBMS.Business.DTO.Extensions;
@@ -45,6 +46,13 @@ namespace StudioBMS.Business.Managers.Models.Impl
         {
             var result =await _unitOfWork.OrderStatusRepository.GetAsync();
             return result.To<OrderStatusModel>();
+        }
+
+        public async Task ManageBalance(PaymentViewModel payment)
+        {
+            var model = await GetAsync(payment.Id);
+            model.Balance += payment.Balance;
+            await UpdateAsync(model);
         }
     }
 }

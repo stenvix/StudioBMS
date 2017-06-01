@@ -13,12 +13,12 @@
 
 @section tableHeader
 {
-    <th class="col-xs-1">#</th>
     <th class="col-xs-2">@ModeLocalizer["Client"]</th>
     <th class="col-xs-2">@ModeLocalizer["Performer"]</th>
     <th class="col-xs-2">@ModeLocalizer["Workshop"]</th>
     <th class="col-xs-2">@ModeLocalizer["DateAndTime"]</th>
     <th class="col-xs-1">@ModeLocalizer["Price"]</th>
+    <th class="col-xs-1">@ModeLocalizer["Balance"]</th>
     <th class="col-xs-2 text-center col-actions">@ModeLocalizer["Actions"]</th>
 }
 
@@ -27,15 +27,15 @@
     @foreach (var order in Model)
     {
         <tr>
-            <td>@order.OrderNumber</td>
             <td>@order.Customer.FullName</td>
             <td>@order.Performer.FullName</td>
             <td>@order.Workshop.Title (@order.Workshop.City)</td>
             <td>@order.Date.ToString("g")</td>
             <td>@order.Price</td>
+            <td>@order.Balance (@ModeLocalizer[order.PaidStatus])</td>
             <td>
                 <a class="btn btn-sm btn-success"><i class="fa fa-check"></i></a>
-                <a class="btn btn-sm btn-primary"><i class="fa fa-money"></i></a>
+                <a asp-area="Orders" asp-controller="Orders" asp-action="Payment" asp-route-id="@order.Id" class="btn btn-sm btn-primary"><i class="fa fa-money"></i></a>
                 <a asp-area="Orders" asp-controller="Orders" asp-action="Edit" asp-route-id="@order.Id" class="btn btn-sm btn-info"><i class="fa fa-pencil"></i></a>
                 <a class="btn btn-sm btn-danger"><i class="fa fa-close"></i></a>
             </td>
