@@ -15,5 +15,7 @@ namespace StudioBMS.Core.Entities
         public Workshop Workshop { get; set; }
         public IEnumerable<PersonTimetable> PersonTimetables { get; set; }
         public IEnumerable<PersonService> PersonServices { get; set; }
+        public IEnumerable<Order> CustomerOrders { get; set; }
+        public IEnumerable<Order> PerformerOrders { get; set; }
     }
 }

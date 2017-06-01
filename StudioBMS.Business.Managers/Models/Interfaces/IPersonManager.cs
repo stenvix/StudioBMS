@@ -9,7 +9,9 @@ namespace StudioBMS.Business.Managers.Models.Interfaces
     public interface IPersonManager : IManager<PersonModel>
     {
         Task<IList<PersonModel>> GetClients();
-        Task<IList<PersonModel>> GetEmployees(Guid? workshopId = default(Guid?));
+        Task<IList<PersonModel>> GetEmployees(Guid workshopId = default(Guid));
         Task<IList<PersonModel>> GetStaff();
+        Task<IList<PersonModel>> GetWithPerformerOrders(Guid[] ids);
+        Task<PersonModel> FindByName(string username);
     }
 }

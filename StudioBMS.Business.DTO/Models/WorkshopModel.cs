@@ -13,5 +13,6 @@ namespace StudioBMS.Business.DTO.Models
         public string Email { get; set; }
         public IList<TimeTableModel> TimeTables { get; set; }
         public Guid Id { get; set; }
+        public string TitleWithCity => $"{Title} ({City})";
     }
 }

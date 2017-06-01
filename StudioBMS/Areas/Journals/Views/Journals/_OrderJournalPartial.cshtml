@@ -1,0 +1,60 @@
+@model OrderModel
+@inject IHtmlLocalizer<ModelResource> ModelLocalizer
+@{
+    var location = CultureInfo.CurrentCulture.Name;
+    var serviceTimes = Model.Services.Select(i => i.Duration);
+    var duration = serviceTimes.Aggregate(TimeSpan.Zero, (current, time) => current + time.TimeOfDay);
+}
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <div class="row">
+            <div class="col-xs-8">
+                <strong>
+                    <i class="fa fa-clock-o"></i> @Model.Date.ToString("t") - @Model.Date.Add(duration).ToString("t")
+                </strong>
+                <br />
+                <span style="font-size: 13px;">
+                    <i class="fa fa-user" aria-hidden="true"></i>
+                    @Model.Customer.LastName @Model.Customer.FirstName[0].
+                </span>
+            </div>
+            <div class="col-xs-4 col-actions">
+                <div class="btn-group text-center">
+                    <a href="#" class="btn btn-success btn-sm">
+                        <i class="fa fa-check fa-fw"></i>
+                    </a>
+                    <a href="#" class="btn btn-info btn-sm">
+                        <i class="fa fa-pencil fa-fw"></i>
+                    </a>
+                    <a href="#" class="btn btn-danger btn-sm">
+                        <i class="fa fa-close fa-fw"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <ul class="list-group">
+        @foreach (var service in Model.Services)
+        {
+            <li class="list-group-item">
+                <i class="fa fa-bars"></i>
+                @if (location == "en")
+                {
+                    @service.EnName
+                }
+                @if (location == "ru")
+                {
+                    @service.RuName
+                }
+                @if (location == "uk")
+                {
+                    @service.UkName
+                }
+            </li>
+        }
+    </ul>
+    <div class="panel-footer">
+        <span>@ModelLocalizer[Model.PaidStatus]</span>
+        <span class="pull-right">@ModelLocalizer[Model.Status.Name]</span>
+    </div>
+</div>

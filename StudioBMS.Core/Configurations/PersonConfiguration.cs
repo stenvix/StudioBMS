@@ -11,8 +11,6 @@ namespace StudioBMS.Core.Configurations
         {
             b.HasKey(i => i.Id);
             b.Property(i => i.Birthday).HasColumnType("datetime2");
-            b.Property(i => i.FirstName).IsRequired();
-            b.Property(i => i.LastName).IsRequired();
             b.HasOne(i => i.Workshop).WithMany(i=>i.Persons).HasForeignKey(i => i.WorkshopId);
         }
     }

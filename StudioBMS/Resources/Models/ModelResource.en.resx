@@ -132,6 +132,9 @@
   <data name="Client" xml:space="preserve">
     <value>Client</value>
   </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
   <data name="ConfirmPassword" xml:space="preserve">
     <value>Confirm new password</value>
   </data>
@@ -141,8 +144,14 @@
   <data name="Create" xml:space="preserve">
     <value>Create</value>
   </data>
+  <data name="Customer" xml:space="preserve">
+    <value>Customer</value>
+  </data>
   <data name="Date" xml:space="preserve">
     <value>Date</value>
+  </data>
+  <data name="DateAndTime" xml:space="preserve">
+    <value>Date and time</value>
   </data>
   <data name="DayOfWeek" xml:space="preserve">
     <value>Day of week</value>
@@ -183,6 +192,9 @@
   <data name="Manicurist" xml:space="preserve">
     <value>Manicurist</value>
   </data>
+  <data name="Master" xml:space="preserve">
+    <value>Master</value>
+  </data>
   <data name="NewPassword" xml:space="preserve">
     <value>New password</value>
   </data>
@@ -213,6 +225,9 @@
   <data name="Russian" xml:space="preserve">
     <value>Russian</value>
   </data>
+  <data name="Services" xml:space="preserve">
+    <value>Services</value>
+  </data>
   <data name="Start" xml:space="preserve">
     <value>Start</value>
   </data>
@@ -227,5 +242,8 @@
   </data>
   <data name="WorkingHours" xml:space="preserve">
     <value>Working hours</value>
+  </data>
+  <data name="Workshop" xml:space="preserve">
+    <value>Workshop</value>
   </data>
 </root>

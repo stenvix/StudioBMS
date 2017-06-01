@@ -132,6 +132,9 @@
   <data name="Client" xml:space="preserve">
     <value>Клієнт</value>
   </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>Підтвердити</value>
+  </data>
   <data name="ConfirmPassword" xml:space="preserve">
     <value>Підтвердіть новий пароль</value>
   </data>
@@ -141,8 +144,14 @@
   <data name="Create" xml:space="preserve">
     <value>Створити</value>
   </data>
+  <data name="Customer" xml:space="preserve">
+    <value>Клієнт</value>
+  </data>
   <data name="Date" xml:space="preserve">
     <value>Дата</value>
+  </data>
+  <data name="DateAndTime" xml:space="preserve">
+    <value>Дата та час</value>
   </data>
   <data name="DayOfWeek" xml:space="preserve">
     <value>День тижня</value>
@@ -186,6 +195,9 @@
   <data name="Manicurist" xml:space="preserve">
     <value>Майстер манікюру</value>
   </data>
+  <data name="Master" xml:space="preserve">
+    <value>Майстер</value>
+  </data>
   <data name="NewPassword" xml:space="preserve">
     <value>Новий пароль</value>
   </data>
@@ -216,6 +228,9 @@
   <data name="Russian" xml:space="preserve">
     <value>Російська</value>
   </data>
+  <data name="Services" xml:space="preserve">
+    <value>Послуги</value>
+  </data>
   <data name="Start" xml:space="preserve">
     <value>Початок</value>
   </data>
@@ -230,5 +245,8 @@
   </data>
   <data name="WorkingHours" xml:space="preserve">
     <value>Режим роботи</value>
+  </data>
+  <data name="Workshop" xml:space="preserve">
+    <value>Майстерня</value>
   </data>
 </root>

@@ -11,7 +11,8 @@ namespace StudioBMS.Business.DTO.Profiles
         {
             CreateMap<Person, PersonModel>()
                 .ForMember(i=>i.Role, o=>o.MapFrom(src=> src.Roles.Select(r=>r.Role).FirstOrDefault()))
-                .ForMember(i=>i.TimeTables, o=>o.MapFrom(src=>src.PersonTimetables.Select(i=>i.Timetable)));
+                .ForMember(i=>i.TimeTables, o=>o.MapFrom(src=>src.PersonTimetables.Select(i=>i.Timetable)))
+                .ForMember(i=>i.Orders, o=>o.Ignore());
             CreateMap<PersonModel, Person>()
                 .ForMember(i=>i.WorkshopId, o=>o.MapFrom(src=>src.Workshop.Id))
                 .ForMember(i=>i.Workshop, o=>o.Ignore())

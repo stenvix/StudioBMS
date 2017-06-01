@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Collections.Generic;
+using AutoMapper;
 using StudioBMS.Business.DTO.Models.Interfaces;
 using StudioBMS.Core.Entities.Interfaces;
 

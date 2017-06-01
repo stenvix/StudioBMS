@@ -3,8 +3,9 @@
 @inject IHtmlLocalizer<PageTitleResource> TitleLocalizer
 
 @{
-    Layout = "Authorize/BaseForm";
+    Layout = "Forms/BaseForm";
     ViewData["Title"] = TitleLocalizer["LogIn"];
+    ViewData["FormClass"] = "authorize-panel";
 }
 <form asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
     <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>

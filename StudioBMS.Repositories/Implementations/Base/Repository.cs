@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 using StudioBMS.Business.Interfaces.Repositories.Base;
 using StudioBMS.Core.Entities.Interfaces;
 using StudioBMS.Database.Context;
@@ -22,14 +23,14 @@ namespace StudioBMS.Repositories.Implementations.Base
         protected DbSet<TEntity> Set { get; }
 
 
-        protected virtual IEnumerable<TEntity> Include()
+        protected virtual IQueryable<TEntity> Include()
         {
             return Set;
         } 
 
         public virtual Task<IEnumerable<TEntity>> GetAsync(CancellationToken cancellationToken = new CancellationToken())
         {
-            return Task.Run(() => Include(), cancellationToken);
+            return Task.Run(() => Include().AsEnumerable(), cancellationToken);
         }
 
         public virtual Task<TEntity> GetAsync(Guid id, CancellationToken cancellationToken = new CancellationToken())
@@ -89,6 +90,11 @@ namespace StudioBMS.Repositories.Implementations.Base
                 if (entry.State != EntityState.Deleted)
                     Set.Remove(entity);
             }, cancellationToken);
+        }
+
+        public int Count()
+        {
+            return Set.Count();
         }
     }
 }

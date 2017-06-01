@@ -55,6 +55,7 @@
     <Folder Include="Areas\Settings\Controllers\" />
     <Folder Include="Areas\Workers\Controllers\" />
     <Folder Include="Areas\Workshops\Controllers\" />
+    <Folder Include="Models\OrderViewModels\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Update="Resources\Messages\MessageResource.en.resx">

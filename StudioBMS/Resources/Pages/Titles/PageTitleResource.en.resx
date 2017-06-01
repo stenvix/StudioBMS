@@ -123,6 +123,9 @@
   <data name="Clients" xml:space="preserve">
     <value>Clients</value>
   </data>
+  <data name="CreateOrder" xml:space="preserve">
+    <value>Create order</value>
+  </data>
   <data name="Journal" xml:space="preserve">
     <value>Journal</value>
   </data>

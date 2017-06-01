@@ -15,6 +15,8 @@ namespace StudioBMS.Business.Managers.Repositories.Interfaces
         ITimeTableRepository TimeTableRepository { get; }
         IServiceRepository ServiceRepository { get; }
         IOrderRepository OrderRepository { get; }
+        IOrderStatusRepository OrderStatusRepository { get; }
+        IOrderServiceRepository OrderServiceRepository { get; }
         Task SaveChanges();
     }
 }

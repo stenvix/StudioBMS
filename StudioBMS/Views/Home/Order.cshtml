@@ -1,0 +1,6 @@
+@inject IHtmlLocalizer<PageTitleResource> TitleLocalizer
+@model StudioBMS.Business.DTO.Models.OrderViewModel
+@{
+    ViewData["Title"] = TitleLocalizer["CreateOrder"];
+}
+@Html.Partial("OrderForm", Model, ViewData)

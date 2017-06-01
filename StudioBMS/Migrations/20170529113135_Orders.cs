@@ -54,7 +54,7 @@ namespace StudioBMS.Migrations
                     CustomerId = table.Column<Guid>(nullable: false),
                     Date = table.Column<DateTime>(nullable: false),
                     IsPaid = table.Column<bool>(nullable: false),
-                    OrderNumber = table.Column<long>(nullable: false),
+                    OrderNumber = table.Column<int>(nullable: false),
                     PerformerId = table.Column<Guid>(nullable: false),
                     Price = table.Column<long>(nullable: false),
                     StatusId = table.Column<Guid>(nullable: false),

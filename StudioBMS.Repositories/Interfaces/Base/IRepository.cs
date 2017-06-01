@@ -14,5 +14,6 @@ namespace StudioBMS.Business.Interfaces.Repositories.Base
         Task<TEntity> Update(TEntity entity, CancellationToken cancellationToken = default(CancellationToken));
         Task DeleteAsync(Guid id, CancellationToken cancellationToken = default(CancellationToken));
         Task DeleteAsync(TEntity entity, CancellationToken cancellationToken = default(CancellationToken));
+        int Count();
     }
 }

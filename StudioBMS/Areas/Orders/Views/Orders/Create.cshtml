@@ -1,0 +1,18 @@
+@inject IHtmlLocalizer<PageTitleResource> TitleLocalizer
+@model OrderViewModel
+@{
+    var title = TitleLocalizer["CreateOrder"];
+    ViewData["Title"] = title;
+    ViewData["H1"] = title;
+}
+<div class="row">
+    <div class="col-xs-12">
+        <div class="panel panel-default">
+            <div class="panel-body row">
+                <form asp-area="Orders" asp-controller="Orders" asp-action="Create" method="post" class="form-horizontal col-lg-6 col-lg-offset-3">
+                    @Html.Partial("Forms/_OrderFormPartial", Model, ViewData)
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

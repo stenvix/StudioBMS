@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace StudioBMS.Migrations
@@ -9,22 +8,19 @@ namespace StudioBMS.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Timetables",
-                columns: table => new
+                "Timetables",
+                table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    End = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Start = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    End = table.Column<DateTime>("datetime2", nullable: false),
+                    Start = table.Column<DateTime>("datetime2", nullable: false),
                     WeekDay = table.Column<int>(nullable: false)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Timetables", x => x.Id);
-                });
+                constraints: table => { table.PrimaryKey("PK_Timetables", x => x.Id); });
 
             migrationBuilder.CreateTable(
-                name: "Workshops",
-                columns: table => new
+                "Workshops",
+                table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
                     Address = table.Column<string>(nullable: true),
@@ -33,14 +29,11 @@ namespace StudioBMS.Migrations
                     PhoneNumber = table.Column<string>(nullable: true),
                     Title = table.Column<string>(nullable: true)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Workshops", x => x.Id);
-                });
+                constraints: table => { table.PrimaryKey("PK_Workshops", x => x.Id); });
 
             migrationBuilder.CreateTable(
-                name: "ItemTimeTables",
-                columns: table => new
+                "ItemTimeTables",
+                table => new
                 {
                     TimeTableId = table.Column<Guid>(nullable: false),
                     WorkshopId = table.Column<Guid>(nullable: false),
@@ -48,37 +41,37 @@ namespace StudioBMS.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ItemTimeTables", x => new { x.TimeTableId, x.WorkshopId });
+                    table.PrimaryKey("PK_ItemTimeTables", x => new {x.TimeTableId, x.WorkshopId});
                     table.ForeignKey(
-                        name: "FK_ItemTimeTables_Timetables_TimeTableId",
-                        column: x => x.TimeTableId,
-                        principalTable: "Timetables",
-                        principalColumn: "Id",
+                        "FK_ItemTimeTables_Timetables_TimeTableId",
+                        x => x.TimeTableId,
+                        "Timetables",
+                        "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ItemTimeTables_Workshops_WorkshopId",
-                        column: x => x.WorkshopId,
-                        principalTable: "Workshops",
-                        principalColumn: "Id",
+                        "FK_ItemTimeTables_Workshops_WorkshopId",
+                        x => x.WorkshopId,
+                        "Workshops",
+                        "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ItemTimeTables_WorkshopId",
-                table: "ItemTimeTables",
-                column: "WorkshopId");
+                "IX_ItemTimeTables_WorkshopId",
+                "ItemTimeTables",
+                "WorkshopId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ItemTimeTables");
+                "ItemTimeTables");
 
             migrationBuilder.DropTable(
-                name: "Timetables");
+                "Timetables");
 
             migrationBuilder.DropTable(
-                name: "Workshops");
+                "Workshops");
         }
     }
 }

@@ -9,7 +9,7 @@ namespace StudioBMS.Core.Entities
         public Guid Id { get; set; }
         public Guid StatusId { get; set; }
         public OrderStatus Status { get; set; }
-        public long OrderNumber { get; set; }
+        public int OrderNumber { get; set; }
         public Guid CustomerId { get; set; }
         public Person Customer { get; set; }
         public Guid WorkshopId { get; set; }

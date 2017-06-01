@@ -11,8 +11,22 @@ window.chartColors = {
 };
 
 $(document).ready(function () {
+    $(".datetimepicker").each(function (i, e) {
+        var locale = $(e).data("locale");
+        var mindate = $(e).data("mindate");
+        var momentMinDate = moment(mindate);
+        if (locale) {
+            $(e).datetimepicker({
+                locale: locale,
+                minDate: momentMinDate
+            });
+
+            $(e).data("DateTimePicker").disabledHours([momentMinDate.add('m',10)]);
+        }
+    });
+
     var items = $(".chosen");
-    items.each(function(i, e) {
+    items.each(function (i, e) {
         var selected_options = $(e).data("selmax");
 
         if (!selected_options) {
@@ -25,9 +39,9 @@ $(document).ready(function () {
             display_disabled_options: false,
             display_selected_options: false,
             max_selected_options: selected_options,
-            no_results_text: "Оопс, нічого не знайдено!",
-            placeholder_text_multiple: "Виберіть декілька позицій",
-            placeholder_text_single: "Виберіть дані"
+            no_results_text: "NOTFOUND",
+            placeholder_text_multiple: "SEVERALPOSITION",
+            placeholder_text_single: "CHOSEDATA"
         });
     });
 

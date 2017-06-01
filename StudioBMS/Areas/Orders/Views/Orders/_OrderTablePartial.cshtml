@@ -1,4 +1,4 @@
-﻿@model IList<OrderModel>
+@model IList<OrderModel>
 @inject IHtmlLocalizer<ModelResource> ModeLocalizer
 @{
     Layout = "Dashboard/_TableLayout";
@@ -6,7 +6,7 @@
 
 @section tableToolbar
 {
-    <a class="btn btn-primary">
+    <a asp-area="Orders" asp-controller="Orders" asp-action="Create" class="btn btn-primary">
         <i class="fa fa-plus" aria-hidden="true"></i> @ModeLocalizer["Create"]
     </a>
 }
@@ -14,9 +14,10 @@
 @section tableHeader
 {
     <th class="col-xs-1">#</th>
-    <th class="col-xs-3">@ModeLocalizer["Client"]</th>
-    <th class="col-xs-3">@ModeLocalizer["Performer"]</th>
-    <th class="col-xs-2">@ModeLocalizer["Date"]</th>
+    <th class="col-xs-2">@ModeLocalizer["Client"]</th>
+    <th class="col-xs-2">@ModeLocalizer["Performer"]</th>
+    <th class="col-xs-2">@ModeLocalizer["Workshop"]</th>
+    <th class="col-xs-2">@ModeLocalizer["DateAndTime"]</th>
     <th class="col-xs-1">@ModeLocalizer["Price"]</th>
     <th class="col-xs-2 text-center col-actions">@ModeLocalizer["Actions"]</th>
 }
@@ -29,11 +30,14 @@
             <td>@order.OrderNumber</td>
             <td>@order.Customer.LastName @order.Customer.FirstName</td>
             <td>@order.Performer.LastName @order.Customer.FirstName</td>
+            <td>@order.Workshop.Title (@order.Workshop.City)</td>
             <td>@order.Date.ToString("g")</td>
             <td>@order.Price</td>
             <td>
-                <a class="btn btn-sm btn-primary"><i class="fa fa-pencil"></i></a>
-                <a class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a>
+                <a class="btn btn-sm btn-success"><i class="fa fa-check"></i></a>
+                <a class="btn btn-sm btn-primary"><i class="fa fa-money"></i></a>
+                <a class="btn btn-sm btn-info"><i class="fa fa-pencil"></i></a>
+                <a class="btn btn-sm btn-danger"><i class="fa fa-close"></i></a>
             </td>
         </tr>
     }

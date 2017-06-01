@@ -1,0 +1,15 @@
+@model WorkshopModel
+@inject IHtmlLocalizer<ModelResource> ModelLocalizer
+
+<div class="form-group">
+    <label>@ModelLocalizer[nameof(Model.Title)]</label>
+    <input asp-for="Title" class="form-control"/>
+</div>
+<div class="form-group">
+    <label>@ModelLocalizer[nameof(Model.City)]</label>
+    <input asp-for="City"/>
+</div>
+<div class="form-group">
+    <label>@ModelLocalizer[nameof(Model.Address)]</label>
+    <input asp-for="Address" />
+</div>

@@ -1,20 +1,33 @@
-﻿.body-content { margin-top: 50px; }
+﻿.body-content {
+    margin-top: 50px;
+}
 
-.authorize-panel { margin-top: 25%; }
+.authorize-panel {
+    margin-top: 25%;
+}
 
-.authorize-panel .panel-heading {
+.order-panel {
+    margin-top: 20px;
+}
+
+.base-panel .panel-heading {
     background-color: transparent !important;
     border-color: transparent !important;
 }
 
-.authorize-panel .panel-heading .panel-title { font-size: 24px !important; }
+    .base-panel .panel-heading .panel-title {
+        font-size: 24px !important;
+    }
 
-.authorize-panel .panel-heading hr { margin-bottom: 0; }
+.base-panel .panel-heading hr {
+    margin-bottom: 0;
+}
 
 .wrapper > nav {
     border: none;
     margin-bottom: 0;
 }
+
 .wrapper .navbar-default {
     background-color: white;
 }
@@ -40,9 +53,15 @@
 }
 
 .col-actions {
-    padding: 4px 0 0 0!important;
+    padding: 4px 0 0 0 !important;
 }
 
 .panel-journal {
     padding: 5px 15px;
+}
+
+.text-ellipsis {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

@@ -1,0 +1,9 @@
+@model StudioBMS.Business.DTO.Models.OrderViewModel
+@{
+    Layout = "Forms/BaseForm";
+    ViewData["FormClass"] = "order-panel";
+}
+
+<form asp-area="" asp-controller="Home" asp-action="Order" method="post">
+    @Html.Partial("Forms/_OrderFormPartial", Model, ViewData)
+</form>
