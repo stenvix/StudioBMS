@@ -45,22 +45,21 @@
                         @if (User.Identity.IsAuthenticated)
                         {
                             <a asp-area="Orders" asp-controller="Orders" asp-action="Create">@TitleLocalizer["CreateOrder"]</a>
+                            <li>
+                                <a asp-area="Orders" asp-controller="Orders" asp-action="Index">@TitleLocalizer["Orders"]</a>
+                            </li>
+                            @if (!User.IsInRole("Client"))
+                             {
+                                 <li>
+                                     <a asp-area="Journals" asp-controller="Journals" asp-action="Index">@TitleLocalizer["Journal"]</a>
+                                 </li>
+                             }
                         }
                         else
                         {
                             <a asp-area="" asp-controller="Home" asp-action="Order">@TitleLocalizer["CreateOrder"]</a>
                         }
                     </li>
-                    <li>
-                        <a asp-area="Orders" asp-controller="Orders" asp-action="Index">@TitleLocalizer["Orders"]</a>
-                    </li>
-                    @if (!User.IsInRole("Client"))
-                    {
-                        <li>
-                            <a asp-area="Journals" asp-controller="Journals" asp-action="Index">@TitleLocalizer["Journal"]</a>
-                        </li>
-                    }
-                    
                 </ul>
                 @await Html.PartialAsync("_LoginPartial")
             </div>

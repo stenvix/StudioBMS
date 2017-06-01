@@ -3,22 +3,34 @@
 @model OrderViewModel
 @inject IHtmlLocalizer<ModelResource> ModelLocalizer
 @{
-    var customers = ViewData["Clients"] as IList<PersonModel>;
-    var workshops = ViewData["Workshops"] as IList<WorkshopModel>;
-    var performers = ViewData["Performers"] as IList<PersonModel>;
-    var services = ViewData["Services"] as IList<ServiceModel>;
+    var action = (BusinessAction)ViewData["Action"];
+    var customers = ViewData["Customers"] as IList<PersonModel> ?? new List<PersonModel>();
+    var workshops = ViewData["Workshops"] as IList<WorkshopModel> ?? new List<WorkshopModel>();
+    var performers = ViewData["Performers"] as IList<PersonModel> ?? new List<PersonModel>();
+    var services = ViewData["Services"] as IList<ServiceModel> ?? new List<ServiceModel>();
+    var statuses = ViewData["Statuses"] as IList<OrderStatusModel> ?? new List<OrderStatusModel>();
 }
+
+<input type="hidden" asp-for="OrderNumber" />
+<input type="hidden" asp-for="Id" />
 
 @if (User.Identity.IsAuthenticated)
 {
-    if (!User.IsInRole("Client"))
+    if (!User.IsInRole(StringConstants.CustomerRole))
     {
         <div class="form-group">
             <label>@ModelLocalizer["Customer"]</label>
             <select class="chosen" asp-for="CustomerId">
-                @foreach (var customer in customers ?? new List<PersonModel>())
+                @foreach (var customer in customers)
                 {
-                    <option value="@customer.Id"> @customer.FirstName @customer.LastName</option>
+                    if (customer.Id == Model.CustomerId)
+                    {
+                        <option value="@customer.Id" selected="selected">@customer.FullName</option>
+                    }
+                    else
+                    {
+                        <option value="@customer.Id"> @customer.FullName</option>
+                    }
                 }
             </select>
         </div>
@@ -28,12 +40,12 @@
         <input type="hidden" asp-for="CustomerId" />
     }
 }
-@if (!User.Identity.IsAuthenticated || User.IsInRole("Client") || User.IsInRole("Administrator"))
+@if (!User.Identity.IsAuthenticated || User.IsInRole(StringConstants.CustomerRole) || User.IsInRole(StringConstants.AdministratorRole))
 {
     <div class="form-group">
         <label>@ModelLocalizer["Workshop"]</label>
         <select class="chosen" asp-for="WorkshopId">
-            @foreach (var workshop in workshops ?? new List<WorkshopModel>())
+            @foreach (var workshop in workshops)
                 {
                 <option value="@workshop.Id">@workshop.Title (@workshop.City)</option>
             }
@@ -49,7 +61,7 @@ else
     <div class="form-group">
         <label>@ModelLocalizer["Master"]</label>
         <select class="chosen" asp-for="PerformerId">
-            @foreach (var performer in performers ?? new List<PersonModel>())
+            @foreach (var performer in performers)
                 {
                 <option value="@performer.Id">@performer.FirstName @performer.LastName (@ModelLocalizer[performer.Role.Name])</option>
             }
@@ -63,7 +75,7 @@ else
 <div class="form-group">
     <label>@ModelLocalizer["Services"]</label>
     <select class="chosen" multiple="multiple" asp-for="ServiceIds">
-        @foreach (var service in services ?? new List<ServiceModel>())
+        @foreach (var service in services)
             {
             <option value="@service.Id">
                 @if (CultureInfo.CurrentCulture.Name == "en")
@@ -91,17 +103,38 @@ else
         </span>
     </div>
 </div>
+
+@if (User.IsInRole(StringConstants.ManagerRole) || User.IsInRole(StringConstants.AdministratorRole))
+{
+    if (action == BusinessAction.Update)
+    {
+        <div class="form-group">
+            <label>@ModelLocalizer["OrderStatus"]</label>
+            <select asp-for="StatusId" class="chosen">
+                @foreach (var status in statuses)
+                {
+                    <option value="@status.Id">@ModelLocalizer[status.Name]</option>
+                }
+            </select>
+        </div>
+        <div class="form-group">
+            <label>@ModelLocalizer[nameof(Model.Price)]</label>
+            <input asp-for="Price" class="form-control" step="0.1" type="number" />
+        </div>
+    }
+}
+
 @if (!User.Identity.IsAuthenticated)
 {
     <hr />
     <div class="row">
         <div class="col-md-6 form-group">
             <label>@ModelLocalizer["FirstName"]</label>
-            <input asp-for="FirstName" class="form-control"/>
+            <input asp-for="FirstName" class="form-control" />
         </div>
         <div class="col-md-6 form-group">
             <label>@ModelLocalizer["LastName"]</label>
-            <input asp-for="LastName" class="form-control"/>
+            <input asp-for="LastName" class="form-control" />
         </div>
     </div>
     <div class="form-group">

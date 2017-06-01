@@ -8,26 +8,23 @@ namespace StudioBMS.Repositories.Implementations
 {
     public class RoleRepository : Repository<Role>, IRoleRepository
     {
-        private static string CLIENT = "CLIENT";
-        private static string ADMINISTRATOR = "ADMINISTRATOR";
-        private static string MANAGER = "MANAGER";
         public RoleRepository(StudioContext context) : base(context)
         {
         }
 
-        public Role Client
+        public Role Customer
         {
-            get { return Include().FirstOrDefault(i => i.Name.ToUpper() == CLIENT); }
+            get { return Include().FirstOrDefault(i => i.Name.ToUpper() == StringConstants.CustomerRole); }
         }
 
         public Role Administrator
         {
-            get { return Include().FirstOrDefault(i => i.Name.ToUpper() == ADMINISTRATOR); }
+            get { return Include().FirstOrDefault(i => i.Name.ToUpper() == StringConstants.AdministratorRole); }
         }
 
         public Role Manager
         {
-            get { return Include().FirstOrDefault(i => i.Name.ToUpper() == MANAGER); }
+            get { return Include().FirstOrDefault(i => i.Name.ToUpper() == StringConstants.ManagerRole); }
         }
     }
 }

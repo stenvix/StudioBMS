@@ -41,7 +41,7 @@ namespace StudioBMS.Business.Managers.Models.Base.Impl
             return result.To<TModel>();
         }
 
-        public virtual async Task<TModel> Update(TModel entity, CancellationToken cancellationToken = new CancellationToken())
+        public virtual async Task<TModel> UpdateAsync(TModel entity, CancellationToken cancellationToken = new CancellationToken())
         {
             var result = await _repository.Update(entity.To<TEntity>(), cancellationToken);
             await _unitOfWork.SaveChanges();

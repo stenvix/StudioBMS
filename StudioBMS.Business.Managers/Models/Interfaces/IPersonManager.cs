@@ -8,7 +8,8 @@ namespace StudioBMS.Business.Managers.Models.Interfaces
 {
     public interface IPersonManager : IManager<PersonModel>
     {
-        Task<IList<PersonModel>> GetClients();
+        Task<PersonModel> FindByEmail(string email);
+        Task<IList<PersonModel>> GetCustomers();
         Task<IList<PersonModel>> GetEmployees(Guid workshopId = default(Guid));
         Task<IList<PersonModel>> GetStaff();
         Task<IList<PersonModel>> GetWithPerformerOrders(Guid[] ids, DateTime date = default(DateTime));

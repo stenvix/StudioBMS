@@ -12,6 +12,7 @@ namespace StudioBMS.Repositories.Interfaces
         Task<IEnumerable<Person>> FindByRole(Guid roleId, Guid[] excluded = default(Guid[]));
         Task<IEnumerable<Person>> FindByWorkshopAndNotInRoles(Guid[] excluded, Guid workshopId = default(Guid));
         Task<Person> FindByName(string username);
+        Task<Person> FindByEmail(string email);
         Task<IQueryable<Person>> GetWithTimetables();
     }
 }

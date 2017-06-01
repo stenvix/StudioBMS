@@ -5,7 +5,7 @@ namespace StudioBMS.Repositories.Interfaces
 {
     public interface IRoleRepository : IRepository<Role>
     {
-        Role Client { get; }
+        Role Customer { get; }
         Role Administrator { get; }
         Role Manager { get; }
     }

@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using StudioBMS.Business.DTO.Extensions;
 using StudioBMS.Business.DTO.Models;
 using StudioBMS.Business.Managers.Models.Interfaces;
 using StudioBMS.Models.UI;
@@ -44,16 +45,16 @@ namespace StudioBMS.Areas.Orders.Controllers
                     throw new ArgumentNullException($"Person not found: {nameof(user)}");
             }
 
-            if (User.IsInRole("Client"))
+            if (User.IsInRole(StringConstants.CustomerRole))
             {
                 model.CustomerId = user.Id;
             }
             else
             {
-                ViewData["Clients"] = await _personManager.GetClients();
+                ViewData["Customers"] = await _personManager.GetCustomers();
             }
 
-            if (IsNotInRoles(new[] { "Client", "Administrator" }))
+            if (IsNotInRoles(new[] { StringConstants.CustomerRole, StringConstants.AdministratorRole }))
             {
                 model.WorkshopId = user.Workshop.Id;
             }
@@ -62,7 +63,7 @@ namespace StudioBMS.Areas.Orders.Controllers
                 ViewData["Workshops"] = await _workshopManager.GetAsync();
             }
 
-            if (IsNotInRoles(new[] { "Client", "Manager", "Administrator" }))
+            if (IsNotInRoles(new[] { StringConstants.CustomerRole, StringConstants.ManagerRole, StringConstants.AdministratorRole }))
             {
                 model.PerformerId = user.Id;
             }
@@ -95,6 +96,29 @@ namespace StudioBMS.Areas.Orders.Controllers
         {
             //TempData["Message"] = new MessageViewModel{Type = MessageType.Success, Message = "OrderSuccess"};
             await _orderManager.CreateAsync(order);
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Edit(Guid id)
+        {
+            var model = await _orderManager.GetAsync(id);
+            ViewData["Action"] = BusinessAction.Update;
+            ViewData["Customers"] = await _personManager.GetCustomers();
+            ViewData["Workshops"] = await _workshopManager.GetAsync();
+            ViewData["Performers"] = await _personManager.GetEmployees();
+            ViewData["Services"] = await _serviceManager.GetAsync();
+            ViewData["Statuses"] = await _orderManager.GetStatuses();
+            return View(model.To<OrderViewModel>());
+        }
+
+        [HttpPost("edit")]
+        public async Task<IActionResult> Update(OrderViewModel order)
+        {
+            //TODO: Send email message on change
+
+            var model = order.To<OrderModel>();
+            await _orderManager.UpdateAsync(model);
             return RedirectToAction("Index");
         }
 

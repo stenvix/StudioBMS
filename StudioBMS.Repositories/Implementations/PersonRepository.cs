@@ -34,6 +34,11 @@ namespace StudioBMS.Repositories.Implementations
             return set.Include(i => i.PersonServices).ThenInclude(i => i.Service);
         }
 
+        public Task<Person> FindByEmail(string email)
+        {
+            return Task.Run(() => Include().FirstOrDefault(i => i.NormalizedEmail == email.ToUpper().Normalize()));
+        }
+
         public Task<IQueryable<Person>> GetWithTimetables()
         {
             return Task.Run(() => WithTimetables(Include()));

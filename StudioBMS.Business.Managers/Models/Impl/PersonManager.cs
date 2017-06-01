@@ -19,9 +19,15 @@ namespace StudioBMS.Business.Managers.Models.Impl
         {
         }
 
-        public async Task<IList<PersonModel>> GetClients()
+        public async Task<PersonModel> FindByEmail(string email)
         {
-            var clientRole = _unitOfWork.RoleRepository.Client;
+            var result = await _unitOfWork.PersonRepository.FindByEmail(email);
+            return result.To<PersonModel>();
+        }
+
+        public async Task<IList<PersonModel>> GetCustomers()
+        {
+            var clientRole = _unitOfWork.RoleRepository.Customer;
             var result = await _unitOfWork.PersonRepository.FindByRole(clientRole.Id);
             return result.To<PersonModel>();
         }
@@ -29,7 +35,7 @@ namespace StudioBMS.Business.Managers.Models.Impl
         public async Task<IList<PersonModel>> GetEmployees(Guid workshopId = default(Guid))
         {
             var roles = new List<Role>{
-                _unitOfWork.RoleRepository.Client,
+                _unitOfWork.RoleRepository.Customer,
                 _unitOfWork.RoleRepository.Administrator,
                 _unitOfWork.RoleRepository.Manager
             };
@@ -41,7 +47,7 @@ namespace StudioBMS.Business.Managers.Models.Impl
         {
             var roles = new List<Role>
             {
-                _unitOfWork.RoleRepository.Client
+                _unitOfWork.RoleRepository.Customer
             };
             var result = await _unitOfWork.PersonRepository.FindByRole(Guid.Empty, roles.Select(i => i.Id).ToArray());
             return result.To<PersonModel>();

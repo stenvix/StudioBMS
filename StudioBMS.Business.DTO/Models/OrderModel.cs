@@ -16,6 +16,8 @@ namespace StudioBMS.Business.DTO.Models
         public double Price { get; set; }
         public DateTime Date { get; set; }
         public bool IsPaid { get; set; }
+
+        //Extencion
         public string PaidStatus => IsPaid ? "Paid" : "NotPaid";
         public bool IsActive => Status.Name == "Active";
 

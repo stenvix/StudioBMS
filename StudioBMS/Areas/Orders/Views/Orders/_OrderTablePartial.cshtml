@@ -28,15 +28,15 @@
     {
         <tr>
             <td>@order.OrderNumber</td>
-            <td>@order.Customer.LastName @order.Customer.FirstName</td>
-            <td>@order.Performer.LastName @order.Customer.FirstName</td>
+            <td>@order.Customer.FullName</td>
+            <td>@order.Performer.FullName</td>
             <td>@order.Workshop.Title (@order.Workshop.City)</td>
             <td>@order.Date.ToString("g")</td>
             <td>@order.Price</td>
             <td>
                 <a class="btn btn-sm btn-success"><i class="fa fa-check"></i></a>
                 <a class="btn btn-sm btn-primary"><i class="fa fa-money"></i></a>
-                <a class="btn btn-sm btn-info"><i class="fa fa-pencil"></i></a>
+                <a asp-area="Orders" asp-controller="Orders" asp-action="Edit" asp-route-id="@order.Id" class="btn btn-sm btn-info"><i class="fa fa-pencil"></i></a>
                 <a class="btn btn-sm btn-danger"><i class="fa fa-close"></i></a>
             </td>
         </tr>

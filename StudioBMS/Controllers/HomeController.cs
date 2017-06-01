@@ -71,7 +71,8 @@ namespace StudioBMS.Controllers
                 var result = await _personModelManager.CreateAsync(person);
                 if (result.Succeeded)
                 {
-                    customer = await _personModelManager.FindByEmailAsync(model.EMail);
+                    customer = await _personManager.FindByEmail(model.EMail);
+                    await _personModelManager.AddToRoleAsync(customer, StringConstants.CustomerRole);
                     model.CustomerId = customer.Id;
                 }
             }

@@ -1,8 +1,10 @@
 ﻿using System;
+using StudioBMS.Core.Entities.Interfaces;
 
 namespace StudioBMS.Business.DTO.Models
 {
-    public class OrderViewModel
+    //Entity because extencion mapping
+    public class OrderViewModel: IEntity 
     {
         public Guid CustomerId { get; set; }
         public Guid WorkshopId { get; set; }
@@ -13,5 +15,12 @@ namespace StudioBMS.Business.DTO.Models
         public string LastName { get; set; }
         public string EMail { get; set; }
         public string Phone { get; set; }
+
+        //Additional fieds
+        public Guid StatusId { get; set; }
+        public bool IsPaid { get; set; }
+        public int OrderNumber { get; set; }
+        public double Price { get; set; }
+        public Guid Id { get; set; }
     }
 }

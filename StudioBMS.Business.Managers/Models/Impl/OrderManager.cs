@@ -40,5 +40,11 @@ namespace StudioBMS.Business.Managers.Models.Impl
             await _unitOfWork.SaveChanges();
             return order;
         }
+
+        public async Task<IList<OrderStatusModel>> GetStatuses()
+        {
+            var result =await _unitOfWork.OrderStatusRepository.GetAsync();
+            return result.To<OrderStatusModel>();
+        }
     }
 }
