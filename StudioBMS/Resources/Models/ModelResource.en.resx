@@ -120,6 +120,9 @@
   <data name="Actions" xml:space="preserve">
     <value>Actions</value>
   </data>
+  <data name="Active" xml:space="preserve">
+    <value>Active</value>
+  </data>
   <data name="Address" xml:space="preserve">
     <value>Address</value>
   </data>
@@ -155,6 +158,12 @@
   </data>
   <data name="DayOfWeek" xml:space="preserve">
     <value>Day of week</value>
+  </data>
+  <data name="Declined" xml:space="preserve">
+    <value>Declined</value>
+  </data>
+  <data name="Done" xml:space="preserve">
+    <value>Done</value>
   </data>
   <data name="Duration" xml:space="preserve">
     <value>Duration</value>
@@ -198,8 +207,14 @@
   <data name="NewPassword" xml:space="preserve">
     <value>New password</value>
   </data>
+  <data name="NotPaid" xml:space="preserve">
+    <value>Not paid</value>
+  </data>
   <data name="OldPassword" xml:space="preserve">
     <value>Current password</value>
+  </data>
+  <data name="Paid" xml:space="preserve">
+    <value>Paid</value>
   </data>
   <data name="Password" xml:space="preserve">
     <value>Password</value>
@@ -227,6 +242,9 @@
   </data>
   <data name="Services" xml:space="preserve">
     <value>Services</value>
+  </data>
+  <data name="Show" xml:space="preserve">
+    <value>Show</value>
   </data>
   <data name="Start" xml:space="preserve">
     <value>Start</value>

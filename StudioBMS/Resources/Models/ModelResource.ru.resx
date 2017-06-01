@@ -120,6 +120,9 @@
   <data name="Actions" xml:space="preserve">
     <value>Действия</value>
   </data>
+  <data name="Active" xml:space="preserve">
+    <value>Активен</value>
+  </data>
   <data name="Address" xml:space="preserve">
     <value>Адрес</value>
   </data>
@@ -155,6 +158,12 @@
   </data>
   <data name="DayOfWeek" xml:space="preserve">
     <value>День недели</value>
+  </data>
+  <data name="Declined" xml:space="preserve">
+    <value>Отменен</value>
+  </data>
+  <data name="Done" xml:space="preserve">
+    <value>Сделанный</value>
   </data>
   <data name="Duration" xml:space="preserve">
     <value>Продолжительность</value>
@@ -198,8 +207,14 @@
   <data name="NewPassword" xml:space="preserve">
     <value>Новый пароль</value>
   </data>
+  <data name="NotPaid" xml:space="preserve">
+    <value>Не оплачен</value>
+  </data>
   <data name="OldPassword" xml:space="preserve">
     <value>Текущий пароль</value>
+  </data>
+  <data name="Paid" xml:space="preserve">
+    <value>Оплачен</value>
   </data>
   <data name="Password" xml:space="preserve">
     <value>Пароль</value>
@@ -227,6 +242,9 @@
   </data>
   <data name="Services" xml:space="preserve">
     <value>Услуги</value>
+  </data>
+  <data name="Show" xml:space="preserve">
+    <value>Показать</value>
   </data>
   <data name="Start" xml:space="preserve">
     <value>Начало</value>

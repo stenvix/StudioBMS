@@ -3,8 +3,10 @@
 @{
     var workshops = ViewData["Workshops"] as IList<WorkshopModel>;
     var workers = ViewData["Workers"] as IList<PersonModel>;
+    var date = ViewData["Date"] as DateTime?;
+    date = date ?? DateTime.Now;
 }
-<form class="row" asp-area="Journals" asp-controller="Journals" asp-action="Index">
+<form class="row" asp-area="Journals" asp-controller="Journals" asp-action="Index" asp-route-date="">
     <div class="col-lg-3">
         <select class="chosen">
             @foreach (var workshop in workshops ?? new List<WorkshopModel>())
@@ -22,14 +24,14 @@
         </select>
     </div>
     <div class="col-lg-2">
-        <div class="input-group">
-            <input class="form-control" asp-for="Date" />
+        <div id="journal-picker" class="input-group datetimepicker" data-locale="@CultureInfo.CurrentCulture.Name" data-format="YYYY-MM-DD">
+            <input class="form-control" asp-for="Date" asp-format="{0:yyyy-MM-dd}" value="@date.Value.ToString("yyyy-MM-dd")" />
             <span class="input-group-addon">
-                <span class="fa fa-calendar"></span>
+                <i class="fa fa-calendar"></i>
             </span>
         </div>
     </div>
-    <div class="col-lg-1">
-        <button type="submit" class="btn btn-primary"><i class="fa fa-filter"></i> Show</button>
+    <div class="col-lg-1 no-padding">
+        <button type="submit" class="btn btn-primary"><i class="fa fa-filter"></i> @ModeLocalizer["Show"]</button>
     </div>
 </form>

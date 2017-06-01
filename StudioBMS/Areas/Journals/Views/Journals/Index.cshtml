@@ -5,16 +5,19 @@
 @{
     ViewData["Title"] = TitleLocalizer["Journal"];
     var journalModel = ViewData["JournalModel"] as JournalViewModel;
+    var date = ViewData["Date"] as DateTime?;
+    date = date ?? DateTime.Now;
 }
 <div class="row" style="padding: 10px 0;">
     <div class="col-lg-1">
-        <a class="btn btn-block btn-primary"><i class="fa fa-angle-left"></i> @DateTime.Now.ToString("d")</a>
+        
+        <a class="btn btn-block btn-primary" asp-area="Journals" asp-controller="Journals" asp-action="Index" asp-route-date="@(date.Value.AddDays(-1).ToString("yyyy-MM-dd"))"><i class="fa fa-angle-left"></i> @date.Value.AddDays(-1).ToString("d")</a>
     </div>
     <div class="col-lg-10">
         @Html.Partial("_JournalPartial", journalModel, ViewData)
     </div>
     <div class="col-lg-1">
-        <a class="btn btn-block btn-primary">@DateTime.Now.ToString("d") <i class="fa fa-angle-right"></i></a>
+        <a class="btn btn-block btn-primary" asp-area="Journals" asp-controller="Journals" asp-action="Index" asp-route-date="@(date.Value.AddDays(1).ToString("yyyy-MM-dd"))">@date.Value.AddDays(1).ToString("d") <i class="fa fa-angle-right"></i></a>
     </div>
 </div>
 <div class="row">

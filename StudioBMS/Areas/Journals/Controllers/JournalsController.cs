@@ -22,10 +22,9 @@ namespace StudioBMS.Areas.Journals.Controllers
         [HttpGet,HttpGet("{date}")]
         public async Task<IActionResult> Index(DateTime? date = null)
         {
-            if (!date.HasValue)
-            {
-                date = DateTime.Today;
-            }
+            DateTime filterDate;
+            filterDate = date ?? DateTime.Now;
+            ViewData["Date"] = filterDate;
 
             ViewData["Workshops"] = await _workshopManager.GetAsync();
             ViewData["Workers"] = await _personManager.GetEmployees();
@@ -45,7 +44,7 @@ namespace StudioBMS.Areas.Journals.Controllers
                 }
             }
 
-            return View(await _personManager.GetWithPerformerOrders(ids.ToArray()));
+            return View(await _personManager.GetWithPerformerOrders(ids.ToArray(), filterDate));
         }
 
         [HttpPost]
@@ -60,7 +59,7 @@ namespace StudioBMS.Areas.Journals.Controllers
             {
                 Response.Cookies.Append("journal", "");
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new {date = model.Date.ToString("yyyy-MM-dd")});
         }
     }
 }

@@ -8,7 +8,6 @@ namespace StudioBMS.Repositories.Interfaces
 {
     public interface IOrderRepository : IRepository<Order>
     {
-        Task<IEnumerable<Order>> FindByPerformer(Guid personId);
-        Task<IEnumerable<Order>> FindByPerformer(Guid[] personIds);
+        Task<IEnumerable<Order>> FindByPerformer(Guid personId, DateTime date = default(DateTime));
     }
 }

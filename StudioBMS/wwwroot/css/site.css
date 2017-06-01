@@ -65,3 +65,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+.no-padding {
+    padding: 0 !important;
+}

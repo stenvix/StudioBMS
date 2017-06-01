@@ -23,6 +23,10 @@
     <None Remove="Areas\Calendar\**" />
     <None Remove="Resources\Areas\**" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="wwwroot\js\charts.js" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Localization.AspNetCore.TagHelpers" Version="0.3.0" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.0" />

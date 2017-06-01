@@ -11,7 +11,7 @@ namespace StudioBMS.Business.Managers.Models.Interfaces
         Task<IList<PersonModel>> GetClients();
         Task<IList<PersonModel>> GetEmployees(Guid workshopId = default(Guid));
         Task<IList<PersonModel>> GetStaff();
-        Task<IList<PersonModel>> GetWithPerformerOrders(Guid[] ids);
+        Task<IList<PersonModel>> GetWithPerformerOrders(Guid[] ids, DateTime date = default(DateTime));
         Task<PersonModel> FindByName(string username);
     }
 }

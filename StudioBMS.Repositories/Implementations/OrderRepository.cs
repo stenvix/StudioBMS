@@ -27,14 +27,9 @@ namespace StudioBMS.Repositories.Implementations
                     .ThenInclude(i => i.Service);
         }
 
-        public Task<IEnumerable<Order>> FindByPerformer(Guid performerId)
+        public Task<IEnumerable<Order>> FindByPerformer(Guid performerId, DateTime date = default(DateTime))
         {
-            return Task.Run(() => Include().Where(i => i.PerformerId == performerId).AsEnumerable());
-        }
-
-        public Task<IEnumerable<Order>> FindByPerformer(Guid[] performerIds)
-        {
-            return Task.Run(()=> Include().Where(i=> performerIds.Contains(i.Id)).AsEnumerable());
+            return Task.Run(() => Include().Where(i => i.PerformerId == performerId && i.Date.Date == date.Date).AsEnumerable());
         }
     }
 }

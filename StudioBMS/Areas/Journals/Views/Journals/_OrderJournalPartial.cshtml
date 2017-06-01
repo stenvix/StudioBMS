@@ -55,6 +55,14 @@
     </ul>
     <div class="panel-footer">
         <span>@ModelLocalizer[Model.PaidStatus]</span>
-        <span class="pull-right">@ModelLocalizer[Model.Status.Name]</span>
+        @if (Model.IsActive)
+        {
+            <span class="pull-right text-success">@ModelLocalizer[Model.Status.Name]</span>
+        }
+        else
+        {
+            <span class="pull-right">@ModelLocalizer[Model.Status.Name]</span>
+
+        }
     </div>
 </div>
