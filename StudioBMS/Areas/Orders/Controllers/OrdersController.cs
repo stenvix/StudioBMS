@@ -136,6 +136,19 @@ namespace StudioBMS.Areas.Orders.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpGet("decline/{id}")]
+        public async Task<IActionResult> Decline(Guid id)
+        {
+            await _orderManager.Deactivate(id);
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet("done/{id}")]
+        public async Task<IActionResult> Done(Guid id)
+        {
+            await _orderManager.Done(id);
+            return RedirectToAction("Index");
+        }
 
         [NonAction]
         private bool IsNotInRoles(string[] roles)

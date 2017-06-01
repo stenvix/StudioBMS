@@ -1,3 +1,4 @@
+@using StudioBMS
 @model IList<OrderModel>
 @inject IHtmlLocalizer<ModelResource> ModeLocalizer
 @{
@@ -13,9 +14,10 @@
 
 @section tableHeader
 {
+    <th class="col-xs-1">#</th>
+    <th class="col-xs-1">@ModeLocalizer["Status"]</th>
     <th class="col-xs-2">@ModeLocalizer["Client"]</th>
     <th class="col-xs-2">@ModeLocalizer["Performer"]</th>
-    <th class="col-xs-2">@ModeLocalizer["Workshop"]</th>
     <th class="col-xs-2">@ModeLocalizer["DateAndTime"]</th>
     <th class="col-xs-1">@ModeLocalizer["Price"]</th>
     <th class="col-xs-1">@ModeLocalizer["Balance"]</th>
@@ -27,17 +29,27 @@
     @foreach (var order in Model)
     {
         <tr>
+            <td>@order.OrderNumber</td>
+            <td>@ModeLocalizer[order.Status.Name]</td>
             <td>@order.Customer.FullName</td>
-            <td>@order.Performer.FullName</td>
-            <td>@order.Workshop.Title (@order.Workshop.City)</td>
+            <td>@order.Performer.FullName<br />@order.Workshop.TitleWithCity</td>
             <td>@order.Date.ToString("g")</td>
             <td>@order.Price</td>
             <td>@order.Balance (@ModeLocalizer[order.PaidStatus])</td>
             <td>
-                <a class="btn btn-sm btn-success"><i class="fa fa-check"></i></a>
-                <a asp-area="Orders" asp-controller="Orders" asp-action="Payment" asp-route-id="@order.Id" class="btn btn-sm btn-primary"><i class="fa fa-money"></i></a>
+                @if (order.Status.Name != StringConstants.DoneStatus && order.Status.Name != StringConstants.DeclinedStatus)
+                {
+                    <a asp-area="Orders" asp-controller="Orders" asp-action="Done" asp-route-id="@order.Id" class="btn btn-sm btn-success"><i class="fa fa-check"></i></a>
+                }
+                @if (!order.IsPaid)
+                {
+                    <a asp-area="Orders" asp-controller="Orders" asp-action="Payment" asp-route-id="@order.Id" class="btn btn-sm btn-primary"><i class="fa fa-money"></i></a>
+                }
                 <a asp-area="Orders" asp-controller="Orders" asp-action="Edit" asp-route-id="@order.Id" class="btn btn-sm btn-info"><i class="fa fa-pencil"></i></a>
-                <a class="btn btn-sm btn-danger"><i class="fa fa-close"></i></a>
+                @if (order.Status.Name != StringConstants.DoneStatus && order.Status.Name != StringConstants.DeclinedStatus)
+                {
+                    <a asp-area="Orders" asp-controller="Orders" asp-action="Decline" asp-route-id="@order.Id" class="btn btn-sm btn-danger"><i class="fa fa-close"></i></a>
+                }
             </td>
         </tr>
     }

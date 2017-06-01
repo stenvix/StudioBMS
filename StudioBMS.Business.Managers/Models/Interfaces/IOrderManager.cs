@@ -11,5 +11,7 @@ namespace StudioBMS.Business.Managers.Models.Interfaces
         Task<OrderModel> CreateAsync(OrderViewModel item);
         Task<IList<OrderStatusModel>> GetStatuses();
         Task ManageBalance(PaymentViewModel payment);
+        Task Deactivate(Guid id);
+        Task Done(Guid id);
     }
 }

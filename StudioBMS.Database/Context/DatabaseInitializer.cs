@@ -20,9 +20,9 @@ namespace StudioBMS.Database.Context
         {
             var statuses = new[]
             {
-                "Active",
-                "Declined",
-                "Done"
+                StringConstants.ActiveStatus,
+                StringConstants.DoneStatus,
+                StringConstants.DeclinedStatus
             };
 
             foreach (var status in statuses)

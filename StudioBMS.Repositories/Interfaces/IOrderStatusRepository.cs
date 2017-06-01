@@ -6,5 +6,7 @@ namespace StudioBMS.Repositories.Interfaces
     public interface IOrderStatusRepository : IRepository<OrderStatus>
     {
         OrderStatus Active { get; }
+        OrderStatus Declined { get; }
+        OrderStatus Done { get; }
     }
 }

@@ -54,5 +54,21 @@ namespace StudioBMS.Business.Managers.Models.Impl
             model.Balance += payment.Balance;
             await UpdateAsync(model);
         }
+
+        public async Task Deactivate(Guid id)
+        {
+            var model = await GetAsync(id);
+            var status = _unitOfWork.OrderStatusRepository.Declined.To<OrderStatusModel>();
+            model.Status = status;
+            await UpdateAsync(model);
+        }
+
+        public async Task Done(Guid id)
+        {
+            var model = await GetAsync(id);
+            var status = _unitOfWork.OrderStatusRepository.Done.To<OrderStatusModel>();
+            model.Status = status;
+            await UpdateAsync(model);
+        }
     }
 }
