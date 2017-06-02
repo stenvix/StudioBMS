@@ -2,15 +2,13 @@
 @inject IHtmlLocalizer<ModelResource> ModelLocalizer
 @{
     var location = CultureInfo.CurrentCulture.Name;
-    var serviceTimes = Model.Services.Select(i => i.Duration);
-    var duration = serviceTimes.Aggregate(TimeSpan.Zero, (current, time) => current + time.TimeOfDay);
 }
 <div class="panel panel-primary">
     <div class="panel-heading">
         <div class="row">
-            <div class="col-xs-8">
+            <div class="@(Model.IsActive?"col-xs-8": "col-xs-12")">
                 <strong>
-                    <i class="fa fa-clock-o"></i> @Model.Date.ToString("t") - @Model.Date.Add(duration).ToString("t")
+                    <i class="fa fa-clock-o"></i> @Model.Date.ToString("t") - @Model.EndTime.ToString("t")
                 </strong>
                 <br />
                 <span style="font-size: 13px;">
@@ -18,19 +16,22 @@
                     @Model.Customer.LastName @Model.Customer.FirstName[0].
                 </span>
             </div>
-            <div class="col-xs-4 col-actions">
-                <div class="btn-group text-center">
-                    <a href="#" class="btn btn-success btn-sm">
-                        <i class="fa fa-check fa-fw"></i>
-                    </a>
-                    <a asp-area="Orders" asp-controller="Orders" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-info btn-sm">
+            @if (Model.IsActive)
+            {
+                <div class="col-xs-4 col-actions">
+                    <div class="btn-group text-center">
+                        <a asp-area="Orders" asp-controller="Orders" asp-action="Done" asp-route-id="@Model.Id" asp-route-redirectUrl="@Context.Request.Path" class="btn btn-success btn-sm">
+                            <i class="fa fa-check fa-fw"></i>
+                        </a>
+                        <a asp-area="Orders" asp-controller="Orders" asp-action="Edit" asp-route-id="@Model.Id" asp-route-redirectUrl="@Context.Request.Path" class="btn btn-info btn-sm">
                         <i class="fa fa-pencil fa-fw"></i>
                     </a>
-                    <a href="#" class="btn btn-danger btn-sm">
-                        <i class="fa fa-close fa-fw"></i>
-                    </a>
+                        <a asp-area="Orders" asp-controller="Orders" asp-action="Decline" asp-route-id="@Model.Id" asp-route-redirectUrl="@Context.Request.Path" class="btn btn-danger btn-sm">
+                            <i class="fa fa-close fa-fw"></i>
+                        </a>
+                    </div>
                 </div>
-            </div>
+            }
         </div>
     </div>
     <ul class="list-group">
@@ -40,15 +41,15 @@
                 <i class="fa fa-bars"></i>
                 @if (location == "en")
                 {
-                    @service.EnName
+                    @service.EnTitle
                 }
                 @if (location == "ru")
                 {
-                    @service.RuName
+                    @service.RuTitle
                 }
                 @if (location == "uk")
                 {
-                    @service.UkName
+                    @service.UkTitle
                 }
             </li>
         }
@@ -62,7 +63,6 @@
         else
         {
             <span class="pull-right">@ModelLocalizer[Model.Status.Name]</span>
-
         }
     </div>
 </div>

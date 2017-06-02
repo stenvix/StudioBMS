@@ -41,13 +41,65 @@ namespace StudioBMS.Areas.Workshops.Controllers
             {
                 model = await _timeTableManager.GetAsync(timeTableId.Value);
             }
-            return PartialView("_TimeTableForm", model);
+            return PartialView("WorkshopTimeForm", model);
         }
 
         [HttpPost("{workshopId}/time")]
-        public IActionResult TimeFormSubmit(Guid workshopId, TimeTableModel model)
+        public async Task<IActionResult> TimeFormSubmit(Guid workshopId, TimeTableModel model)
         {
-            return null;
+            if (model.Id == Guid.Empty)
+            {
+                model = await _timeTableManager.CreateAsync(model);
+                await _timeTableManager.CreateWorkshop(workshopId, model.Id);
+            }
+            else
+            {
+                await _timeTableManager.UpdateAsync(model);
+            }
+            return RedirectToAction("TimeIndex");
+        }
+
+        [HttpGet("create")]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost("create")]
+        public async Task<IActionResult> Create(WorkshopModel model)
+        {
+            //TODO: Add message
+            await _workshopManager.CreateAsync(model);
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet("edit/{id}")]
+        public async Task<IActionResult> Edit(Guid id)
+        {
+            return View(await _workshopManager.GetAsync(id));
+        }
+
+        [HttpPost("edit")]
+        public async Task<IActionResult> Update(WorkshopModel model)
+        {
+            //TODO: Add message
+            await _workshopManager.UpdateAsync(model);
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet("delete/{id}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            //TODO: Add message
+            await _workshopManager.DeleteAsync(id);
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet("delete/{workshopId}/time/{timetableId}")]
+        public async Task<IActionResult> DeleteTimetable(Guid workshopId, Guid timetableId)
+        {
+            await _timeTableManager.DeleteAsync(timetableId);
+            return RedirectToAction("TimeIndex", new { workshopId });
         }
 
         protected override void Dispose(bool disposing)

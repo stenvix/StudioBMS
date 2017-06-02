@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using StudioBMS.Business.DTO.Models;
@@ -14,6 +15,7 @@ namespace StudioBMS.Business.DTO.Profiles
                 .ForMember(i => i.Services, o => o.MapFrom(src => src.OrderServices.Select(i => i.Service)))
                 .ForMember(i => i.Price, o => o.MapFrom(src => src.Price / 100.0))
                 .ForMember(i => i.Balance, o => o.MapFrom(src => src.Balance / 100.0))
+                .ForMember(i => i.EndTime, o => o.MapFrom(src => src.Date.Add(src.OrderServices.Select(i => i.Service).Select(i => i.Duration).Aggregate(new DateTime(), (res, date)=> res.Add(date.TimeOfDay)).TimeOfDay)))
                 .PreserveReferences();
             CreateMap<OrderModel, Order>()
                 .ForMember(i => i.CustomerId, o => o.MapFrom(src => src.Customer.Id))

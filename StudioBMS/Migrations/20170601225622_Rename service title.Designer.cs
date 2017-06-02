@@ -8,9 +8,10 @@ using StudioBMS.Database.Context;
 namespace StudioBMS.Migrations
 {
     [DbContext(typeof(StudioContext))]
-    partial class StudioContextModelSnapshot : ModelSnapshot
+    [Migration("20170601225622_Rename service title")]
+    partial class Renameservicetitle
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -286,8 +287,6 @@ namespace StudioBMS.Migrations
 
                     b.Property<string>("EnTitle")
                         .IsRequired();
-
-                    b.Property<bool>("IsActive");
 
                     b.Property<int>("Price");
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using StudioBMS.Core.Entities;
 using StudioBMS.Database.Context;
@@ -15,10 +16,25 @@ namespace StudioBMS.Repositories.Implementations
         {
         }
 
+        protected override IQueryable<Service> Include()
+        {
+            return Set.Where(i => i.IsActive);
+        }
+
         public Task<IEnumerable<Service>> FindByPerson(Guid personId)
         {
             var ids = Context.PersonServices.Where(i => i.PersonId == personId).Select(s => s.ServiceId);
             return Task.Run(() => Include().Where(i => ids.Contains(i.Id)).AsEnumerable());
+        }
+
+        public override async Task DeleteAsync(Service entity, CancellationToken cancellationToken = new CancellationToken())
+        {
+            entity.IsActive = false;
+            foreach (var pts in Context.PersonServices.Where(i => i.ServiceId == entity.Id))
+            {
+                Context.PersonServices.Remove(pts);
+            }
+            await Update(entity, cancellationToken);
         }
     }
 }

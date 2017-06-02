@@ -66,6 +66,7 @@ namespace StudioBMS.Controllers
                     LastName = model.LastName,
                     UserName = model.EMail,
                     Email = model.EMail,
+                    PhoneNumber = model.Phone,
                     Workshop = new WorkshopModel {Id = model.WorkshopId}
                 };
                 var result = await _personModelManager.CreateAsync(person);

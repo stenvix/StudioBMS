@@ -1,8 +1,14 @@
-﻿@inject IHtmlLocalizer<ModelResource> ModeLocalizer
+@inject IHtmlLocalizer<ModelResource> ModeLocalizer
 @{
     Layout = "Dashboard/_TableLayout";
 }
 @model IList<ServiceModel>
+@section tableToolbar
+{
+    <a asp-area="Services" asp-controller="Services" asp-action="Create" class="btn btn-primary">
+        <i class="fa fa-plus" aria-hidden="true"></i> @ModeLocalizer["Create"]
+    </a>
+}
 @section tableHeader{
     <th class="col-xs-4">@ModeLocalizer["Title"]</th>
     <th class="col-xs-4">@ModeLocalizer["Duration"]</th>
@@ -14,23 +20,23 @@
     @foreach (var service in Model)
     {
         <tr>
-            @if (CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "uk")
+            @if (CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "en")
             {
-                <td>@service.UkName</td>
+                <td>@service.EnTitle</td>
             }
             @if (CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "ru")
             {
-                <td>@service.RuName</td>
+                <td>@service.RuTitle</td>
             }
-            @if (CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "en")
+            @if (CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "uk")
             {
-                <td>@service.EnName</td>
+                <td>@service.UkTitle</td>
             }
-            <td>@service.Duration.ToString("t")</td>
+            <td>@service.Duration.TimeOfDay.ToString(@"hh\:mm")</td>
             <td>@service.Price</td>
             <td>
-                <a class="btn btn-sm btn-primary"><i class="fa fa-pencil"></i></a>
-                <a class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a>
+                <a asp-area="Services" asp-controller="Services" asp-action="Edit" asp-route-id="@service.Id" class="btn btn-sm btn-primary"><i class="fa fa-pencil"></i></a>
+                <a asp-area="Services" asp-controller="Services" asp-action="Delete" asp-route-id="@service.Id" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a>
             </td>
         </tr>
     }

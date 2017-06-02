@@ -19,5 +19,20 @@ namespace StudioBMS.Repositories.Implementations
         {
             return Task.Run(() => Context.WorkshopTimetables.Where(i => i.WorkshopId == workshopId).Select(i => i.Timetable), cancellationToken);
         }
+
+        public Task<IQueryable<Timetable>> FindByWorker(Guid workerId, CancellationToken cancellationToken = new CancellationToken())
+        {
+            return Task.Run(() => Context.PersonTimetables.Where(i => i.PersonId == workerId).Select(i=>i.Timetable), cancellationToken);
+        }
+
+        public Task CreateWorkshop(Guid workshopId, Guid timetableId)
+        {
+            return Context.WorkshopTimetables.AddAsync(new WorkshopTimetable{WorkshopId = workshopId, TimetableId = timetableId});
+        }
+
+        public Task CreateWorker(Guid workerId, Guid timetableId)
+        {
+            return Context.PersonTimetables.AddAsync(new PersonTimetable {PersonId = workerId, TimetableId = timetableId});
+        }
     }
 }

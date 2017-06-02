@@ -1,0 +1,10 @@
+@model TimeTableModel
+@{
+    ViewData["Area"] = "Workers";
+    ViewData["Controller"] = "Workers";
+    ViewData["Action"] = "TimeForm";
+    ViewData["Id"] = ViewData["workerId"];
+}
+<form asp-area="Workers" asp-controller="Workers" asp-action="TimeFormSubmit" asp-route-workerid="@ViewData["WorkerId"]" method="post">
+    @Html.Partial("Forms/_TimeTableForm", Model, ViewData)
+</form>

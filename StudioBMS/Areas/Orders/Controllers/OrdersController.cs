@@ -101,9 +101,10 @@ namespace StudioBMS.Areas.Orders.Controllers
         }
 
         [HttpGet("edit/{id}")]
-        public async Task<IActionResult> Edit(Guid id)
+        public async Task<IActionResult> Edit(Guid id, string redirectUrl)
         {
             var model = await _orderManager.GetAsync(id);
+            ViewData["Redirect"] = redirectUrl;
             ViewData["Action"] = BusinessAction.Update;
             ViewData["Customers"] = await _personManager.GetCustomers();
             ViewData["Workshops"] = await _workshopManager.GetAsync();
@@ -114,19 +115,23 @@ namespace StudioBMS.Areas.Orders.Controllers
         }
 
         [HttpPost("edit")]
-        public async Task<IActionResult> Update(OrderViewModel order)
+        public async Task<IActionResult> Update(OrderViewModel order, string redirectUrl)
         {
             //TODO: Send email message on change
 
             var model = order.To<OrderModel>();
             await _orderManager.UpdateAsync(model);
-            return RedirectToAction("Index");
+            if (string.IsNullOrEmpty(redirectUrl))
+            {
+                return RedirectToAction("Index");
+            }
+            return new RedirectResult(redirectUrl);
         }
 
         [HttpGet("pay/{id}")]
         public IActionResult Payment(Guid id)
         {
-            return View(new PaymentViewModel{Id = id});
+            return View(new PaymentViewModel { Id = id });
         }
 
         [HttpPost("pay")]
@@ -137,17 +142,25 @@ namespace StudioBMS.Areas.Orders.Controllers
         }
 
         [HttpGet("decline/{id}")]
-        public async Task<IActionResult> Decline(Guid id)
+        public async Task<IActionResult> Decline(Guid id, string redirectUrl)
         {
             await _orderManager.Deactivate(id);
-            return RedirectToAction("Index");
+            if (string.IsNullOrEmpty(redirectUrl))
+            {
+                return RedirectToAction("Index");
+            }
+            return new RedirectResult(redirectUrl);
         }
 
         [HttpGet("done/{id}")]
-        public async Task<IActionResult> Done(Guid id)
+        public async Task<IActionResult> Done(Guid id, string redirectUrl)
         {
             await _orderManager.Done(id);
-            return RedirectToAction("Index");
+            if (string.IsNullOrEmpty(redirectUrl))
+            {
+                return RedirectToAction("Index");
+            }
+            return new RedirectResult(redirectUrl);
         }
 
         [NonAction]

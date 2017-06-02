@@ -1,0 +1,15 @@
+@model WorkshopModel
+@inject IHtmlLocalizer<PageTitleResource> TitleLocalizer
+@{
+    var title = TitleLocalizer["EditWorkshop"];
+    ViewData["Title"] = title;
+    ViewData["H1"] = title;
+}
+
+<div class="panel panel-default">
+    <div class="panel-body row">
+        <form asp-area="Workshops" asp-controller="Workshops" asp-action="Update" method="post" class="form-horizontal col-md-6 col-md-offset-3">
+            @Html.Partial("_WorkshopFormPartial", Model, ViewData);
+        </form>
+    </div>
+</div>

@@ -36,7 +36,7 @@ namespace StudioBMS.Database.Context
             {
                 StringConstants.CustomerRole,
                 StringConstants.ManagerRole,
-                StringConstants.ManagerRole,
+                StringConstants.AdministratorRole,
                 "Hairdresser",
                 "MakeupArtist",
                 "Stylist",
@@ -113,58 +113,65 @@ namespace StudioBMS.Database.Context
             {
                 new Service
                 {
-                    EnName = "Haircuts for women",
-                    RuName = "Стрижка женская",
-                    UkName = "Стрижка жіноча",
+                    EnTitle = "Haircuts for women",
+                    RuTitle = "Стрижка женская",
+                    UkTitle = "Стрижка жіноча",
                     Duration = new DateTime().AddHours(1),
+                    IsActive = true,
                     Price = 12000
                 },
                 new Service
                 {
-                    EnName = "",
-                    RuName = "Стрижка мужская",
-                    UkName = "Стрижка чоловіча",
+                    EnTitle = "Men's grooming",
+                    RuTitle = "Стрижка мужская",
+                    UkTitle = "Стрижка чоловіча",
                     Duration = new DateTime().AddHours(1),
+                    IsActive = true,
                     Price = 6000
                 },
                 new Service
                 {
-                    EnName = "",
-                    RuName = "Стрижка детская",
-                    UkName = "Стрижка дитяча",
+                    EnTitle = "Children's haircut",
+                    RuTitle = "Стрижка детская",
+                    UkTitle = "Стрижка дитяча",
                     Duration = new DateTime().AddMinutes(50),
+                    IsActive = true,
                     Price = 4500
                 },
                 new Service
                 {
-                    EnName = "",
-                    RuName = "Оформление концов волос",
-                    UkName = "Оформлення кінців волосся",
+                    EnTitle = "Registration ends of hair",
+                    RuTitle = "Оформление концов волос",
+                    UkTitle = "Оформлення кінців волосся",
                     Duration = new DateTime().AddMinutes(30),
+                    IsActive = true,
                     Price = 5500
                 },
                 new Service
                 {
-                    EnName = "",
-                    RuName = "Оформление челки",
-                    UkName = "Оформлення чілки",
+                    EnTitle = "Making bangs",
+                    RuTitle = "Оформление челки",
+                    UkTitle = "Оформлення чілки",
                     Duration = new DateTime().AddMinutes(30),
+                    IsActive = true,
                     Price = 2500
                 },
                 new Service
                 {
-                    EnName = "",
-                    RuName = "Стрижка бороды",
-                    UkName = "Стрижка бороди",
+                    EnTitle = "Beard grooming",
+                    RuTitle = "Стрижка бороды",
+                    UkTitle = "Стрижка бороди",
                     Duration = new DateTime().AddMinutes(30),
+                    IsActive = true,
                     Price = 3000
                 },
                 new Service
                 {
-                    EnName = "",
-                    RuName = "Оформление усов",
-                    UkName = "Оформлення вусів",
+                    EnTitle = "Registration mustache",
+                    RuTitle = "Оформление усов",
+                    UkTitle = "Оформлення вусів",
                     Duration = new DateTime().AddMinutes(30),
+                    IsActive = true,
                     Price = 1000
                 }
             };

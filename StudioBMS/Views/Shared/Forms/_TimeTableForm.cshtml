@@ -1,0 +1,62 @@
+@using System.Globalization
+@using StudioBMS.Business.DTO.Models
+@model TimeTableModel
+@inject IHtmlLocalizer<ModelResource> ModeLocalizer
+
+<div class="row">
+    <div class="form-group col-xs-4">
+        
+        @if (Model == null)
+        {
+            <select asp-for="WeekDay" class=" form-control">
+                @foreach (var day in Enum.GetValues(typeof(DayOfWeek)))
+                {
+                    <option value="@day">@CultureInfo.CurrentCulture.DateTimeFormat.GetDayName((DayOfWeek) day)</option>
+                }
+            </select>
+        }
+        else
+        {
+            <input type="hidden" name="Id" value="@Model.Id" />
+            <select asp-for="WeekDay" class=" form-control" disabled="disabled">
+                @foreach (var day in Enum.GetValues(typeof(DayOfWeek)))
+                {
+                    <option value="@day">@CultureInfo.CurrentCulture.DateTimeFormat.GetDayName((DayOfWeek) day)</option>
+                }
+            </select>
+        }
+    </div>
+    <div class="form-group col-xs-3">
+        <div class="input-group datetimepicker" data-format="HH:mm" data-locale="@CultureInfo.CurrentCulture.Name">
+            <input asp-for="Start" asp-format="{0:t}" placeholder="@ModeLocalizer[nameof(Model.Start)]" class="form-control" />
+            <span class="input-group-addon">
+                <span class="fa fa-calendar"></span>
+            </span>
+        </div>
+    </div>
+    <div class="form-group col-xs-3">
+        <div class="input-group datetimepicker" data-format="HH:mm" data-locale="@CultureInfo.CurrentCulture.Name">
+            <input asp-for="End" asp-format="{0:t}" placeholder="@ModeLocalizer[nameof(Model.End)]" class="form-control" />
+            <span class="input-group-addon">
+                <span class="fa fa-calendar"></span>
+            </span>
+        </div>
+    </div>
+    <div class="form-group btn-group col-xs-2">
+        <button type="submit" class="btn btn-primary">
+            <i class="fa fa-plus"></i>
+        </button>
+        <a asp-area="@ViewData["Area"]"
+           asp-controller="@ViewData["Controller"]"
+           asp-action="@ViewData["Action"]"
+           asp-route-id="@ViewData["Id"]"
+           data-ajax="true"
+           data-ajax-method="GET"
+           data-ajax-mode="replace"
+           data-ajax-update="#timeform"
+           data-ajax-complete="UpdateDatetimePickers"
+           class="btn btn-danger">
+            <i class="fa fa-remove"></i>
+        </a>
+    </div>
+</div>

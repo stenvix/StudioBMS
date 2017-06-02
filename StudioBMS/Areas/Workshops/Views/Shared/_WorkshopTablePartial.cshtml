@@ -1,8 +1,14 @@
 @inject IHtmlLocalizer<ModelResource> ModeLocalizer
-@using System.Globalization
 @model IList<WorkshopModel>
 @{
     Layout = "Dashboard/_TableLayout";
+}
+
+@section tableToolbar
+{
+    <a asp-area="Workshops" asp-controller="Workshops" asp-action="Create" class="btn btn-primary">
+        <i class="fa fa-plus" aria-hidden="true"></i> @ModeLocalizer["Create"]
+    </a>
 }
 
 @section tableHeader{
@@ -30,14 +36,17 @@
                     {
                         weekday = workshop.TimeTables.FirstOrDefault();
                     }
-                    @Html.Raw(CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedDayNames[(byte)weekday.WeekDay] + " ")
-                    @Html.Raw(weekday.Start.ToString("t") + "-")
-                    @Html.Raw(weekday.End.ToString("t"))
+                    if (weekday != null)
+                    {
+                        @Html.Raw(CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedDayNames[(byte)weekday.WeekDay] + " ")
+                        @Html.Raw(weekday.Start.ToString("t") + "-")
+                        @Html.Raw(weekday.End.ToString("t"))
+                    }
                 }
             </td>
             <td>
                 <a class="btn btn-sm btn-primary" asp-area="Workshops" asp-controller="Workshops" asp-action="TimeIndex" asp-route-workshopid="@workshop.Id"><i class="fa fa-clock-o"></i></a>
-                <a class="btn btn-sm btn-primary"><i class="fa fa-pencil"></i></a>
+                <a class="btn btn-sm btn-primary"asp-area="Workshops" asp-controller="Workshops" asp-action="Edit" asp-route-id="@workshop.Id"><i class="fa fa-pencil"></i></a>
                 <a class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a>
             </td>
         </tr>

@@ -10,12 +10,13 @@ window.chartColors = {
     grey: 'rgb(201, 203, 207)'
 };
 
-$(document).ready(function () {
+function UpdateDatetimePickers() {
     $(".datetimepicker").each(function (i, e) {
         var datepicker = $(e);
         var locale = $(e).data("locale");
         var mindate = $(e).data("mindate");
         var format = $(e).data("format");
+
         var momentMinDate = null;
         if (mindate) {
             momentMinDate = moment(mindate);
@@ -24,7 +25,7 @@ $(document).ready(function () {
         var config = {};
         config.format = format;
         config.locale = locale;
-        if(moment.isMoment(momentMinDate))
+        if (moment.isMoment(momentMinDate))
             config.minDate = momentMinDate;
 
         datepicker.datetimepicker(config);
@@ -36,9 +37,11 @@ $(document).ready(function () {
         //        });
         //}
     });
+}
 
-    
-  
+$(document).ready(function () {
+
+    UpdateDatetimePickers();
 
     var items = $(".chosen");
     items.each(function (i, e) {

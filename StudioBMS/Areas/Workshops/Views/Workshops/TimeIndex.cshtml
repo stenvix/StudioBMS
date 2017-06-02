@@ -1,4 +1,3 @@
-﻿@using System.Globalization
 @inject IHtmlLocalizer<PageTitleResource> TitleLocalizer
 @inject IHtmlLocalizer<ModelResource> ModeLocalizer
 @model IList<TimeTableModel>
@@ -37,10 +36,11 @@
                                        data-ajax-method="GET"
                                        data-ajax-mode="replace"
                                        data-ajax-update="#timeform"
+                                       data-ajax-complete="UpdateDatetimePickers"
                                        class="btn btn-primary btn-sm">
                                         <i class="fa fa-pencil"></i>
                                     </a>
-                                    <a class="btn btn-danger btn-sm">
+                                    <a asp-area="Workshops" asp-controller="Workshops" asp-action="DeleteTimetable" asp-route-workshopId="@ViewData["workshopId"]" asp-route-timetableId="@time.Id" class="btn btn-danger btn-sm">
                                         <i class="fa fa-trash"></i>
                                     </a>
                                 </td>
@@ -49,7 +49,7 @@
                     </tbody>
                 </table>
                 <div id="timeform" class="">
-                    @Html.Partial("_TimeTableForm", null,ViewData)
+                    @Html.Partial("WorkshopTimeForm", null,ViewData)
                 </div>
             </div>
         </div>

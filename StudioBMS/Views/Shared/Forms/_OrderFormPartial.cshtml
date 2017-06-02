@@ -13,7 +13,6 @@
 
 <input type="hidden" asp-for="OrderNumber" />
 <input type="hidden" asp-for="Id" />
-
 @if (User.Identity.IsAuthenticated)
 {
     if (!User.IsInRole(StringConstants.CustomerRole))
@@ -80,15 +79,15 @@ else
             <option value="@service.Id">
                 @if (CultureInfo.CurrentCulture.Name == "en")
                 {
-                    @service.EnName
+                    @service.EnTitle
                 }
                 @if (CultureInfo.CurrentCulture.Name == "ru")
                 {
-                    @service.RuName
+                    @service.RuTitle
                 }
                 @if (CultureInfo.CurrentCulture.Name == "uk")
                 {
-                    @service.UkName
+                    @service.UkTitle
                 }
             </option>
         }
