@@ -9,5 +9,7 @@ namespace StudioBMS.Repositories.Interfaces
     public interface IServiceRepository : IRepository<Service>
     {
         Task<IEnumerable<Service>> FindByPerson(Guid personId);
+        Task CreatePerson(Guid personId, Guid serviceId);
+        Task DeletePersonService(Guid personId, Guid serviceId);
     }
 }

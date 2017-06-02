@@ -21,5 +21,17 @@ namespace StudioBMS.Business.Managers.Models.Impl
             var result = await _unitOfWork.ServiceRepository.FindByPerson(personId);
             return Mapper.Map<IEnumerable<Service>, IList<ServiceModel>>(result);
         }
+
+        public async Task CreatePerson(Guid personId, Guid serviceId)
+        {
+            await _unitOfWork.ServiceRepository.CreatePerson(personId, serviceId);
+            await _unitOfWork.SaveChanges();
+        }
+
+        public async Task DeletePersonService(Guid personId, Guid serviceId)
+        {
+            await _unitOfWork.ServiceRepository.DeletePersonService(personId, serviceId);
+            await _unitOfWork.SaveChanges();
+        }
     }
 }

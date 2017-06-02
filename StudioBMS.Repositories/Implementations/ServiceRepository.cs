@@ -27,6 +27,20 @@ namespace StudioBMS.Repositories.Implementations
             return Task.Run(() => Include().Where(i => ids.Contains(i.Id)).AsEnumerable());
         }
 
+        public Task CreatePerson(Guid personId, Guid serviceId)
+        {
+            return Context.PersonServices.AddAsync(new PersonService { PersonId = personId, ServiceId = serviceId });
+        }
+
+        public Task DeletePersonService(Guid personId, Guid serviceId)
+        {
+            return Task.Run(() =>
+            {
+                var entity = Context.PersonServices.FirstOrDefault(i => i.PersonId == personId && i.ServiceId == serviceId);
+                Context.PersonServices.Remove(entity);
+            });
+        }
+
         public override async Task DeleteAsync(Service entity, CancellationToken cancellationToken = new CancellationToken())
         {
             entity.IsActive = false;

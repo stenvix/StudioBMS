@@ -9,5 +9,7 @@ namespace StudioBMS.Business.Managers.Models.Interfaces
     public interface IServiceManager : IManager<ServiceModel>
     {
         Task<IList<ServiceModel>> FindByPerson(Guid personId);
+        Task CreatePerson(Guid personId, Guid serviceId);
+        Task DeletePersonService(Guid personId, Guid serviceId);
     }
 }

@@ -1,0 +1,54 @@
+@inject IHtmlLocalizer<PageTitleResource> TitleLocalizer
+@inject IHtmlLocalizer<ModelResource> ModeLocalizer
+@model IList<ServiceModel>
+@{
+    var title = TitleLocalizer["Timetable"];
+    ViewData["Title"] = title;
+    ViewData["H1"] = title;
+    var locale = CultureInfo.CurrentCulture.Name;
+}
+<div class="row">
+    <div class="col-lg-8 col-lg-offset-2">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th class="col-xs-11">@ModeLocalizer["Title"]</th>
+                            <th class="col-xs-1 text-center">@ModeLocalizer["Actions"]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var service in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @if (locale == "en")
+                                    {
+                                        @service.EnTitle
+                                    }
+                                    @if (locale == "ru")
+                                    {
+                                        @service.RuTitle
+                                    }
+                                    @if (locale == "uk")
+                                    {
+                                        @service.UkTitle
+                                    }
+                                </td>
+                                <td class="col-actions text-center">
+                                    <a asp-area="Workers" asp-controller="Workers" asp-action="DeleteService" asp-route-workerId="@ViewData["workerId"]" asp-route-serviceId="@service.Id" class="btn btn-danger btn-sm">
+                                        <i class="fa fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <div id="timeform" class="">
+                    @Html.Partial("ServiceForm", null, ViewData)
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

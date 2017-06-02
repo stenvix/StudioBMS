@@ -15,12 +15,17 @@ namespace StudioBMS.Areas.Workers.Controllers
         private readonly IPersonManager _personManager;
         private readonly PersonModelManager _permonModelManager;
         private readonly ITimeTableManager _timeTableManager;
+        private readonly IServiceManager _serviceManager;
 
-        public WorkersController(IPersonManager personManager, PersonModelManager permonModelManager, ITimeTableManager timeTableManager)
+        public WorkersController(IPersonManager personManager,
+            PersonModelManager permonModelManager,
+            ITimeTableManager timeTableManager,
+            IServiceManager serviceManager)
         {
             _personManager = personManager;
             _permonModelManager = permonModelManager;
             _timeTableManager = timeTableManager;
+            _serviceManager = serviceManager;
         }
 
         public async Task<IActionResult> Index()
@@ -67,7 +72,7 @@ namespace StudioBMS.Areas.Workers.Controllers
             {
                 await _timeTableManager.UpdateAsync(model);
             }
-           
+
             return RedirectToAction("TimeIndex", new { workerId });
         }
 
@@ -76,7 +81,29 @@ namespace StudioBMS.Areas.Workers.Controllers
         {
             //TODO: ADD MESSAGE
             await _timeTableManager.DeleteAsync(timetableId);
-            return RedirectToAction("TimeIndex", new {workerId});
+            return RedirectToAction("TimeIndex", new { workerId });
+        }
+
+        [HttpGet("{workerId}/service")]
+        public async Task<IActionResult> ServiceIndex(Guid workerId)
+        {
+            ViewData["workerId"] = workerId;
+            ViewData["Services"] = await _serviceManager.GetAsync();
+            var model = await _serviceManager.FindByPerson(workerId);
+            return View(model);
+        }
+        [HttpPost("{workerId}/service")]
+        public async Task<IActionResult> ServiceSubmit(Guid workerId, Guid serviceId)
+        {
+            await _serviceManager.CreatePerson(workerId, serviceId);
+            return RedirectToAction("ServiceIndex", new { workerId });
+        }
+
+        [HttpGet("delete/{workerId}/service/{serviceId}")]
+        public async Task<IActionResult> DeleteService(Guid workerId, Guid serviceId)
+        {
+            await _serviceManager.DeletePersonService(workerId, serviceId);
+            return RedirectToAction("ServiceIndex", new { workerId });
         }
     }
 }
