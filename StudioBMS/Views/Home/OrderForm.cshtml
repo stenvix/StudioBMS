@@ -4,6 +4,8 @@
     ViewData["FormClass"] = "order-panel";
 }
 
-<form asp-area="" asp-controller="Home" asp-action="Order" method="post">
-    @Html.Partial("Forms/_OrderFormPartial", Model, ViewData)
-</form>
+<div id="order">
+    <form asp-area="" asp-controller="Home" asp-action="Order" data-ajax="true" data-ajax-method="POST" data-ajax-mode="replace" data-ajax-update="#order">
+        @Html.Partial("Forms/_OrderFormPartial", Model, ViewData)
+    </form>
+</div>

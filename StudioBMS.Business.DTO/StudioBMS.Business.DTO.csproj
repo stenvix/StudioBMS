@@ -19,5 +19,14 @@
     <Folder Include="Properties\" />
     <Folder Include="Validators\" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>C:\Users\Stepanov Valentyn\.nuget\packages\newtonsoft.json\9.0.1\lib\netstandard1.0\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization.Primitives">
+      <HintPath>C:\Users\Stepanov Valentyn\.nuget\packages\system.runtime.serialization.primitives\4.3.0\ref\netstandard1.3\System.Runtime.Serialization.Primitives.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 
 </Project>

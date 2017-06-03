@@ -1,9 +1,15 @@
 using System;
+using System.Globalization;
+using System.Runtime.InteropServices.ComTypes;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Routing;
+using Newtonsoft.Json;
 using StudioBMS.Business.DTO.Extensions;
 using StudioBMS.Business.DTO.Models;
+using StudioBMS.Business.DTO.Models.ViewModels;
 using StudioBMS.Business.Managers.Models.Interfaces;
 using StudioBMS.Models.UI;
 
@@ -161,6 +167,56 @@ namespace StudioBMS.Areas.Orders.Controllers
                 return RedirectToAction("Index");
             }
             return new RedirectResult(redirectUrl);
+        }
+
+        [HttpGet("call"), AllowAnonymous]
+        public IActionResult Calback()
+        {
+            var orderPayment = new OrderPaymentViewModel();
+            var model = new OrderModel
+            {
+                Id = Guid.NewGuid(),
+                OrderNumber = 12341234
+            };
+
+            var liqpay = new LiqPayViewModel
+            {
+                PrivateKey = "tuKOtMrz1arqJd2nv9UxtuZ5W9SpFgvdpP1P5MpL",
+                Amount = 52.5,
+                Language = CultureInfo.CurrentCulture.TwoLetterISOLanguageName,
+                OrderId = model.Id.ToString(),
+                ResultUrl = Url.Action("Callback", "Orders", null, Request.Scheme)
+            };
+
+
+            //liqpay.ResultUrl = Url.Action("Calback", "Orders", null, Request.Scheme);
+            orderPayment.Order = model;
+            orderPayment.LiqPay = liqpay;
+
+            return PartialView("Payment/OrderPayment", orderPayment);
+        }
+
+        [HttpPost("callback"), AllowAnonymous]
+        public async Task<IActionResult> Callback(string data, string signature)
+        {
+            var stringData = Encoding.UTF8.GetString(Convert.FromBase64String(data));
+            var liqCallback = JsonConvert.DeserializeObject<LiqPayCallbackViewModel>(stringData);
+            liqCallback.PrivateKey = "tuKOtMrz1arqJd2nv9UxtuZ5W9SpFgvdpP1P5MpL";
+
+            if (liqCallback.GetSignature(data) == signature)
+            {
+                var order = await _orderManager.GetAsync(liqCallback.OrderId);
+                order.Balance += liqCallback.Amount;
+                await _orderManager.UpdateAsync(order);
+
+                if (!User.Identity.IsAuthenticated)
+                {
+                    return RedirectToAction("Thanks", "Home");
+                }
+                //TODO: Success message;
+                return RedirectToAction("Index");
+            }
+            return new EmptyResult();
         }
 
         [NonAction]

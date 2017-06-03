@@ -117,7 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="OrderDescription" xml:space="preserve">
+    <value>Оплата за услуги салона красоты</value>
+  </data>
+  <data name="OrderSuccessfullyCreated" xml:space="preserve">
+    <value>Заказ {0} успешно создан</value>
+  </data>
   <data name="PasswordUpdated" xml:space="preserve">
     <value>Пароль успешно обновлен</value>
+  </data>
+  <data name="PayWithLiqPay" xml:space="preserve">
+    <value>Оплатить при помощи LiqPay</value>
   </data>
 </root>

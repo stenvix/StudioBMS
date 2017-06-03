@@ -1,0 +1,18 @@
+﻿@using StudioBMS.Messages
+@model StudioBMS.Business.DTO.Models.ViewModels.OrderPaymentViewModel
+@inject IHtmlLocalizer<MessageResource> MessageLocalizer
+
+@if (!User.Identity.IsAuthenticated || User.IsInRole(StringConstants.CustomerRole))
+{
+    <div class="row">
+        <form method="POST" class="text-center" accept-charset="utf-8" action="https://www.liqpay.com/api/3/checkout">
+            <h2>@MessageLocalizer["OrderSuccessfullyCreated", Model.Order.OrderNumber]</h2>
+            <input type="hidden" name="data" value="@Model.LiqPay.Data"/>
+            <input type="hidden" name="signature" value="@Model.LiqPay.Signature"/>
+            <button class="btn btn-primary">
+                <i class="fa fa-money"></i>
+                @MessageLocalizer["PayByLiqPay"]
+            </button>
+        </form>
+    </div>
+}
