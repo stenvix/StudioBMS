@@ -1,27 +1,26 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
-using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Routing;
 using Newtonsoft.Json;
 using StudioBMS.Business.DTO.Extensions;
 using StudioBMS.Business.DTO.Models;
 using StudioBMS.Business.DTO.Models.ViewModels;
 using StudioBMS.Business.Managers.Models.Interfaces;
-using StudioBMS.Models.UI;
 
 namespace StudioBMS.Areas.Orders.Controllers
 {
-    [Area("Orders"), Route("[area]")]
+    [Area("Orders")]
+    [Route("[area]")]
     public class OrdersController : Controller
     {
         private readonly IOrderManager _orderManager;
         private readonly IPersonManager _personManager;
-        private readonly IWorkshopManager _workshopManager;
         private readonly IServiceManager _serviceManager;
+        private readonly IWorkshopManager _workshopManager;
 
         public OrdersController(IOrderManager orderManager,
             IPersonManager personManager,
@@ -33,10 +32,28 @@ namespace StudioBMS.Areas.Orders.Controllers
             _workshopManager = workshopManager;
             _serviceManager = serviceManager;
         }
+
         public async Task<IActionResult> Index()
         {
             //ViewData["Message"] = TempData["Message"];
-            return View(await _orderManager.GetAsync());
+            IList<OrderModel> orders = null;
+
+            if (User.IsInRole(StringConstants.CustomerRole))
+            {
+                var customer = await _personManager.FindByName(User.Identity.Name);
+                orders = await _orderManager.FindByCustomer(customer.Id);
+            }
+            else if (User.IsInRole(StringConstants.ManagerRole))
+            {
+                var manager = await _personManager.FindByName(User.Identity.Name);
+                orders = await _orderManager.FindByWorkshop(manager.Workshop.Id);
+            }
+            else
+            {
+                orders = await _orderManager.GetAsync();
+            }
+
+            return View(orders);
         }
 
         [HttpGet("create")]
@@ -53,47 +70,32 @@ namespace StudioBMS.Areas.Orders.Controllers
             }
 
             if (User.IsInRole(StringConstants.CustomerRole))
-            {
                 model.CustomerId = user.Id;
-            }
             else
-            {
                 ViewData["Customers"] = await _personManager.GetCustomers();
-            }
 
             if (IsNotInRoles(new[] { StringConstants.CustomerRole, StringConstants.AdministratorRole }))
-            {
                 model.WorkshopId = user.Workshop.Id;
-            }
             else
-            {
                 ViewData["Workshops"] = await _workshopManager.GetAsync();
-            }
 
-            if (IsNotInRoles(new[] { StringConstants.CustomerRole, StringConstants.ManagerRole, StringConstants.AdministratorRole }))
+            if (IsNotInRoles(new[]
+                {StringConstants.CustomerRole, StringConstants.ManagerRole, StringConstants.AdministratorRole}))
             {
                 model.PerformerId = user.Id;
             }
             else
             {
                 if (model.WorkshopId == Guid.Empty)
-                {
                     ViewData["Performers"] = await _personManager.GetEmployees();
-                }
                 else
-                {
                     ViewData["Performers"] = await _personManager.GetEmployees(model.WorkshopId);
-                }
             }
 
             if (model.PerformerId == Guid.Empty)
-            {
                 ViewData["Services"] = await _serviceManager.GetAsync();
-            }
             else
-            {
                 ViewData["Services"] = await _serviceManager.FindByPerson(model.PerformerId);
-            }
 
             return View(model);
         }
@@ -128,9 +130,7 @@ namespace StudioBMS.Areas.Orders.Controllers
             var model = order.To<OrderModel>();
             await _orderManager.UpdateAsync(model);
             if (string.IsNullOrEmpty(redirectUrl))
-            {
                 return RedirectToAction("Index");
-            }
             return new RedirectResult(redirectUrl);
         }
 
@@ -152,9 +152,7 @@ namespace StudioBMS.Areas.Orders.Controllers
         {
             await _orderManager.Deactivate(id);
             if (string.IsNullOrEmpty(redirectUrl))
-            {
                 return RedirectToAction("Index");
-            }
             return new RedirectResult(redirectUrl);
         }
 
@@ -163,13 +161,12 @@ namespace StudioBMS.Areas.Orders.Controllers
         {
             await _orderManager.Done(id);
             if (string.IsNullOrEmpty(redirectUrl))
-            {
                 return RedirectToAction("Index");
-            }
             return new RedirectResult(redirectUrl);
         }
 
-        [HttpGet("call"), AllowAnonymous]
+        [HttpGet("call")]
+        [AllowAnonymous]
         public IActionResult Calback()
         {
             var orderPayment = new OrderPaymentViewModel();
@@ -196,7 +193,8 @@ namespace StudioBMS.Areas.Orders.Controllers
             return PartialView("Payment/OrderPayment", orderPayment);
         }
 
-        [HttpPost("callback"), AllowAnonymous]
+        [HttpPost("callback")]
+        [AllowAnonymous]
         public async Task<IActionResult> Callback(string data, string signature)
         {
             var stringData = Encoding.UTF8.GetString(Convert.FromBase64String(data));
@@ -210,9 +208,7 @@ namespace StudioBMS.Areas.Orders.Controllers
                 await _orderManager.UpdateAsync(order);
 
                 if (!User.Identity.IsAuthenticated)
-                {
                     return RedirectToAction("Thanks", "Home");
-                }
                 //TODO: Success message;
                 return RedirectToAction("Index");
             }
@@ -224,9 +220,7 @@ namespace StudioBMS.Areas.Orders.Controllers
         {
             var result = true;
             foreach (var role in roles)
-            {
                 result &= !User.IsInRole(role);
-            }
             return result;
         }
     }

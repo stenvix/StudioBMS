@@ -50,7 +50,7 @@ namespace StudioBMS.Controllers
             return View();
         }
 
-        [HttpGet, AllowAnonymous]
+        [HttpGet("order"), AllowAnonymous]
         public async Task<IActionResult> Order()
         {
             var model = new OrderViewModel {Date = DateTime.Today};
@@ -64,7 +64,7 @@ namespace StudioBMS.Controllers
             return View(model);
         }
 
-        [HttpPost, AllowAnonymous]
+        [HttpPost("order"), AllowAnonymous]
         public async Task<IActionResult> Order(OrderViewModel model)
         {
             var customer = await _personModelManager.FindByEmailAsync(model.EMail);

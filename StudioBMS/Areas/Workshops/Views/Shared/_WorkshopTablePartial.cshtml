@@ -1,4 +1,5 @@
 @inject IHtmlLocalizer<ModelResource> ModeLocalizer
+@using StudioBMS
 @model IList<WorkshopModel>
 @{
     Layout = "Dashboard/_TableLayout";
@@ -6,9 +7,12 @@
 
 @section tableToolbar
 {
-    <a asp-area="Workshops" asp-controller="Workshops" asp-action="Create" class="btn btn-primary">
-        <i class="fa fa-plus" aria-hidden="true"></i> @ModeLocalizer["Create"]
-    </a>
+    @if (User.IsInRole(StringConstants.AdministratorRole))
+    {
+        <a asp-area="Workshops" asp-controller="Workshops" asp-action="Create" class="btn btn-primary">
+            <i class="fa fa-plus" aria-hidden="true"></i> @ModeLocalizer["Create"]
+        </a>
+    }
 }
 
 @section tableHeader{
@@ -17,7 +21,10 @@
     <th class="col-xs-2">@ModeLocalizer["Phone"]</th>
     <th class="col-xs-2">@ModeLocalizer["EMail"]</th>
     <th class="col-xs-2">@ModeLocalizer["WorkingHours"]</th>
-    <th class="col-xs-2 text-center col-actions">@ModeLocalizer["Actions"]</th>
+    @if (User.IsInRole(StringConstants.AdministratorRole))
+    {
+        <th class="col-xs-2 text-center col-actions">@ModeLocalizer["Actions"]</th>
+    }
 }
 
 @section tableBody{
@@ -29,26 +36,15 @@
             <td>@workshop.City, @workshop.Address</td>
             <td>@workshop.PhoneNumber</td>
             <td>@workshop.Email</td>
-            <td>
-                @{
-                    var weekday = workshop.TimeTables.FirstOrDefault(i => i.WeekDay == DateTime.Now.DayOfWeek);
-                    if (weekday == null)
-                    {
-                        weekday = workshop.TimeTables.FirstOrDefault();
-                    }
-                    if (weekday != null)
-                    {
-                        @Html.Raw(CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedDayNames[(byte)weekday.WeekDay] + " ")
-                        @Html.Raw(weekday.Start.ToString("t") + "-")
-                        @Html.Raw(weekday.End.ToString("t"))
-                    }
-                }
-            </td>
-            <td>
-                <a class="btn btn-sm btn-primary" asp-area="Workshops" asp-controller="Workshops" asp-action="TimeIndex" asp-route-workshopid="@workshop.Id"><i class="fa fa-clock-o"></i></a>
-                <a class="btn btn-sm btn-primary"asp-area="Workshops" asp-controller="Workshops" asp-action="Edit" asp-route-id="@workshop.Id"><i class="fa fa-pencil"></i></a>
-                <a class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a>
-            </td>
+            <td>@Html.Raw(workshop.HtmlTimetableString)</td>
+            @if (User.IsInRole(StringConstants.AdministratorRole))
+            {
+                <td>
+                    <a class="btn btn-sm btn-primary" asp-area="Workshops" asp-controller="Workshops" asp-action="TimeIndex" asp-route-workshopid="@workshop.Id"><i class="fa fa-clock-o"></i></a>
+                    <a class="btn btn-sm btn-primary" asp-area="Workshops" asp-controller="Workshops" asp-action="Edit" asp-route-id="@workshop.Id"><i class="fa fa-pencil"></i></a>
+                    <a class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a>
+                </td>
+            }
         </tr>
                     }
 }

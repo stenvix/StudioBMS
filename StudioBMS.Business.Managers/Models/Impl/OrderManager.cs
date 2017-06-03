@@ -23,7 +23,6 @@ namespace StudioBMS.Business.Managers.Models.Impl
             order.Status = _unitOfWork.OrderStatusRepository.Active.To<OrderStatusModel>();
             foreach (var service in order.Services)
             {
-                
                 var srv = await _unitOfWork.ServiceRepository.GetAsync(service.Id);
                 order.Price += srv.Price / 100.0;
             }
@@ -44,8 +43,20 @@ namespace StudioBMS.Business.Managers.Models.Impl
 
         public async Task<IList<OrderStatusModel>> GetStatuses()
         {
-            var result =await _unitOfWork.OrderStatusRepository.GetAsync();
+            var result = await _unitOfWork.OrderStatusRepository.GetAsync();
             return result.To<OrderStatusModel>();
+        }
+
+        public async Task<IList<OrderModel>> FindByCustomer(Guid personId)
+        {
+            var result = await _unitOfWork.OrderRepository.FindByCustomer(personId);
+            return result.To<OrderModel>();
+        }
+
+        public async Task<IList<OrderModel>> FindByWorkshop(Guid workshopId)
+        {
+            var result = await _unitOfWork.OrderRepository.FindByWorkshop(workshopId);
+            return result.To<OrderModel>();
         }
 
         public async Task ManageBalance(PaymentViewModel payment)

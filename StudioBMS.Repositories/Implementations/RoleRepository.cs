@@ -30,6 +30,11 @@ namespace StudioBMS.Repositories.Implementations
             get { return Include().FirstOrDefault(i => i.Name.ToUpper() == StringConstants.ManagerRole); }
         }
 
+        public Task<Role> FindByName(string name)
+        {
+            return Task.FromResult(Include().FirstOrDefault(i => i.Name.ToUpper().Normalize() == name.ToUpper().Normalize()));
+        }
+
         public Task<IEnumerable<Role>> GetWorkerRoles()
         {
             var ids = new List<Guid> { Administrator.Id, Manager.Id, Customer.Id };
@@ -50,6 +55,11 @@ namespace StudioBMS.Repositories.Implementations
         public Task AddToRole(Guid personId, Guid roleId)
         {
             return Context.UserRoles.AddAsync(new PersonRole { UserId = personId, RoleId = roleId });
+        }
+
+        public Task<bool> IsInRole(Guid personId, Guid roleId)
+        {
+            return Task.FromResult(Context.UserRoles.Any(i => i.UserId == personId && i.RoleId == roleId));
         }
     }
 }

@@ -31,5 +31,15 @@ namespace StudioBMS.Repositories.Implementations
         {
             return Task.Run(() => Include().Where(i => i.PerformerId == performerId && i.Date.Date == date.Date).AsEnumerable());
         }
+
+        public Task<IEnumerable<Order>> FindByCustomer(Guid personId)
+        {
+            return Task.Run(() => Include().Where(i => i.CustomerId == personId).AsEnumerable());
+        }
+
+        public Task<IEnumerable<Order>> FindByWorkshop(Guid workshopId)
+        {
+            return Task.Run(() => Include().Where(i => i.WorkshopId == workshopId).AsEnumerable());
+        }
     }
 }

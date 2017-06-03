@@ -1,4 +1,6 @@
 @inject IHtmlLocalizer<ModelResource> ModeLocalizer
+@inject IPersonManager PersonManager
+@using StudioBMS.Business.Managers.Models.Interfaces
 @model IList<PersonModel>
 @{
     Layout = "Dashboard/_TableLayout";
@@ -6,18 +8,25 @@
 
 @section tableToolbar
 {
-    <a asp-area="Workers" asp-controller="Workers" asp-action="Create" class="btn btn-primary">
-        <i class="fa fa-plus" aria-hidden="true"></i> @ModeLocalizer["Create"]
-    </a>
+    @if (User.IsInRole(StringConstants.AdministratorRole) || User.IsInRole(StringConstants.ManagerRole))
+    {
+        <a asp-area="Workers" asp-controller="Workers" asp-action="Create" class="btn btn-primary">
+            <i class="fa fa-plus" aria-hidden="true"></i> @ModeLocalizer["Create"]
+        </a>
+    }
 }
 
 @section tableHeader{
-    <th>@ModeLocalizer["FirstName"]</th>
-    <th>@ModeLocalizer["LastName"]</th>
+    <th>@ModeLocalizer["LastName"] / @ModeLocalizer["FirstName"] </th>
     <th>@ModeLocalizer["Position"]</th>
+    <th>@ModeLocalizer["Services"]</th>
+    <th>@ModeLocalizer["Workshop"]</th>
     <th>@ModeLocalizer["Phone"]</th>
     <th>@ModeLocalizer["WorkingHours"]</th>
-    <th class="col-xs-2 text-center col-actions">@ModeLocalizer["Actions"]</th>
+    @if (User.IsInRole(StringConstants.AdministratorRole) || User.IsInRole(StringConstants.ManagerRole))
+    {
+        <th class="col-xs-2 text-center col-actions">@ModeLocalizer["Actions"]</th>
+    }
 }
 
 @section tableBody
@@ -25,14 +34,15 @@
     @foreach (var worker in Model)
     {
         <tr>
-            <td>@worker.FirstName</td>
-            <td>@worker.LastName</td>
+            <td>@worker.FullName</td>
             <td>
                 @if (worker.Role != null)
                 {
                     @ModeLocalizer[worker.Role.Name]
                 }
             </td>
+            <td>@Html.Raw(string.Join("<br />", worker.Services.Select(i => i.Title)))</td>
+            <td>@worker.Workshop.TitleWithCity</td>
             <td>@worker.PhoneNumber</td>
             <td>
                 @foreach (var time in worker.TimeTables)
@@ -40,13 +50,20 @@
                     @Html.Raw($"{CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedDayName(time.WeekDay)} {time.Start:t} - {time.End:t}<br />")
                 }
             </td>
-            <td>
-                <a class="btn btn-sm btn-primary"><i class="fa fa-bar-chart fa-fw"></i></a>
-                <a asp-area="Workers" asp-controller="Workers" asp-action="TimeIndex" asp-route-workerid="@worker.Id" class="btn btn-sm btn-primary"><i class="fa fa-clock-o fa-fw"></i></a>
-                <a asp-area="Workers" asp-controller="Workers" asp-action="ServiceIndex" asp-route-workerid="@worker.Id" class="btn btn-sm btn-primary"><i class="fa fa-briefcase fa-fw"></i></a>
-                <a asp-area="Workers" asp-controller="Workers" asp-action="Edit" asp-route-id="@worker.Id" class="btn btn-sm btn-primary"><i class="fa fa-pencil fa-fw"></i></a>
-                <a class="btn btn-sm btn-danger"><i class="fa fa-trash fa-fw"></i></a>
-            </td>
+            @if (User.IsInRole(StringConstants.AdministratorRole) || User.IsInRole(StringConstants.ManagerRole))
+            {
+                <td>
+                    <a class="btn btn-sm btn-primary"><i class="fa fa-bar-chart fa-fw"></i></a>
+                    <a asp-area="Workers" asp-controller="Workers" asp-action="TimeIndex" asp-route-workerid="@worker.Id" class="btn btn-sm btn-primary"><i class="fa fa-clock-o fa-fw"></i></a>
+                    @if( !(await PersonManager.IsInRole(worker.Id, StringConstants.AdministratorRole)| await PersonManager.IsInRole(worker.Id, StringConstants.ManagerRole)))
+                    {
+                        <a asp-area="Workers" asp-controller="Workers" asp-action="ServiceIndex" asp-route-workerid="@worker.Id" class="btn btn-sm btn-primary"><i class="fa fa-briefcase fa-fw"></i></a>
+                    }
+                    <a asp-area="Workers" asp-controller="Workers" asp-action="Edit" asp-route-id="@worker.Id" class="btn btn-sm btn-primary"><i class="fa fa-pencil fa-fw"></i></a>
+                    <a class="btn btn-sm btn-danger"><i class="fa fa-trash fa-fw"></i></a>
+                </td>
+            }
         </tr>
+
     }
 }

@@ -37,18 +37,23 @@ namespace StudioBMS.Areas.Workers.Controllers
         public async Task<IActionResult> Index()
         {
             IList<PersonModel> employees = null;
-            if (User.IsInRole("Administrator"))
+            if (User.IsInRole(StringConstants.AdministratorRole))
             {
                 employees = await _personManager.GetStaff();
             }
+            else if (User.IsInRole(StringConstants.ManagerRole))
+            {
+                var manager = await _personManager.FindByName(User.Identity.Name);
+                employees = await _personManager.GetEmployees(manager.Workshop.Id);
+            }
             else
             {
-                var manager = await _permonModelManager.FindByNameAsync(User.Identity.Name);
-                employees = await _personManager.GetEmployees(manager.Workshop.Id);
+                employees = await _personManager.GetEmployees();
             }
             foreach (var employee in employees)
             {
                 employee.TimeTables = await _timeTableManager.FindByWorker(employee.Id);
+                employee.Services = await _serviceManager.FindByPerson(employee.Id);
             }
             return View(employees);
         }
@@ -122,12 +127,12 @@ namespace StudioBMS.Areas.Workers.Controllers
             if (User.IsInRole(StringConstants.AdministratorRole))
             {
                 ViewData["Roles"] = await _roleManager.GetAsync();
+                ViewData["Workshops"] = await _workshopManager.GetAsync();
             }
             else
             {
                 ViewData["Roles"] = await _roleManager.GetWorkerRoles();
             }
-            ViewData["Workshops"] = await _workshopManager.GetAsync();
             return View(await _personManager.GetAsync(id));
         }
 
@@ -136,8 +141,7 @@ namespace StudioBMS.Areas.Workers.Controllers
         {
             var personModel = await _personManager.GetAsync(model.Id);
             PersonMapping(model, personModel);
-
-            var role = await _roleManager.GetAsync(model.Role.Id);
+            
             //TODO: Add message
             var result = await _permonModelManager.UpdateAsync(personModel);
             
@@ -169,6 +173,11 @@ namespace StudioBMS.Areas.Workers.Controllers
         [HttpPost("create")]
         public async Task<IActionResult> Create(PersonModel model)
         {
+            if (User.IsInRole(StringConstants.ManagerRole))
+            {
+                var manager = await _personManager.FindByName(User.Identity.Name);
+                model.Workshop = manager.Workshop;
+            }
             var roleId = model.Role.Id;
             model.UserName = model.Email;
             await _permonModelManager.CreateAsync(model);
@@ -185,6 +194,7 @@ namespace StudioBMS.Areas.Workers.Controllers
             oldModel.Email = newModel.Email;
             oldModel.Birthday = newModel.Birthday;
             oldModel.UserName = newModel.Email;
+            oldModel.Workshop.Id = newModel.Workshop.Id;
         }
     }
 }

@@ -48,7 +48,7 @@
                             <li>
                                 <a asp-area="Orders" asp-controller="Orders" asp-action="Index">@TitleLocalizer["Orders"]</a>
                             </li>
-                            @if (!User.IsInRole("Client"))
+                            if (!User.IsInRole(StringConstants.CustomerRole))
                              {
                                  <li>
                                      <a asp-area="Journals" asp-controller="Journals" asp-action="Index">@TitleLocalizer["Journal"]</a>

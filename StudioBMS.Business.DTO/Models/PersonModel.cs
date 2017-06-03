@@ -14,6 +14,7 @@ namespace StudioBMS.Business.DTO.Models
         public RoleModel Role { get; set; }
         public DateTime Birthday { get; set; }
         public WorkshopModel Workshop { get; set; }
+        public IList<ServiceModel> Services { get; set; }
         public IList<TimeTableModel> TimeTables { get; set; }
         public IList<OrderModel> Orders { get; set; }
     }

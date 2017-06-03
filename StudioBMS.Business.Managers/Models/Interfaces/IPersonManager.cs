@@ -14,5 +14,6 @@ namespace StudioBMS.Business.Managers.Models.Interfaces
         Task<IList<PersonModel>> GetStaff();
         Task<IList<PersonModel>> GetWithPerformerOrders(Guid[] ids, DateTime date = default(DateTime));
         Task<PersonModel> FindByName(string username);
+        Task<bool> IsInRole(Guid personId, string roleName);
     }
 }

@@ -1,4 +1,4 @@
-@using Microsoft.ApplicationInsights.AspNetCore
+﻿@using Microsoft.ApplicationInsights.AspNetCore
 @using StudioBMS.Messages
 @inject JavaScriptSnippet JavaScriptSnippet
 @inject IHtmlLocalizer<MessageResource> MessageLocalizer
@@ -20,7 +20,7 @@
         <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.min.css" />
         <link rel="stylesheet" href="~/lib/metisMenu/dist/metisMenu.css" />
         <link rel="stylesheet" href="~/lib/bootstrap-table/dist/bootstrap-table.css" />
-        <link rel="stylesheet" href="~/lib/chosen-bootstrap/chosen.bootstrap.css"/>
+        <link rel="stylesheet" href="~/lib/chosen-bootstrap/chosen.bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" />
     </environment>
     <environment names="Staging,Production">
@@ -57,27 +57,35 @@
             <div class="navbar-default sidebar" role="navigation">
                 <div class="sidebar-nav navbar-collapse collapse">
                     <ul class="nav in metismenu" id="side-menu">
-                        <li>
-                            <a asp-area="Journals" asp-controller="Journals" asp-action="Index"><i class="fa fa-calendar"></i> @TitleLocalizer["Journal"]</a>
-                        </li>
+                        @if (!User.IsInRole(StringConstants.CustomerRole))
+                        {
+                            <li>
+                                <a asp-area="Journals" asp-controller="Journals" asp-action="Index"><i class="fa fa-calendar"></i> @TitleLocalizer["Journal"]</a>
+                            </li>
+                        }
                         <li>
                             <a asp-area="Orders" asp-controller="Orders" asp-action="Index"><i class="fa fa-shopping-cart "></i> @TitleLocalizer["Orders"]</a>
                         </li>
                         <li>
                             <a asp-area="Statistics" asp-controller="Statistics" asp-action="Index"><i class="fa fa-bar-chart"></i> @TitleLocalizer["Statistics"]</a>
                         </li>
-                        <li>
-                            <a asp-area="Clients" asp-controller="Clients" asp-action="Index"><i class="fa fa-address-card"></i> @TitleLocalizer["Clients"]</a>
-                        </li>
+                        @if (User.IsInRole(StringConstants.AdministratorRole) || User.IsInRole(StringConstants.ManagerRole))
+                        {
+                            <li>
+                                <a asp-area="Clients" asp-controller="Clients" asp-action="Index"><i class="fa fa-address-card"></i> @TitleLocalizer["Clients"]</a>
+                            </li>
+                        }
                         <li>
                             <a asp-area="Workers" asp-controller="Workers" asp-action="Index"><i class="fa fa-users"></i> @TitleLocalizer["Workers"]</a>
                         </li>
                         <li>
                             <a asp-area="Services" asp-controller="Services" asp-action="Index"><i class="fa fa-briefcase"></i> @TitleLocalizer["Services"]</a>
                         </li>
+
                         <li>
                             <a asp-area="Workshops" asp-controller="Workshops" asp-action="Index"><i class="fa fa-building"></i> @TitleLocalizer["Workshops"]</a>
                         </li>
+
                         @*<li>
                                 <a href="#" class="has-arrow">
                                     <span class="fa fa-bar-chart-o fa-fw"></span>
@@ -184,18 +192,18 @@
                             <hr />
                             @{
                                 var message = (MessageViewModel)ViewData["Message"];
-                                if (message!=null && !string.IsNullOrEmpty(message.Message))
+                                if (message != null && !string.IsNullOrEmpty(message.Message))
                                 {
                                     <div class="alert @message.GetClass()">
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                         <p>@MessageLocalizer[message.Message]!</p>
-                                    </div>    
+                                    </div>
                                 }
                             }
-                            
+
                         </div>
                     </div>
-                }
+                                }
                 @RenderBody()
             </div>
         </div>

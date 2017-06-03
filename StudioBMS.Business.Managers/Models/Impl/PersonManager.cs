@@ -74,5 +74,11 @@ namespace StudioBMS.Business.Managers.Models.Impl
             var result = await _unitOfWork.PersonRepository.FindByName(username);
             return result.To<PersonModel>();
         }
+
+        public async Task<bool> IsInRole(Guid personId, string roleName)
+        {
+            var role = await _unitOfWork.RoleRepository.FindByName(roleName);
+            return await _unitOfWork.RoleRepository.IsInRole(personId, role.Id);
+        }
     }
 }

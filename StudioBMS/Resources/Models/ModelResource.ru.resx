@@ -129,6 +129,9 @@
   <data name="Administrator" xml:space="preserve">
     <value>Администратор</value>
   </data>
+  <data name="Balance" xml:space="preserve">
+    <value>Баланс</value>
+  </data>
   <data name="Birthday" xml:space="preserve">
     <value>Дата рождения</value>
   </data>
@@ -237,6 +240,9 @@
   <data name="RememberMe" xml:space="preserve">
     <value>Запомнить меня</value>
   </data>
+  <data name="Role" xml:space="preserve">
+    <value>Роль</value>
+  </data>
   <data name="Russian" xml:space="preserve">
     <value>Русский</value>
   </data>
@@ -249,11 +255,17 @@
   <data name="Start" xml:space="preserve">
     <value>Начало</value>
   </data>
+  <data name="Status" xml:space="preserve">
+    <value>Статус</value>
+  </data>
   <data name="Stylist" xml:space="preserve">
     <value>Стилист</value>
   </data>
   <data name="Title" xml:space="preserve">
     <value>Название</value>
+  </data>
+  <data name="UAH" xml:space="preserve">
+    <value>грн</value>
   </data>
   <data name="Ukrainian" xml:space="preserve">
     <value>Украинский</value>

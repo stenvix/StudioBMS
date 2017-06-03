@@ -3,7 +3,7 @@
 @model OrderViewModel
 @inject IHtmlLocalizer<ModelResource> ModelLocalizer
 @{
-    var action = ViewData.ContainsKey("Action")?(BusinessAction)ViewData["Action"]: BusinessAction.Create;
+    var action = ViewData.ContainsKey("Action") ? (BusinessAction)ViewData["Action"] : BusinessAction.Create;
     var customers = ViewData["Customers"] as IList<PersonModel> ?? new List<PersonModel>();
     var workshops = ViewData["Workshops"] as IList<WorkshopModel> ?? new List<WorkshopModel>();
     var performers = ViewData["Performers"] as IList<PersonModel> ?? new List<PersonModel>();
@@ -39,7 +39,7 @@
         <input type="hidden" asp-for="CustomerId" />
     }
 }
-@if (!User.Identity.IsAuthenticated || User.IsInRole(StringConstants.CustomerRole) || User.IsInRole(StringConstants.AdministratorRole))
+@if (!User.Identity.IsAuthenticated || User.IsInRole(StringConstants.CustomerRole) && !Model.IsPaid || User.IsInRole(StringConstants.AdministratorRole))
 {
     <div class="form-group">
         <label>@ModelLocalizer["Workshop"]</label>
@@ -55,7 +55,7 @@ else
 {
     <input type="hidden" asp-for="WorkshopId" />
 }
-@if (!User.Identity.IsAuthenticated || User.IsInRole("Client") || User.IsInRole("Manager") || User.IsInRole("Administrator"))
+@if (!User.Identity.IsAuthenticated || User.IsInRole(StringConstants.CustomerRole) && !Model.IsPaid || User.IsInRole(StringConstants.ManagerRole) || User.IsInRole(StringConstants.AdministratorRole))
 {
     <div class="form-group">
         <label>@ModelLocalizer["Master"]</label>
@@ -71,28 +71,22 @@ else
 {
     <input type="hidden" asp-for="PerformerId" />
 }
-<div class="form-group">
-    <label>@ModelLocalizer["Services"]</label>
-    <select class="chosen" multiple="multiple" asp-for="ServiceIds">
-        @foreach (var service in services)
+@if (!User.Identity.IsAuthenticated || User.IsInRole(StringConstants.CustomerRole) && !Model.IsPaid || User.IsInRole(StringConstants.ManagerRole) || User.IsInRole(StringConstants.AdministratorRole))
+{
+    <div class="form-group">
+        <label>@ModelLocalizer["Services"]</label>
+        <select class="chosen" multiple="multiple" asp-for="ServiceIds">
+            @foreach (var service in services)
             {
-            <option value="@service.Id">
-                @if (CultureInfo.CurrentCulture.Name == "en")
-                {
-                    @service.EnTitle
-                }
-                @if (CultureInfo.CurrentCulture.Name == "ru")
-                {
-                    @service.RuTitle
-                }
-                @if (CultureInfo.CurrentCulture.Name == "uk")
-                {
-                    @service.UkTitle
-                }
-            </option>
-        }
-    </select>
-</div>
+                <option value="@service.Id">@service.Title</option>
+            }
+        </select>
+    </div>
+}
+else
+{
+    <input type="hidden" asp-for="ServiceIds" />
+}
 <div class="form-group">
     <label>@ModelLocalizer["DateAndTime"]</label>
     @*data-mindate="@($"{DateTime.Now.AddMinutes(30):yyyy-MM-dd HH:mm}")" TODO: Fix bug with initialization *@
@@ -117,15 +111,25 @@ else
                 }
             </select>
         </div>
-        <div class="form-group">
-            <label>@ModelLocalizer[nameof(Model.Price)]</label>
-            <input asp-for="Price" class="form-control" step="0.1" type="number" />
-        </div>
-        <div class="form-group">
-            <label>@ModelLocalizer[nameof(Model.Balance)]</label>
-            <input asp-for="Balance" class="form-control" step="0.1" type="number" />
-        </div>
+
+        if (User.IsInRole(StringConstants.AdministratorRole))
+        {
+            <div class="form-group">
+                <label>@ModelLocalizer[nameof(Model.Price)]</label>
+                <input asp-for="Price" class="form-control" step="0.1" type="number" />
+            </div>
+            <div class="form-group">
+                <label>@ModelLocalizer[nameof(Model.Balance)]</label>
+                <input asp-for="Balance" class="form-control" step="0.1" type="number" />
+            </div>
+        }
     }
+}
+else
+{
+    <input type="hidden" asp-for="StatusId" />
+    <input type="hidden" asp-for="Price" />
+    <input type="hidden" asp-for="Balance" />
 }
 
 @if (!User.Identity.IsAuthenticated)
@@ -133,12 +137,12 @@ else
     <hr />
     <div class="row">
         <div class="col-md-6 form-group">
-            <label>@ModelLocalizer["FirstName"]</label>
-            <input asp-for="FirstName" class="form-control" />
-        </div>
-        <div class="col-md-6 form-group">
             <label>@ModelLocalizer["LastName"]</label>
             <input asp-for="LastName" class="form-control" />
+        </div>
+        <div class="col-md-6 form-group">
+            <label>@ModelLocalizer["FirstName"]</label>
+            <input asp-for="FirstName" class="form-control" />
         </div>
     </div>
     <div class="form-group">

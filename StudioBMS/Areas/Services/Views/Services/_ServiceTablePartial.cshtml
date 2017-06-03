@@ -2,42 +2,41 @@
 @{
     Layout = "Dashboard/_TableLayout";
 }
+
 @model IList<ServiceModel>
 @section tableToolbar
 {
-    <a asp-area="Services" asp-controller="Services" asp-action="Create" class="btn btn-primary">
-        <i class="fa fa-plus" aria-hidden="true"></i> @ModeLocalizer["Create"]
-    </a>
+    @if (User.IsInRole(StringConstants.AdministratorRole))
+    {
+        <a asp-area="Services" asp-controller="Services" asp-action="Create" class="btn btn-primary">
+            <i class="fa fa-plus" aria-hidden="true"></i> @ModeLocalizer["Create"]
+        </a>
+    }
 }
 @section tableHeader{
-    <th class="col-xs-4">@ModeLocalizer["Title"]</th>
-    <th class="col-xs-4">@ModeLocalizer["Duration"]</th>
-    <th class="col-xs-3">@ModeLocalizer["Price"]</th>
-    <th class="col-xs-2 text-center col-actions">@ModeLocalizer["Actions"]</th>
+    <th>@ModeLocalizer["Title"]</th>
+    <th>@ModeLocalizer["Duration"]</th>
+    <th>@ModeLocalizer["Price"]</th>
+    @if (User.IsInRole(StringConstants.AdministratorRole))
+    {
+        <th class="text-center col-actions">@ModeLocalizer["Actions"]</th>
+    }
 }
 
 @section tableBody{
     @foreach (var service in Model)
     {
         <tr>
-            @if (CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "en")
-            {
-                <td>@service.EnTitle</td>
-            }
-            @if (CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "ru")
-            {
-                <td>@service.RuTitle</td>
-            }
-            @if (CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "uk")
-            {
-                <td>@service.UkTitle</td>
-            }
+            <td>@service.Title</td>
             <td>@service.Duration.TimeOfDay.ToString(@"hh\:mm")</td>
-            <td>@service.Price</td>
-            <td>
-                <a asp-area="Services" asp-controller="Services" asp-action="Edit" asp-route-id="@service.Id" class="btn btn-sm btn-primary"><i class="fa fa-pencil"></i></a>
-                <a asp-area="Services" asp-controller="Services" asp-action="Delete" asp-route-id="@service.Id" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a>
-            </td>
+            <td>@service.Price @ModeLocalizer["UAH"]</td>
+            @if (User.IsInRole(StringConstants.AdministratorRole))
+            {
+                <td>
+                    <a asp-area="Services" asp-controller="Services" asp-action="Edit" asp-route-id="@service.Id" class="btn btn-sm btn-primary"><i class="fa fa-pencil"></i></a>
+                    <a asp-area="Services" asp-controller="Services" asp-action="Delete" asp-route-id="@service.Id" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a>
+                </td>
+            }
         </tr>
     }
 
