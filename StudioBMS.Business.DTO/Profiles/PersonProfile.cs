@@ -10,6 +10,7 @@ namespace StudioBMS.Business.DTO.Profiles
         public PersonProfile()
         {
             CreateMap<Person, PersonModel>()
+                .ForMember(i=>i.Roles, o=>o.MapFrom(src=>src.Roles))
                 .ForMember(i=>i.Role, o=>o.MapFrom(src=> src.Roles.Select(r=>r.Role).FirstOrDefault()))
                 .ForMember(i=>i.TimeTables, o=>o.MapFrom(src=>src.PersonTimetables.Select(i=>i.Timetable)))
                 .ForMember(i=>i.Orders, o=>o.Ignore());

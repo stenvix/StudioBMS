@@ -57,9 +57,9 @@ $(document).ready(function () {
             display_disabled_options: false,
             display_selected_options: false,
             max_selected_options: selected_options,
-            no_results_text: "NOTFOUND",
-            placeholder_text_multiple: "SEVERALPOSITION",
-            placeholder_text_single: "CHOSEDATA"
+            no_results_text: "Не знайдено",
+            placeholder_text_multiple: "Виберіть декілька позицій",
+            placeholder_text_single: "Виберіть дані"
         });
     });
 })

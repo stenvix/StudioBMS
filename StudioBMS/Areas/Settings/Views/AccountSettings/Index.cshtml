@@ -47,8 +47,8 @@
                             </div>
                             <div class="col-lg-6 form-group">
                                 <label>@Localizer[nameof(Model.Birthday)]</label>
-                                <div class="input-group">
-                                    <input asp-for="Birthday" placeholder="@Localizer[nameof(Model.Birthday)]" class="form-control" />
+                                <div class="input-group datetimepicker" data-locale="@CultureInfo.CurrentCulture.Name" data-format="YYYY-MM-DD">
+                                    <input asp-for="Birthday" asp-format="{0:yyyy-MM-dd}" placeholder="@Localizer[nameof(Model.Birthday)]" class="form-control" />
                                     <span class="input-group-addon">
                                         <span class="fa fa-calendar"></span>
                                     </span>

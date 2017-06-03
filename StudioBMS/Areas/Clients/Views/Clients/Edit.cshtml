@@ -1,0 +1,14 @@
+@model PersonModel
+@inject IHtmlLocalizer<PageTitleResource> TitleLocalizer
+@{
+    var title = TitleLocalizer["EditCustomer"];
+    ViewData["Title"] = title;
+    ViewData["H1"] = title;
+}
+<div class="panel panel-default">
+    <div class="panel-body row">
+        <form class="col-md-6 col-md-offset-3" asp-area="Clients" asp-controller="Clients" asp-action="Update" method="post">
+            @Html.Partial("Forms/_PersonFormPartial", Model, ViewData)
+        </form>
+    </div>
+</div>

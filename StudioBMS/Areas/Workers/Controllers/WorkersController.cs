@@ -16,18 +16,24 @@ namespace StudioBMS.Areas.Workers.Controllers
         private readonly PersonModelManager _permonModelManager;
         private readonly ITimeTableManager _timeTableManager;
         private readonly IServiceManager _serviceManager;
+        private readonly IRoleManager _roleManager;
+        private readonly IWorkshopManager _workshopManager;
 
         public WorkersController(IPersonManager personManager,
             PersonModelManager permonModelManager,
             ITimeTableManager timeTableManager,
-            IServiceManager serviceManager)
+            IServiceManager serviceManager,
+            IRoleManager roleManager,
+            IWorkshopManager workshopManager)
         {
             _personManager = personManager;
             _permonModelManager = permonModelManager;
             _timeTableManager = timeTableManager;
             _serviceManager = serviceManager;
+            _roleManager = roleManager;
+            _workshopManager = workshopManager;
         }
-
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             IList<PersonModel> employees = null;
@@ -39,6 +45,10 @@ namespace StudioBMS.Areas.Workers.Controllers
             {
                 var manager = await _permonModelManager.FindByNameAsync(User.Identity.Name);
                 employees = await _personManager.GetEmployees(manager.Workshop.Id);
+            }
+            foreach (var employee in employees)
+            {
+                employee.TimeTables = await _timeTableManager.FindByWorker(employee.Id);
             }
             return View(employees);
         }
@@ -104,6 +114,77 @@ namespace StudioBMS.Areas.Workers.Controllers
         {
             await _serviceManager.DeletePersonService(workerId, serviceId);
             return RedirectToAction("ServiceIndex", new { workerId });
+        }
+
+        [HttpGet("edit/{id}")]
+        public async Task<IActionResult> Edit(Guid id)
+        {
+            if (User.IsInRole(StringConstants.AdministratorRole))
+            {
+                ViewData["Roles"] = await _roleManager.GetAsync();
+            }
+            else
+            {
+                ViewData["Roles"] = await _roleManager.GetWorkerRoles();
+            }
+            ViewData["Workshops"] = await _workshopManager.GetAsync();
+            return View(await _personManager.GetAsync(id));
+        }
+
+        [HttpPost("edit")]
+        public async Task<IActionResult> Update(PersonModel model)
+        {
+            var personModel = await _personManager.GetAsync(model.Id);
+            PersonMapping(model, personModel);
+
+            var role = await _roleManager.GetAsync(model.Role.Id);
+            //TODO: Add message
+            var result = await _permonModelManager.UpdateAsync(personModel);
+            
+            if (!result.Succeeded)
+                NotFound();
+
+            await _roleManager.ClearRoles(personModel.Id);
+
+            await _roleManager.AddToRole(model.Id, model.Role.Id);
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet("create")]
+        public async Task<IActionResult> Create()
+        {
+            if (User.IsInRole(StringConstants.AdministratorRole))
+            {
+                ViewData["Roles"] = await _roleManager.GetAsync();
+            }
+            else
+            {
+                ViewData["Roles"] = await _roleManager.GetWorkerRoles();
+            }
+            ViewData["Workshops"] = await _workshopManager.GetAsync();
+            return View();
+        }
+
+        [HttpPost("create")]
+        public async Task<IActionResult> Create(PersonModel model)
+        {
+            var roleId = model.Role.Id;
+            model.UserName = model.Email;
+            await _permonModelManager.CreateAsync(model);
+            model = await _permonModelManager.FindByEmailAsync(model.Email);
+            await _roleManager.AddToRole(model.Id, roleId);
+            return RedirectToAction("Index");
+        }
+
+
+        private void PersonMapping(PersonModel newModel, PersonModel oldModel)
+        {
+            oldModel.FirstName = newModel.FirstName;
+            oldModel.LastName = newModel.LastName;
+            oldModel.Email = newModel.Email;
+            oldModel.Birthday = newModel.Birthday;
+            oldModel.UserName = newModel.Email;
         }
     }
 }

@@ -41,6 +41,7 @@ namespace StudioBMS.Business.Infrastructure
             builder.RegisterType<ServiceManager>().AsImplementedInterfaces();
             builder.RegisterType<PersonManager>().AsImplementedInterfaces();
             builder.RegisterType<OrderManager>().AsImplementedInterfaces();
+            builder.RegisterType<RoleManager>().AsImplementedInterfaces();
             var container = builder.Build();
             return container.Resolve<IServiceProvider>();
         }

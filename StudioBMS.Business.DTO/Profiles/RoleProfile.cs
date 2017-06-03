@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using StudioBMS.Business.DTO.Models;
+using StudioBMS.Business.Identity.Models;
 using StudioBMS.Core.Entities.IdentityBase;
 
 namespace StudioBMS.Business.DTO.Profiles
@@ -10,6 +11,7 @@ namespace StudioBMS.Business.DTO.Profiles
         {
             CreateMap<Role, RoleModel>();
             CreateMap<RoleModel, Role>();
+            CreateMap<PersonRole, PersonModelRole>();
         }
     }
 }

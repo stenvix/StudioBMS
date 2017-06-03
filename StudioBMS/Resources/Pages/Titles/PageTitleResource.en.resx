@@ -123,8 +123,26 @@
   <data name="Clients" xml:space="preserve">
     <value>Clients</value>
   </data>
+  <data name="CreateCustomer" xml:space="preserve">
+    <value>Create customer</value>
+  </data>
   <data name="CreateOrder" xml:space="preserve">
     <value>Create order</value>
+  </data>
+  <data name="CreateService" xml:space="preserve">
+    <value>Create service</value>
+  </data>
+  <data name="CreateWorker" xml:space="preserve">
+    <value>Create worker</value>
+  </data>
+  <data name="EditCustomer" xml:space="preserve">
+    <value>Edit customer</value>
+  </data>
+  <data name="EditOrder" xml:space="preserve">
+    <value>Edit order</value>
+  </data>
+  <data name="EditWorker" xml:space="preserve">
+    <value>Edit worker</value>
   </data>
   <data name="Journal" xml:space="preserve">
     <value>Journal</value>
@@ -134,6 +152,9 @@
   </data>
   <data name="LogOut" xml:space="preserve">
     <value>Log out</value>
+  </data>
+  <data name="Main" xml:space="preserve">
+    <value>Main</value>
   </data>
   <data name="Orders" xml:space="preserve">
     <value>Orders</value>

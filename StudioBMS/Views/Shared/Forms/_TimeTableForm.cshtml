@@ -11,17 +11,17 @@
             <select asp-for="WeekDay" class=" form-control">
                 @foreach (var day in Enum.GetValues(typeof(DayOfWeek)))
                 {
-                    <option value="@day">@CultureInfo.CurrentCulture.DateTimeFormat.GetDayName((DayOfWeek) day)</option>
+                    <option value="@((int)day)">@CultureInfo.CurrentCulture.DateTimeFormat.GetDayName((DayOfWeek) day)</option>
                 }
             </select>
         }
         else
         {
             <input type="hidden" name="Id" value="@Model.Id" />
-            <select asp-for="WeekDay" class=" form-control" disabled="disabled">
+            <select asp-for="WeekDay" class=" form-control">
                 @foreach (var day in Enum.GetValues(typeof(DayOfWeek)))
                 {
-                    <option value="@day">@CultureInfo.CurrentCulture.DateTimeFormat.GetDayName((DayOfWeek) day)</option>
+                    <option value="@((int)day)">@CultureInfo.CurrentCulture.DateTimeFormat.GetDayName((DayOfWeek) day)</option>
                 }
             </select>
         }

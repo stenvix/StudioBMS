@@ -44,12 +44,12 @@ namespace StudioBMS.Areas.Settings.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index(MessageType? message)
+        public async Task<IActionResult> Index(MessageType? message)
         {
             if (message.HasValue)
                 ViewData["Message"] =
                     new MessageViewModel {Message = _messages[message.Value], Type = MessageType.Success};
-            return View();
+            return View(await _userManager.FindByEmailAsync(User.Identity.Name));
         }
 
         [HttpGet("password")]

@@ -1,7 +1,14 @@
-﻿@inject IHtmlLocalizer<ModelResource> ModeLocalizer
+@inject IHtmlLocalizer<ModelResource> ModeLocalizer
 @model IList<PersonModel>
 @{
     Layout = "Dashboard/_TableLayout";
+}
+
+@section tableToolbar
+{
+    <a asp-area="Clients" asp-controller="Clients" asp-action="Create" class="btn btn-primary">
+        <i class="fa fa-plus" aria-hidden="true"></i> @ModeLocalizer["Create"]
+    </a>
 }
 
 @section tableHeader
@@ -24,7 +31,7 @@
             <td>@person.Email</td>
             <td>
                 <a class="btn btn-sm btn-primary"><i class="fa fa-bar-chart"></i></a>
-                <a class="btn btn-sm btn-primary"><i class="fa fa-pencil"></i></a>
+                <a asp-area="Clients" asp-controller="Clients" asp-action="Edit" asp-route-id="@person.Id" class="btn btn-sm btn-primary"><i class="fa fa-pencil"></i></a>
                 <a class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a>
             </td>
         </tr>

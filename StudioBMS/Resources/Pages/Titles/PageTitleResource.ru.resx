@@ -123,8 +123,26 @@
   <data name="Clients" xml:space="preserve">
     <value>Клиенты</value>
   </data>
+  <data name="CreateCustomer" xml:space="preserve">
+    <value>Создать клиента</value>
+  </data>
   <data name="CreateOrder" xml:space="preserve">
     <value>Создать заказ</value>
+  </data>
+  <data name="CreateService" xml:space="preserve">
+    <value>Создать услугу</value>
+  </data>
+  <data name="CreateWorker" xml:space="preserve">
+    <value>Создать работника</value>
+  </data>
+  <data name="EditCustomer" xml:space="preserve">
+    <value>Редактировать клиента</value>
+  </data>
+  <data name="EditOrder" xml:space="preserve">
+    <value>Редактировать заказ</value>
+  </data>
+  <data name="EditWorker" xml:space="preserve">
+    <value>Редактировать работника</value>
   </data>
   <data name="Journal" xml:space="preserve">
     <value>Журнал</value>
@@ -134,6 +152,9 @@
   </data>
   <data name="LogOut" xml:space="preserve">
     <value>Выход</value>
+  </data>
+  <data name="Main" xml:space="preserve">
+    <value>Главная</value>
   </data>
   <data name="Orders" xml:space="preserve">
     <value>Заказы</value>
