@@ -52,7 +52,7 @@ namespace StudioBMS.Controllers
             {
                 if (User.IsInRole(StringConstants.CustomerRole))
                 {
-                    return RedirectToAction("Index", "Services");
+                    return RedirectToAction("Index", "Orders");
                 }
                 return RedirectToAction("Index", "Journals");
             }

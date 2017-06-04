@@ -96,7 +96,7 @@ namespace StudioBMS.Areas.Orders.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> Create([CustomizeValidator(RuleSet = "")]OrderViewModel order)
+        public async Task<IActionResult> Create([CustomizeValidator(RuleSet = "Full")]OrderViewModel order)
         {
             if (ModelState.IsValid)
             {

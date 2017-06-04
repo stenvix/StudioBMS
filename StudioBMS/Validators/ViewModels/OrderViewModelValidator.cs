@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using System;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc.Localization;
 using StudioBMS.Business.DTO.Models;
 using StudioBMS.Messages;
@@ -38,7 +39,11 @@ namespace StudioBMS.Validators.ViewModels
 
             RuleSet("Full", () =>
             {
+                RuleFor(i => i.WorkshopId).NotEmpty();
                 RuleFor(i => i.CustomerId).NotEmpty();
+                RuleFor(i => i.PerformerId).NotEmpty();
+                RuleFor(i => i.ServiceIds).NotEmpty();
+                RuleFor(i => i.Date).Must(i => i != new DateTime());
             });
         }
     }

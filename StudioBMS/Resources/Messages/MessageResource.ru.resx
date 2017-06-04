@@ -129,6 +129,9 @@
   <data name="PasswordUpdated" xml:space="preserve">
     <value>Пароль успешно обновлен</value>
   </data>
+  <data name="PayInfo" xml:space="preserve">
+    <value>После подтверждения внести изменения может только администратор, поэтому будьте внимательны</value>
+  </data>
   <data name="PayWithLiqPay" xml:space="preserve">
     <value>Оплатить при помощи LiqPay</value>
   </data>

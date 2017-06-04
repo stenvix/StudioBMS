@@ -288,4 +288,7 @@
   <data name="Workshop" xml:space="preserve">
     <value>Майстерня</value>
   </data>
+  <data name="Pay" xml:space="preserve">
+    <value>Оплата</value>
+  </data>
 </root>
