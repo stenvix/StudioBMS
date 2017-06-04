@@ -11,7 +11,7 @@ namespace StudioBMS.Business.DTO.Models
         public string RuTitle { get; set; }
         public string UkTitle { get; set; }
         public DateTime Duration { get; set; }
-        public int Price { get; set; }
+        public double Price { get; set; }
 
         public string Title
         {

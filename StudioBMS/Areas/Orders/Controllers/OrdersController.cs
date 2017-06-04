@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using System.Threading.Tasks;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -95,11 +96,15 @@ namespace StudioBMS.Areas.Orders.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> Create(OrderViewModel order)
+        public async Task<IActionResult> Create([CustomizeValidator(RuleSet = "")]OrderViewModel order)
         {
+            if (ModelState.IsValid)
+            {
+                await _orderManager.CreateAsync(order);
+                return RedirectToAction("Index");
+            }
+            return View("Create", order);
             //TempData["Message"] = new MessageViewModel{Type = MessageType.Success, Message = "OrderSuccess"};
-            await _orderManager.CreateAsync(order);
-            return RedirectToAction("Index");
         }
 
         [HttpGet("edit/{id}")]

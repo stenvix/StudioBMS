@@ -78,7 +78,7 @@ function InitOrderForm() {
     });
 }
 if ($.validator) {
-    $.validator.setDefaults({ ignore: [] });
+    $.validator.setDefaults({ ignore: ".ignore" });
 }
 $(document).ready(function () {
 

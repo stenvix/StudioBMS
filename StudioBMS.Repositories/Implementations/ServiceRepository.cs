@@ -21,6 +21,12 @@ namespace StudioBMS.Repositories.Implementations
             return Set.Where(i => i.IsActive);
         }
 
+        public override Task<Service> CreateAsync(Service entity, CancellationToken cancellationToken = new CancellationToken())
+        {
+            entity.IsActive = true;
+            return base.CreateAsync(entity, cancellationToken);
+        }
+
         public Task<IEnumerable<Service>> FindByPerson(Guid personId)
         {
             var ids = Context.PersonServices.Where(i => i.PersonId == personId).Select(s => s.ServiceId);

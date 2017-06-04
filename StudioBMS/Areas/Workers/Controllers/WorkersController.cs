@@ -194,6 +194,13 @@ namespace StudioBMS.Areas.Workers.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpGet("delete/{id}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            await _personManager.DeleteAsync(id);
+            return RedirectToAction("Index");
+        }
+
 
         private void PersonMapping(PersonModel newModel, PersonModel oldModel)
         {

@@ -11,7 +11,8 @@ namespace StudioBMS.Business.DTO.Profiles
             CreateMap<Service, ServiceModel>()
                 .ForMember(i => i.Price, o => o.MapFrom(src => src.Price / 100));
             CreateMap<ServiceModel, Service>()
-                .ForMember(i => i.Price, o => o.MapFrom(src => src.Price * 100));
+                .ForMember(i => i.Price, o => o.MapFrom(src => src.Price * 100))
+                .ForMember(i=>i.IsActive, o=>o.MapFrom(src=> true));
         }
     }
 }

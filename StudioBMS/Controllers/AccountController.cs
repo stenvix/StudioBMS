@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using StudioBMS.Business.DTO.Models;
 using StudioBMS.Business.Managers.Identity;
+using StudioBMS.Business.Managers.Models.Interfaces;
 using StudioBMS.Models.AccountViewModels;
 using StudioBMS.Services;
 
@@ -21,6 +22,7 @@ namespace StudioBMS.Controllers
         private readonly ILogger _logger;
         private readonly PersonModelSignInManager _signInManager;
         private readonly ISmsSender _smsSender;
+        private readonly IPersonManager _personManager;
         private readonly PersonModelManager _userManager;
 
         public AccountController(
@@ -29,13 +31,14 @@ namespace StudioBMS.Controllers
             IOptions<IdentityCookieOptions> identityCookieOptions,
             IEmailSender emailSender,
             ISmsSender smsSender,
-            ILoggerFactory loggerFactory)
+            ILoggerFactory loggerFactory, IPersonManager personManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _externalCookieScheme = identityCookieOptions.Value.ExternalCookieAuthenticationScheme;
             _emailSender = emailSender;
             _smsSender = smsSender;
+            _personManager = personManager;
             _logger = loggerFactory.CreateLogger<AccountController>();
         }
 
@@ -67,8 +70,8 @@ namespace StudioBMS.Controllers
         public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
-
-            if (ModelState.IsValid)
+            var user = await _personManager.FindByEmail(model.Email);
+            if (ModelState.IsValid && user!=null)
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true

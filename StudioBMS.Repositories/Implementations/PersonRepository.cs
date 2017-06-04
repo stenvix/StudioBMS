@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using StudioBMS.Core.Entities;
@@ -19,6 +20,7 @@ namespace StudioBMS.Repositories.Implementations
         protected override IQueryable<Person> Include()
         {
             return Set
+                .Where(i=>i.IsActive)
                 .Include(i => i.Roles)
                     .ThenInclude(i => i.Role)
                 .Include(i => i.Workshop);
@@ -66,6 +68,27 @@ namespace StudioBMS.Repositories.Implementations
         {
             var normalizedUsername = username.ToUpper().Normalize();
             return Task.Run(() => Include().FirstOrDefault(i => i.UserName.ToUpper().Normalize() == normalizedUsername));
+        }
+
+        public override Task DeleteAsync(Person entity, CancellationToken cancellationToken = new CancellationToken())
+        {
+            entity.IsActive = false;
+            var guid = Guid.NewGuid();
+            entity.Email = guid.ToString();
+            entity.NormalizedEmail = guid.ToString();
+            entity.UserName = guid.ToString();
+            entity.NormalizedUserName = guid.ToString();
+            entity.PhoneNumber = string.Empty;
+
+            foreach (var personService in Context.PersonServices.Where(i=>i.PersonId == entity.Id))
+            {
+                Context.PersonServices.Remove(personService);
+            }
+            foreach (var personTimetable in Context.PersonTimetables.Where(i=>i.PersonId == entity.Id))
+            {
+                Context.PersonTimetables.Remove(personTimetable);
+            }
+            return Update(entity, cancellationToken);
         }
     }
 }

@@ -17,5 +17,6 @@ namespace StudioBMS.Core.Entities
         public IEnumerable<PersonService> PersonServices { get; set; }
         public IEnumerable<Order> CustomerOrders { get; set; }
         public IEnumerable<Order> PerformerOrders { get; set; }
+        public bool IsActive { get; set; }
     }
 }

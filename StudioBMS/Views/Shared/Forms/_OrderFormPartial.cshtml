@@ -11,8 +11,8 @@
     var statuses = ViewData["Statuses"] as IList<OrderStatusModel> ?? new List<OrderStatusModel>();
 }
 
-<input type="hidden" asp-for="OrderNumber" />
-<input type="hidden" asp-for="Id" />
+<input class="ignore" type="hidden" asp-for="OrderNumber" />
+<input class="ignore" type="hidden" asp-for="Id" />
 @if (User.Identity.IsAuthenticated)
 {
     if (!User.IsInRole(StringConstants.CustomerRole))
@@ -37,7 +37,7 @@
     }
     else
     {
-        <input type="hidden" asp-for="CustomerId" />
+        <input class="ignore" type="hidden" asp-for="CustomerId" />
     }
 }
 @if (!User.Identity.IsAuthenticated || User.IsInRole(StringConstants.CustomerRole) && !Model.IsPaid || User.IsInRole(StringConstants.AdministratorRole))
@@ -55,7 +55,7 @@
 }
 else
 {
-    <input type="hidden" asp-for="WorkshopId" />
+    <input class="ignore" type="hidden" asp-for="WorkshopId" />
 }
 @if (!User.Identity.IsAuthenticated || User.IsInRole(StringConstants.CustomerRole) && !Model.IsPaid || User.IsInRole(StringConstants.ManagerRole) || User.IsInRole(StringConstants.AdministratorRole))
 {
@@ -75,7 +75,7 @@ else
 }
 else
 {
-    <input type="hidden" asp-for="PerformerId" />
+    <input class="ignore" type="hidden" asp-for="PerformerId" />
 }
 @if (!User.Identity.IsAuthenticated || User.IsInRole(StringConstants.CustomerRole) && !Model.IsPaid || User.IsInRole(StringConstants.ManagerRole) || User.IsInRole(StringConstants.AdministratorRole))
 {
@@ -138,9 +138,9 @@ else
 }
 else
 {
-    <input type="hidden" asp-for="StatusId" />
-    <input type="hidden" asp-for="Price" />
-    <input type="hidden" asp-for="Balance" />
+    <input class="ignore" type="hidden" asp-for="StatusId" />
+    <input class="ignore" type="hidden" asp-for="Price" />
+    <input class="ignore" type="hidden" asp-for="Balance" />
 }
 
 @if (!User.Identity.IsAuthenticated)

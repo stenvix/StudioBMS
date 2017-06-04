@@ -35,6 +35,11 @@ namespace StudioBMS.Validators.ViewModels
             RuleFor(i => i.Phone)
                 .NotEmpty().WithName(modelLocalizer["Phone"].Value)
                 .WithMessage(messageLocalizer["FieldRequire"].Value);
+
+            RuleSet("Full", () =>
+            {
+                RuleFor(i => i.CustomerId).NotEmpty();
+            });
         }
     }
 }

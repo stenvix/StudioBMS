@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,10 +7,12 @@ using StudioBMS.Business.Managers.Models.Interfaces;
 
 namespace StudioBMS.Areas.Services.Controllers
 {
-    [Area("Services"), Route("[area]")]
+    [Area("Services")]
+    [Route("[area]")]
     public class ServicesController : Controller
     {
         private readonly IServiceManager _serviceManager;
+
         public ServicesController(IServiceManager serviceManager)
         {
             _serviceManager = serviceManager;
@@ -24,7 +24,8 @@ namespace StudioBMS.Areas.Services.Controllers
             return View(await _serviceManager.GetAsync());
         }
 
-        [HttpPost("json"), AllowAnonymous]
+        [HttpPost("json")]
+        [AllowAnonymous]
         public async Task<IActionResult> Json(Guid workerId)
         {
             var services = await _serviceManager.FindByPerson(workerId);

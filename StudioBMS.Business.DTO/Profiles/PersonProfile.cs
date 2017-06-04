@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using AutoMapper;
 using StudioBMS.Business.DTO.Models;
 using StudioBMS.Core.Entities;
@@ -20,7 +21,8 @@ namespace StudioBMS.Business.DTO.Profiles
                 .ForMember(i=>i.Claims, o=>o.Ignore())
                 .ForMember(i=>i.PersonTimetables, o=>o.Ignore())
                 .ForMember(i=>i.Logins, o=>o.Ignore())
-                .ForMember(i=>i.Roles, o=>o.Ignore());
+                .ForMember(i=>i.Roles, o=>o.Ignore())
+                .ForMember(i=>i.IsActive, o=>o.MapFrom(src=> true));
         }
     }
 }
