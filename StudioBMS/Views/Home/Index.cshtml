@@ -1,113 +1,209 @@
 ﻿@{
+    Layout = "_Landing";
     ViewData["Title"] = "Home Page";
+    ViewData["Page"] = "Main";
 }
 
-@*<div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="6000">
-    <ol class="carousel-indicators">
-        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-        <li data-target="#myCarousel" data-slide-to="1"></li>
-        <li data-target="#myCarousel" data-slide-to="2"></li>
-        <li data-target="#myCarousel" data-slide-to="3"></li>
-    </ol>
-    <div class="carousel-inner" role="listbox">
-        <div class="item active">
-            <img src="~/images/banner1.svg" alt="ASP.NET" class="img-responsive" />
-            <div class="carousel-caption" role="option">
-                <p>
-                    Learn how to build ASP.NET apps that can run anywhere.
-                    <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkID=525028&clcid=0x409">
-                        Learn More
-                    </a>
-                </p>
-            </div>
-        </div>
-        <div class="item">
-            <img src="~/images/banner2.svg" alt="Visual Studio" class="img-responsive" />
-            <div class="carousel-caption" role="option">
-                <p>
-                    There are powerful new features in Visual Studio for building modern web apps.
-                    <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkID=525030&clcid=0x409">
-                        Learn More
-                    </a>
-                </p>
-            </div>
-        </div>
-        <div class="item">
-            <img src="~/images/banner3.svg" alt="Package Management" class="img-responsive" />
-            <div class="carousel-caption" role="option">
-                <p>
-                    Bring in libraries from NuGet, Bower, and npm, and automate tasks using Grunt or Gulp.
-                    <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkID=525029&clcid=0x409">
-                        Learn More
-                    </a>
-                </p>
-            </div>
-        </div>
-        <div class="item">
-            <img src="~/images/banner4.svg" alt="Microsoft Azure" class="img-responsive" />
-            <div class="carousel-caption" role="option">
-                <p>
-                    Learn how Microsoft's Azure cloud platform allows you to build, deploy, and scale web apps.
-                    <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkID=525027&clcid=0x409">
-                        Learn More
-                    </a>
-                </p>
-            </div>
-        </div>
-    </div>
-    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
-        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-        <span class="sr-only">Previous</span>
-    </a>
-    <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
-        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
-    </a>
-</div>
+<div class="wrapper">
 
-<div class="row">
-    <div class="col-md-3">
-        <h2>Application uses</h2>
-        <ul>
-            <li>Sample pages using ASP.NET Core MVC</li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=518004">Bower</a> for managing client-side libraries</li>
-            <li>Theming using <a href="https://go.microsoft.com/fwlink/?LinkID=398939">Bootstrap</a></li>
-        </ul>
+<nav class="navbar navbar-toggleable-md navbar-light bg-faded navbar-landing">
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <a class="navbar-brand" href="#">studiobms</a>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+            <a class="nav-item nav-link" href="#header">Головна</a>
+            <a class="nav-item nav-link" href="#how-to-work">Як працює?</a>
+            <a class="nav-item nav-link" href="#about">Переваги</a>
+            <a class="nav-item nav-link" href="#features">Особливості</a>
+            <a class="nav-item nav-link" href="#we-work-with">Нас обрали</a>
+        </div>
     </div>
-    <div class="col-md-3">
-        <h2>How to</h2>
-        <ul>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=398600">Add a Controller and View</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699315">Manage User Secrets using Secret Manager.</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699316">Use logging to log a message.</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699317">Add packages using NuGet.</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699318">Add client packages using Bower.</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699319">Target development, staging or production environment.</a></li>
-        </ul>
+</nav>
+
+<header id="header">
+    <div class="header-pic"></div>
+    <div class="text-on-header">
+        <p class="icon">S</p>
+        <p class="title">studiobms</p>
+        <p class="description">Веб-система для підтримки салонів краси</p>
+        <a asp-area="" asp-controller="Account" asp-action="Login" class="btn btn-primary">Почати роботу</a>
+        <p class="version">В даний час версія 1.0.0</p>
     </div>
-    <div class="col-md-3">
-        <h2>Overview</h2>
-        <ul>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=518008">Conceptual overview of what is ASP.NET Core</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699320">Fundamentals of ASP.NET Core such as Startup and middleware.</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=398602">Working with Data</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=398603">Security</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=699321">Client side development</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=699322">Develop on different platforms</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=699323">Read more on the documentation site</a></li>
-        </ul>
+</header>
+
+<main class="row">
+<article class="how-to-work col-12" id="how-to-work">
+    <div class="row">
+
+        <header class="col-12">
+            Як працює?
+        </header>
+
+        <div class="content text col-12">
+            <div class="row">
+                <div class="col-lg-5">
+                    <div class="intrinsic-container">
+                        <iframe src="https://www.youtube.com/embed/oIfaVMBhGTo" allowfullscreen></iframe>
+                    </div>
+                </div>
+                <div class="col-lg-7 text">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse gravida sapien pulvinar arcu rhoncus interdum. Ut mattis nisi sed ante dignissim pretium. Etiam at nibh lacus. Fusce auctor dui eu magna finibus, ut venenatis elit pretium. Integer porttitor placerat ex ut porta. Maecenas in bibendum felis. In auctor magna magna, sit amet suscipit ipsum venenatis non. Ut ornare velit nibh, eu aliquet mauris fermentum posuere. Quisque convallis lectus felis, vitae posuere metus cursus at. In vitae bibendum ligula, ut molestie justo. Suspendisse nec condimentum elit, in maximus nunc. Donec pharetra ligula quis nisl aliquam interdum. Aliquam augue est, interdum id velit ac, aliquet tristique lacus.
+                </div>
+            </div>
+        </div>
+
     </div>
-    <div class="col-md-3">
-        <h2>Run & Deploy</h2>
-        <ul>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=517851">Run your app</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=517853">Run tools such as EF migrations and more</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=398609">Publish to Microsoft Azure Web Apps</a></li>
-        </ul>
+</article>
+
+<article class="about col-12" id="about">
+    <div class="about-colored">
+        <div class="row">
+
+            <header class="col-12">
+                Переваги
+            </header>
+
+            <div class="content col-12">
+                <div class="row item">
+                    <div class="picture col-lg-4 col-sm-12" style="background-image: url(/images/1.jpg);"></div>
+                    <div class="text col-lg-8 col-sm-12">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse gravida sapien pulvinar arcu rhoncus interdum. Ut mattis nisi sed ante dignissim pretium. Etiam at nibh lacus. Fusce auctor dui eu magna finibus, ut venenatis elit pretium. Integer porttitor placerat ex ut porta. Maecenas in bibendum felis. In auctor magna magna, sit amet suscipit ipsum venenatis non. Ut ornare velit nibh, eu aliquet mauris fermentum posuere. Quisque convallis lectus felis, vitae posuere metus cursus at. In vitae bibendum ligula, ut molestie justo. Suspendisse nec condimentum elit, in maximus nunc. Donec pharetra ligula quis nisl aliquam interdum. Aliquam augue est, interdum id velit ac, aliquet tristique lacus.
+                    </div>
+                </div>
+
+                <div class="row item">
+                    <div class="text col-lg-8 col-sm-12">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse gravida sapien pulvinar arcu rhoncus interdum. Ut mattis nisi sed ante dignissim pretium. Etiam at nibh lacus. Fusce auctor dui eu magna finibus, ut venenatis elit pretium. Integer porttitor placerat ex ut porta. Maecenas in bibendum felis. In auctor magna magna, sit amet suscipit ipsum venenatis non. Ut ornare velit nibh, eu aliquet mauris fermentum posuere. Quisque convallis lectus felis, vitae posuere metus cursus at. In vitae bibendum ligula, ut molestie justo. Suspendisse nec condimentum elit, in maximus nunc. Donec pharetra ligula quis nisl aliquam interdum. Aliquam augue est, interdum id velit ac, aliquet tristique lacus.
+                    </div>
+                    <div class="picture col-lg-4 col-sm-12" style="background-image: url(/images/2.jpg);"></div>
+                </div>
+
+                <div class="row item">
+                    <div class="picture col-lg-4 col-sm-12" style="background-image: url(/images/3.jpg);"></div>
+                    <div class="text col-lg-8 col-sm-12">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse gravida sapien pulvinar arcu rhoncus interdum. Ut mattis nisi sed ante dignissim pretium. Etiam at nibh lacus. Fusce auctor dui eu magna finibus, ut venenatis elit pretium. Integer porttitor placerat ex ut porta. Maecenas in bibendum felis. In auctor magna magna, sit amet suscipit ipsum venenatis non. Ut ornare velit nibh, eu aliquet mauris fermentum posuere. Quisque convallis lectus felis, vitae posuere metus cursus at. In vitae bibendum ligula, ut molestie justo. Suspendisse nec condimentum elit, in maximus nunc. Donec pharetra ligula quis nisl aliquam interdum. Aliquam augue est, interdum id velit ac, aliquet tristique lacus.
+                    </div>
+                </div>
+            </div>
+
+        </div>
     </div>
-</div>*@
-<div class="row">
-    <div class="col-xs-12">
-        <h1> LANDING PAGE</h1>
+</article>
+
+<article class="features col-12" id="features">
+    <div class="row">
+
+        <header class="col-12">
+            Особливості
+        </header>
+
+        <div class="content col-12">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="picture">
+                        <img src="~/images/2.jpg" alt="">
+                    </div>
+                    <p class="title">Локалізація на 3 мови (рос., укр., eng.)</p>
+                    <hr class="half-rule">
+                    <p class="description">Опис</p>
+                </div>
+                <div class="col-lg-3">
+                    <div class="picture">
+                        <img src="~/images/2.jpg" alt="">
+                    </div>
+                    <p class="title">Оплата онлайн</p>
+                    <hr class="half-rule">
+                    <p class="description">Опис</p>
+                </div>
+                <div class="col-lg-3">
+                    <div class="picture">
+                        <img src="~/images/2.jpg" alt="">
+                    </div>
+                    <p class="title">База клієнтів</p>
+                    <hr class="half-rule">
+                    <p class="description">Опис</p>
+                </div>
+                <div class="col-lg-3">
+                    <div class="picture">
+                        <img src="~/images/2.jpg" alt="">
+                    </div>
+                    <p class="title">Керування мережею</p>
+                    <hr class="half-rule">
+                    <p class="description">Опис</p>
+                </div>
+            </div>
+        </div>
+
     </div>
+</article>
+
+<article class="we-work-with col-12" id="we-work-with">
+    <div class="row">
+
+        <header class="col-12">
+            Працюють з studiobms
+        </header>
+
+        <div class="content col-12">
+            <div class="swiper-container">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <img src="https://selenum.ru/img_upld/picture/image/20418/logo_salon.png" alt="">
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="http://vittaspb.com/img/logovitta.png" alt="">
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="http://www.annybeaute.ru/images/stories/AnnyBeaute_salon_logo.png" alt="">
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="https://bestofbeauty.ru/sites/default/files/salon_images/dolce_dom_logo-01.png" alt="">
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="http://salvador72.ru/wp-content/themes/salvador/images/generalLogo.png" alt="">
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="http://www.salon-pride.ru/images/template/salon-pride-logo.png" alt="">
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="http://hochu.ua/pictures_ckfinder/images/logo(2).png" alt="">
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="http://kapriz-spb.ru/logo.png" alt="">
+                    </div>
+                </div>
+                <div class="swiper-pagination"></div>
+            </div>
+        </div>
+    </div>
+</article>
+<footer style="width: 100%;">
+    <div class="row">
+        <div class="col-lg-12 links">
+            <ul>
+                <li>
+                    <a href="">GitHub</a>
+                </li>
+                <li>
+                    <a href="">Facebook</a>
+                </li>
+                <li>
+                    <a href="">VK</a>
+                </li>
+                <li>
+                    <a href="">Twitter</a>
+                </li>
+                <li>
+                    <a href="">LinkedIn</a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-lg-12">
+            Copyright © 2017 STUDIOBMS, Inc. All rights reserved.
+        </div>
+    </div>
+</footer>
+</main>
 </div>

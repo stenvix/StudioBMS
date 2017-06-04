@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - StudioBMS</title>
-
+    <link href="~/images/favicon.ico" rel="icon">
     <environment names="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.min.css" />
@@ -15,12 +15,6 @@
         <link rel="stylesheet" href="~/lib/chosen-bootstrap/chosen.bootstrap.css" />
         <link rel="stylesheet" href="~/lib/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
         <link rel="stylesheet" href="~/css/site.css" />
-    </environment>
-    <environment names="Staging,Production">
-        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
-              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
-              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
-        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
     </environment>
     @Html.Raw(JavaScriptSnippet.FullScript)
 </head>
@@ -41,25 +35,27 @@
                     <li>
                         <a asp-area="" asp-controller="Home" asp-action="Index">@TitleLocalizer["Main"]</a>
                     </li>
-                    <li>
-                        @if (User.Identity.IsAuthenticated)
-                        {
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li>
                             <a asp-area="Orders" asp-controller="Orders" asp-action="Create">@TitleLocalizer["CreateOrder"]</a>
-                            <li>
-                                <a asp-area="Orders" asp-controller="Orders" asp-action="Index">@TitleLocalizer["Orders"]</a>
-                            </li>
-                            if (!User.IsInRole(StringConstants.CustomerRole))
-                             {
-                                 <li>
-                                     <a asp-area="Journals" asp-controller="Journals" asp-action="Index">@TitleLocalizer["Journal"]</a>
-                                 </li>
-                             }
-                        }
-                        else
+                        </li>
+                        <li>
+                            <a asp-area="Orders" asp-controller="Orders" asp-action="Index">@TitleLocalizer["Orders"]</a>
+                        </li>
+                        if (!User.IsInRole(StringConstants.CustomerRole))
                         {
-                            <a asp-area="" asp-controller="Home" asp-action="Order">@TitleLocalizer["CreateOrder"]</a>
+                            <li>
+                                <a asp-area="Journals" asp-controller="Journals" asp-action="Index">@TitleLocalizer["Journal"]</a>
+                            </li>
                         }
-                    </li>
+                    }
+                    else
+                    {
+                        <li>
+                            <a asp-area="" asp-controller="Home" asp-action="Order">@TitleLocalizer["CreateOrder"]</a>
+                        </li>
+                    }
                 </ul>
                 @await Html.PartialAsync("_LoginPartial")
             </div>
@@ -68,11 +64,6 @@
     <div class="container body-content">
         @RenderBody()
     </div>
-    @*<footer>
-            <hr />
-            <p>&copy; 2017 - StudioBMS</p>
-        </footer>*@
-
     <environment names="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js"></script>
@@ -85,22 +76,6 @@
         <script src="~/lib/chosen/chosen.jquery.js"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
     </environment>
-    <environment names="Staging,Production">
-        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
-                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
-                asp-fallback-test="window.jQuery"
-                crossorigin="anonymous"
-                integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
-        </script>
-        <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
-                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
-                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
-                crossorigin="anonymous"
-                integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
-        </script>
-        <script src="~/js/site.min.js" asp-append-version="true"></script>
-    </environment>
-
     @RenderSection("Scripts", false)
 </body>
 </html>

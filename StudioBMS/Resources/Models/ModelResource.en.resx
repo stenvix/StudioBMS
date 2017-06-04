@@ -142,7 +142,7 @@
     <value>Confirm</value>
   </data>
   <data name="ConfirmPassword" xml:space="preserve">
-    <value>Confirm new password</value>
+    <value>Confirm password</value>
   </data>
   <data name="Cosmetologist" xml:space="preserve">
     <value>Cosmetologist</value>

@@ -45,6 +45,14 @@ namespace StudioBMS.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Login(string returnUrl = null)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                if (User.IsInRole(StringConstants.CustomerRole))
+                {
+                    return RedirectToAction("Index", "Services");
+                }
+                return RedirectToAction("Index", "Journals");
+            }
             // Clear the existing external cookie to ensure a clean login process
             await HttpContext.Authentication.SignOutAsync(_externalCookieScheme);
             ViewData["ReturnUrl"] = returnUrl;
@@ -59,6 +67,7 @@ namespace StudioBMS.Controllers
         public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
+
             if (ModelState.IsValid)
             {
                 // This doesn't count login failures towards account lockout
@@ -68,6 +77,17 @@ namespace StudioBMS.Controllers
                 if (result.Succeeded)
                 {
                     _logger.LogInformation(1, "User logged in.");
+                    if (returnUrl == null)
+                    {
+                        if (!User.IsInRole(StringConstants.CustomerRole))
+                        {
+                            returnUrl = Url.Action("Index", "Journals");
+                        }
+                        else
+                        {
+                            returnUrl = Url.Action("Index", "Orders");
+                        }
+                    }
                     return RedirectToLocal(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
@@ -134,7 +154,7 @@ namespace StudioBMS.Controllers
         {
             await _signInManager.SignOutAsync();
             _logger.LogInformation(4, "User logged out.");
-            return RedirectToAction(nameof(HomeController.Index), "Home");
+            return RedirectToAction(nameof(AccountController.Login), "Account");
         }
 
         //
