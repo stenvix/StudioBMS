@@ -36,7 +36,7 @@ namespace StudioBMS.Areas.Orders.Controllers
         public async Task<IActionResult> Index()
         {
             //ViewData["Message"] = TempData["Message"];
-            IList<OrderModel> orders = null;
+            IList<OrderModel> orders;
 
             if (User.IsInRole(StringConstants.CustomerRole))
             {
@@ -59,8 +59,7 @@ namespace StudioBMS.Areas.Orders.Controllers
         [HttpGet("create")]
         public async Task<IActionResult> Create()
         {
-            var model = new OrderViewModel();
-            model.Date = DateTime.Now;
+            var model = new OrderViewModel {Date = DateTime.Now};
             PersonModel user = null;
             if (!User.IsInRole("Administrator"))
             {
@@ -79,22 +78,17 @@ namespace StudioBMS.Areas.Orders.Controllers
             else
                 ViewData["Workshops"] = await _workshopManager.GetAsync();
 
-            if (IsNotInRoles(new[]
-                {StringConstants.CustomerRole, StringConstants.ManagerRole, StringConstants.AdministratorRole}))
+            if (IsNotInRoles(new[]{StringConstants.CustomerRole, StringConstants.ManagerRole, StringConstants.AdministratorRole}))
             {
                 model.PerformerId = user.Id;
             }
             else
             {
-                if (model.WorkshopId == Guid.Empty)
-                    ViewData["Performers"] = await _personManager.GetEmployees();
-                else
+                if (model.WorkshopId != Guid.Empty)
                     ViewData["Performers"] = await _personManager.GetEmployees(model.WorkshopId);
             }
 
-            if (model.PerformerId == Guid.Empty)
-                ViewData["Services"] = await _serviceManager.GetAsync();
-            else
+            if (model.PerformerId != Guid.Empty)
                 ViewData["Services"] = await _serviceManager.FindByPerson(model.PerformerId);
 
             return View(model);

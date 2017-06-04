@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StudioBMS.Business.DTO.Models;
 using StudioBMS.Business.Managers.Identity;
@@ -56,6 +57,13 @@ namespace StudioBMS.Areas.Workers.Controllers
                 employee.Services = await _serviceManager.FindByPerson(employee.Id);
             }
             return View(employees);
+        }
+
+        [HttpPost("json"), AllowAnonymous]
+        public async Task<IActionResult> Json(Guid workshopId)
+        {
+            var employees = await _personManager.GetEmployees(workshopId);
+            return new JsonResult(employees);
         }
 
         [HttpGet("{workerId}/time")]

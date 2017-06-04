@@ -57,16 +57,13 @@ namespace StudioBMS.Controllers
 
             ViewData["Workshops"] = await _workshopManager.GetAsync();
 
-            ViewData["Performers"] = await _personManager.GetEmployees();
-
-            ViewData["Services"] = await _serviceManager.GetAsync();
-
             return View(model);
         }
 
         [HttpPost("order"), AllowAnonymous]
         public async Task<IActionResult> Order(OrderViewModel model)
         {
+            if (ModelState.IsValid) { 
             var customer = await _personModelManager.FindByEmailAsync(model.EMail);
             if (customer == null)
             {
@@ -103,8 +100,10 @@ namespace StudioBMS.Controllers
                 ResultUrl = Url.Action("Callback", "Orders", null, Request.Scheme),
                 Description = _messageLocalizer["OrderDescription", order.Services.Select(i=>i.Title) ].Value
             };
-
+                
             return PartialView("Payment/OrderPayment", new OrderPaymentViewModel{LiqPay = liqpay, Order = order});
+            }
+            return View("Order", model);
         }
 
         [HttpGet("thanks"), AllowAnonymous]

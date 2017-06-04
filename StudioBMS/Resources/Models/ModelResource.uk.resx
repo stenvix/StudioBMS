@@ -183,6 +183,9 @@
   <data name="English" xml:space="preserve">
     <value>Англійська</value>
   </data>
+  <data name="EnTitle" xml:space="preserve">
+    <value>Англійська назва</value>
+  </data>
   <data name="FirstName" xml:space="preserve">
     <value>Им'я</value>
   </data>
@@ -249,6 +252,9 @@
   <data name="Russian" xml:space="preserve">
     <value>Російська</value>
   </data>
+  <data name="RuTitle" xml:space="preserve">
+    <value>Російська назва</value>
+  </data>
   <data name="Services" xml:space="preserve">
     <value>Послуги</value>
   </data>
@@ -272,6 +278,9 @@
   </data>
   <data name="Ukrainian" xml:space="preserve">
     <value>Українська</value>
+  </data>
+  <data name="UkTitle" xml:space="preserve">
+    <value>Українська назва</value>
   </data>
   <data name="WorkingHours" xml:space="preserve">
     <value>Режим роботи</value>

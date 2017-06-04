@@ -20,6 +20,7 @@
         <div class="form-group">
             <label>@ModelLocalizer["Customer"]</label>
             <select class="chosen" asp-for="CustomerId">
+                <option val="">@ModelLocalizer["None"]</option>
                 @foreach (var customer in customers)
                 {
                     if (customer.Id == Model.CustomerId)
@@ -43,9 +44,10 @@
 {
     <div class="form-group">
         <label>@ModelLocalizer["Workshop"]</label>
-        <select class="chosen" asp-for="WorkshopId">
+        <select id="workshops" class="chosen" asp-for="WorkshopId">
+            <option val="">@ModelLocalizer["None"]</option>
             @foreach (var workshop in workshops)
-                {
+            {
                 <option value="@workshop.Id">@workshop.Title (@workshop.City)</option>
             }
         </select>
@@ -59,10 +61,14 @@ else
 {
     <div class="form-group">
         <label>@ModelLocalizer["Master"]</label>
-        <select class="chosen" asp-for="PerformerId">
-            @foreach (var performer in performers)
+        <select id="workers" class="chosen" asp-for="PerformerId">
+            <option val="">@ModelLocalizer["None"]</option>
+            @if (Model.WorkshopId != Guid.Empty)
+            {
+                foreach (var performer in performers)
                 {
-                <option value="@performer.Id">@performer.FirstName @performer.LastName (@ModelLocalizer[performer.Role.Name])</option>
+                    <option value="@performer.Id">@performer.FirstName @performer.LastName (@ModelLocalizer[performer.Role.Name])</option>
+                }
             }
         </select>
     </div>
@@ -75,12 +81,16 @@ else
 {
     <div class="form-group">
         <label>@ModelLocalizer["Services"]</label>
-        <select class="chosen" multiple="multiple" asp-for="ServiceIds">
-            @foreach (var service in services)
+        <select id="services" class="chosen" multiple="multiple" asp-for="ServiceIds">
+        @if (Model.PerformerId != Guid.Empty)
+        {
+            foreach (var service in services)
             {
                 <option value="@service.Id">@service.Title</option>
             }
+        }
         </select>
+        <span asp-validation-for="ServiceIds" class="text-danger"></span>
     </div>
 }
 else
@@ -96,6 +106,7 @@ else
             <i class="fa fa-calendar"></i>
         </span>
     </div>
+    <span asp-validation-for="Date" class="text-danger"></span>
 </div>
 
 @if (User.IsInRole(StringConstants.ManagerRole) || User.IsInRole(StringConstants.AdministratorRole))
@@ -139,19 +150,23 @@ else
         <div class="col-md-6 form-group">
             <label>@ModelLocalizer["LastName"]</label>
             <input asp-for="LastName" class="form-control" />
+            <span asp-validation-for="LastName" class="text-danger"></span>
         </div>
         <div class="col-md-6 form-group">
             <label>@ModelLocalizer["FirstName"]</label>
             <input asp-for="FirstName" class="form-control" />
+            <span asp-validation-for="FirstName" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group">
         <label>@ModelLocalizer["EMail"]</label>
         <input class="form-control" asp-for="EMail" />
+        <span asp-validation-for="EMail" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label>@ModelLocalizer["Phone"]</label>
         <input class="form-control" asp-for="Phone" />
+        <span asp-validation-for="Phone" class="text-danger"></span>
     </div>
 }
 <div class="form-group row">

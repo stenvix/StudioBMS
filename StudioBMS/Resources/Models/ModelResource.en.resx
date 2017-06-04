@@ -180,6 +180,9 @@
   <data name="English" xml:space="preserve">
     <value>English</value>
   </data>
+  <data name="EnTitle" xml:space="preserve">
+    <value>English title</value>
+  </data>
   <data name="FirstName" xml:space="preserve">
     <value>First name</value>
   </data>
@@ -246,6 +249,9 @@
   <data name="Russian" xml:space="preserve">
     <value>Russian</value>
   </data>
+  <data name="RuTitle" xml:space="preserve">
+    <value>Russian title</value>
+  </data>
   <data name="Services" xml:space="preserve">
     <value>Services</value>
   </data>
@@ -269,6 +275,9 @@
   </data>
   <data name="Ukrainian" xml:space="preserve">
     <value>Ukrainian</value>
+  </data>
+  <data name="UkTitle" xml:space="preserve">
+    <value>Ukrainian title</value>
   </data>
   <data name="WorkingHours" xml:space="preserve">
     <value>Working hours</value>

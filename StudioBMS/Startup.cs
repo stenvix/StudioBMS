@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using FluentValidation.Resources;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -14,6 +17,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using StudioBMS.Business.DTO.Models;
 using StudioBMS.Business.Infrastructure;
 using StudioBMS.Business.Managers.Identity;
 using StudioBMS.Business.Managers.Models.Interfaces;
@@ -55,7 +59,11 @@ namespace StudioBMS
                     options.Filters.Add(new AuthorizeFilter(policy));
                 })
                 .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
-                .AddDataAnnotationsLocalization();
+                .AddDataAnnotationsLocalization()
+                .AddFluentValidation(fv =>
+                {
+                    fv.RegisterValidatorsFromAssemblyContaining<Startup>();
+                });
 
             services.AddDbContext<StudioContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),

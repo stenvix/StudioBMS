@@ -39,9 +39,51 @@ function UpdateDatetimePickers() {
     });
 }
 
+function InitOrderForm() {
+    var workers = "#workers";
+    var services = "#services";
+    $("#workshops").change(function () {
+        var workshopId = $(this).find(":selected").val();
+        if (workshopId!=="None") {
+            $.post('/workers/json', { "workshopId": workshopId }).success(function(data) {
+                $(workers).empty();
+                $(services).empty();
+                $(data).each(function(i, e) {
+                    $(workers).append($("<option>").attr("value", e.id).text(e.fullName));
+                });
+                $(workers).trigger("chosen:updated");
+                $(workers).val("");
+                $(workers).trigger("chosen:updated");
+                $(services).trigger("chosen:updated");
+            });
+        } else {
+            $(workers).empty();
+            $(services).empty();
+            $(workers).trigger("chosen:updated");
+            $(services).trigger("chosen:updated");
+        }
+
+    });
+
+    $(workers).change(function () {
+        var workerId = $(this).find(":selected").val();
+        $.post('/services/json', { "workerId": workerId })
+            .success(function (data) {
+                $(services).empty();
+                $(data).each(function (i, e) {
+                    $(services).append($("<option>").val(e.id).text(e.title));
+                });
+                $(services).trigger("chosen:updated");
+            });
+    });
+}
+if ($.validator) {
+    $.validator.setDefaults({ ignore: [] });
+}
 $(document).ready(function () {
 
     UpdateDatetimePickers();
+    InitOrderForm();
 
     var items = $(".chosen");
     items.each(function (i, e) {
@@ -51,7 +93,10 @@ $(document).ready(function () {
             selected_options = 0;
         }
 
+        var select = $(e).find(":selected").val();
+
         $(e).chosen({
+            allow_single_deselect: true,
             inherit_select_classes: true,
             disable_search_threshold: 10,
             display_disabled_options: false,
@@ -61,5 +106,10 @@ $(document).ready(function () {
             placeholder_text_multiple: "Виберіть декілька позицій",
             placeholder_text_single: "Виберіть дані"
         });
+        
+        if (select==="None") {
+            $(e).val("");
+            $(e).trigger("chosen:updated");
+        }
     });
 })
