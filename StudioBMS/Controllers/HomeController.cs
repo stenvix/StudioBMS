@@ -12,6 +12,9 @@ using StudioBMS.Business.Infrastructure.Helpers;
 using StudioBMS.Business.Managers.Identity;
 using StudioBMS.Business.Managers.Models.Interfaces;
 using StudioBMS.Messages;
+using StudioBMS.Models;
+using StudioBMS.Pages.Titles;
+using StudioBMS.Services;
 
 namespace StudioBMS.Controllers
 {
@@ -20,23 +23,27 @@ namespace StudioBMS.Controllers
         private readonly IOrderManager _orderManager;
         private readonly IPersonManager _personManager;
         private readonly IWorkshopManager _workshopManager;
-        private readonly IServiceManager _serviceManager;
         private readonly PersonModelManager _personModelManager;
         private readonly IHtmlLocalizer<MessageResource> _messageLocalizer;
+        private readonly IHtmlLocalizer<PageTitleResource> _titleLocalizer;
+        private readonly IEmailSender _emailSender;
 
         public HomeController(IOrderManager orderManager,
             IPersonManager personManager,
             IWorkshopManager workshopManager,
-            IServiceManager serviceManager, 
+            IServiceManager serviceManager,
             PersonModelManager personModelManager,
-            IHtmlLocalizer<MessageResource> messageLocalizer)
+            IHtmlLocalizer<MessageResource> messageLocalizer,
+            IHtmlLocalizer<PageTitleResource> titleLocalizer,
+            IEmailSender emailSender)
         {
             _orderManager = orderManager;
             _personManager = personManager;
             _workshopManager = workshopManager;
-            _serviceManager = serviceManager;
             _personModelManager = personModelManager;
             _messageLocalizer = messageLocalizer;
+            _titleLocalizer = titleLocalizer;
+            _emailSender = emailSender;
         }
 
         [AllowAnonymous]
@@ -53,7 +60,7 @@ namespace StudioBMS.Controllers
         [HttpGet("order"), AllowAnonymous]
         public async Task<IActionResult> Order()
         {
-            var model = new OrderViewModel {Date = DateTime.Today};
+            var model = new OrderViewModel { Date = DateTime.Today };
 
             ViewData["Workshops"] = await _workshopManager.GetAsync();
 
@@ -63,45 +70,50 @@ namespace StudioBMS.Controllers
         [HttpPost("order"), AllowAnonymous]
         public async Task<IActionResult> Order(OrderViewModel model)
         {
-            if (ModelState.IsValid) { 
-            var customer = await _personModelManager.FindByEmailAsync(model.EMail);
-            if (customer == null)
+            if (ModelState.IsValid)
             {
-                var person = new PersonModel
-                {
-                    FirstName = model.FirstName,
-                    LastName = model.LastName,
-                    UserName = model.EMail,
-                    Email = model.EMail,
-                    PhoneNumber = model.Phone,
-                    Workshop = new WorkshopModel {Id = model.WorkshopId}
-                };
-                var password = PasswordHelper.GetRandomPassword();
-                var result = await _personModelManager.CreateAsync(person, password+"!");
-                if (result.Succeeded)
-                {
-                    customer = await _personManager.FindByEmail(model.EMail);
-                    await _personModelManager.AddToRoleAsync(customer, StringConstants.CustomerRole);
-                    model.CustomerId = customer.Id;
-                    //TODO: Send message to email with account credentials
-                }
-            }
-            else
-            {
-                model.CustomerId = customer.Id;
-            }
-            var order = await _orderManager.CreateAsync(model);
+                var customer = await _personModelManager.FindByEmailAsync(model.EMail);
+                Task emailTask = Task.FromResult(0);
 
-            var liqpay = new LiqPayViewModel
-            {
-                OrderId = order.Id.ToString(),
-                PrivateKey = "tuKOtMrz1arqJd2nv9UxtuZ5W9SpFgvdpP1P5MpL",
-                Amount = order.Price,
-                ResultUrl = Url.Action("Callback", "Orders", null, Request.Scheme),
-                Description = _messageLocalizer["OrderDescription", order.Services.Select(i=>i.Title) ].Value
-            };
-                
-            return PartialView("Payment/OrderPayment", new OrderPaymentViewModel{LiqPay = liqpay, Order = order});
+                if (customer == null)
+                {
+                    var person = new PersonModel
+                    {
+                        FirstName = model.FirstName,
+                        LastName = model.LastName,
+                        UserName = model.EMail,
+                        Email = model.EMail,
+                        PhoneNumber = model.Phone,
+                        Workshop = new WorkshopModel { Id = model.WorkshopId }
+                    };
+                    var password = PasswordHelper.GetRandomPassword() +"!";
+                    var result = await _personModelManager.CreateAsync(person, password);
+                    if (result.Succeeded)
+                    {
+                        customer = await _personManager.FindByEmail(model.EMail);
+                        await _personModelManager.AddToRoleAsync(customer, StringConstants.CustomerRole);
+                        model.CustomerId = customer.Id;
+                        var message = $"{_messageLocalizer.GetString("RegistrationMessage").Value}. Login: {customer.Email} <br /> Password: {password}";
+                        emailTask = _emailSender.SendEmailAsync(customer.Email, _titleLocalizer["Registration"].Value, message);
+                    }
+                }
+                else
+                {
+                    model.CustomerId = customer.Id;
+                }
+
+                var order = await _orderManager.CreateAsync(model);
+
+                var liqpay = new LiqPayViewModel
+                {
+                    OrderId = order.Id.ToString(),
+                    PrivateKey = "tuKOtMrz1arqJd2nv9UxtuZ5W9SpFgvdpP1P5MpL",
+                    Amount = order.Price,
+                    ResultUrl = Url.Action("Callback", "Orders", null, Request.Scheme),
+                    Description = _messageLocalizer["OrderDescription", order.Services.Select(i => i.Title)].Value
+                };
+                await emailTask;
+                return PartialView("Payment/OrderPayment", new OrderPaymentViewModel { LiqPay = liqpay, Order = order });
             }
             return View("Order", model);
         }

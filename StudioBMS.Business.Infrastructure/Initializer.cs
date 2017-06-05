@@ -31,7 +31,8 @@ namespace StudioBMS.Business.Infrastructure
                 .AddSignInManager<PersonModelSignInManager>()
                 .AddUserManager<PersonModelManager>()
                 .AddUserStore<PersonModelStore>()
-                .AddRoleStore<RoleModelStore>();
+                .AddRoleStore<RoleModelStore>()
+                .AddDefaultTokenProviders();
 
             var builder = new ContainerBuilder();
             builder.Populate(services);

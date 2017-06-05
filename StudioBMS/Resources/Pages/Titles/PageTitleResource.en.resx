@@ -144,6 +144,9 @@
   <data name="EditWorker" xml:space="preserve">
     <value>Edit worker</value>
   </data>
+  <data name="ForgotYourPassword" xml:space="preserve">
+    <value>Forgot your password</value>
+  </data>
   <data name="Journal" xml:space="preserve">
     <value>Journal</value>
   </data>
@@ -161,6 +164,9 @@
   </data>
   <data name="Registration" xml:space="preserve">
     <value>Registration</value>
+  </data>
+  <data name="ResetPassword" xml:space="preserve">
+    <value>Reset password</value>
   </data>
   <data name="Save" xml:space="preserve">
     <value>Save</value>
@@ -182,6 +188,9 @@
   </data>
   <data name="Timetable" xml:space="preserve">
     <value>Timetable</value>
+  </data>
+  <data name="Warning" xml:space="preserve">
+    <value>Warning</value>
   </data>
   <data name="Workers" xml:space="preserve">
     <value>Workers</value>

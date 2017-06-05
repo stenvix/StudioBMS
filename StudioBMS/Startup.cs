@@ -23,6 +23,7 @@ using StudioBMS.Business.Managers.Identity;
 using StudioBMS.Business.Managers.Models.Interfaces;
 using StudioBMS.Database.Context;
 using StudioBMS.Services;
+using StudioBMS.Services.Impl;
 
 namespace StudioBMS
 {
@@ -72,8 +73,7 @@ namespace StudioBMS
             services.AddRouting(config => { config.LowercaseUrls = true; });
 
             // Add application services.
-            services.AddTransient<IEmailSender, AuthMessageSender>();
-            services.AddTransient<ISmsSender, AuthMessageSender>();
+            services.AddTransient<IEmailSender, EmailSender>();
 
             return Initializer.InitServices(services);
         }

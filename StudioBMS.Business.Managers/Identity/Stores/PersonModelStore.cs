@@ -14,7 +14,7 @@ namespace StudioBMS.Business.Managers.Identity.Stores
 {
     public class PersonModelStore : IUserPasswordStore<PersonModel>, IUserPhoneNumberStore<PersonModel>,
         IUserTwoFactorStore<PersonModel>,
-        IUserLoginStore<PersonModel>, IUserEmailStore<PersonModel>, IUserRoleStore<PersonModel> //  IUserClaimStore<PersonModel>, IUserSecurityStampStore<PersonModel>, IUserLockoutStore<PersonModel>, IUserPhoneNumberStore<PersonModel>, IQueryableUserStore<PersonModel>, IUserTwoFactorStore<PersonModel>, IUserAuthenticationTokenStore<PersonModel>
+        IUserLoginStore<PersonModel>, IUserEmailStore<PersonModel>, IUserRoleStore<PersonModel>//  IUserClaimStore<PersonModel>, IUserSecurityStampStore<PersonModel>, IUserLockoutStore<PersonModel>, IUserPhoneNumberStore<PersonModel>, IQueryableUserStore<PersonModel>, IUserTwoFactorStore<PersonModel>, IUserAuthenticationTokenStore<PersonModel>
     {
         public PersonModelStore(IUnitOfWork context)
         {

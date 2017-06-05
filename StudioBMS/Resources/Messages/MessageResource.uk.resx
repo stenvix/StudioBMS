@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="CheckEmailPasswordReset" xml:space="preserve">
+    <value>Будь ласка, перевірте свою електронну пошту, щоб скинути пароль.</value>
+  </data>
   <data name="FieldRequire" xml:space="preserve">
     <value>{PropertyName} повинно бути не порожнім</value>
   </data>
@@ -126,6 +129,9 @@
   <data name="OrderSuccessfullyCreated" xml:space="preserve">
     <value>Замовлення {0} успішно створено</value>
   </data>
+  <data name="PasswordReset" xml:space="preserve">
+    <value>Ваш пароль був скинутий</value>
+  </data>
   <data name="PasswordUpdated" xml:space="preserve">
     <value>Пароль успішно оновлено</value>
   </data>
@@ -134,5 +140,8 @@
   </data>
   <data name="PayWithLiqPay" xml:space="preserve">
     <value>Оплатити за допомогою LiqPay</value>
+  </data>
+  <data name="RegistrationMessage" xml:space="preserve">
+    <value>Ви успішно зареєстровані</value>
   </data>
 </root>

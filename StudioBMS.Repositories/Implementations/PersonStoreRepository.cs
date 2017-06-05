@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
@@ -19,6 +20,16 @@ namespace StudioBMS.Repositories.Implementations
         public PersonStoreRepository(StudioContext context, IdentityErrorDescriber describer = null) : base(context,
             describer)
         {
+        }
+
+        private IQueryable<Person> Include()
+        {
+            return this.Users.Include(i => i.Workshop);
+        }
+
+        public override Task<Person> FindByEmailAsync(string normalizedEmail, CancellationToken cancellationToken = new CancellationToken())
+        {
+            return Include().FirstOrDefaultAsync(i => i.NormalizedEmail == normalizedEmail, cancellationToken);
         }
 
         public override Task<IdentityResult> UpdateAsync(Person user, CancellationToken cancellationToken = new CancellationToken())

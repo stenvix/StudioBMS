@@ -144,6 +144,9 @@
   <data name="EditWorker" xml:space="preserve">
     <value>Редактировать работника</value>
   </data>
+  <data name="ForgotYourPassword" xml:space="preserve">
+    <value>Забыли пароль</value>
+  </data>
   <data name="Journal" xml:space="preserve">
     <value>Журнал</value>
   </data>
@@ -161,6 +164,9 @@
   </data>
   <data name="Registration" xml:space="preserve">
     <value>Регистрация</value>
+  </data>
+  <data name="ResetPassword" xml:space="preserve">
+    <value>Сброс пароля</value>
   </data>
   <data name="Save" xml:space="preserve">
     <value>Сохранить</value>
@@ -182,6 +188,9 @@
   </data>
   <data name="Timetable" xml:space="preserve">
     <value>Расписание</value>
+  </data>
+  <data name="Warning" xml:space="preserve">
+    <value>Внимание</value>
   </data>
   <data name="Workers" xml:space="preserve">
     <value>Работники</value>

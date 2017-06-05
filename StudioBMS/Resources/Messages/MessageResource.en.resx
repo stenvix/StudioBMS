@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="CheckEmailPasswordReset" xml:space="preserve">
+    <value>Please check your email to reset your password.</value>
+  </data>
   <data name="FieldRequire" xml:space="preserve">
     <value>{PropertyName} is required</value>
   </data>
@@ -126,6 +129,9 @@
   <data name="OrderSuccessfullyCreated" xml:space="preserve">
     <value>Order {0} successfully created</value>
   </data>
+  <data name="PasswordReset" xml:space="preserve">
+    <value>Your password has been reset</value>
+  </data>
   <data name="PasswordUpdated" xml:space="preserve">
     <value>Password successfully updated</value>
   </data>
@@ -134,5 +140,8 @@
   </data>
   <data name="PayWithLiqPay" xml:space="preserve">
     <value>Pay with LiqPay</value>
+  </data>
+  <data name="RegistrationMessage" xml:space="preserve">
+    <value>You successfully registered</value>
   </data>
 </root>
