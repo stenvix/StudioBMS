@@ -8,5 +8,9 @@
         public const string ActiveStatus = "Active";
         public const string DeclinedStatus = "Declined";
         public const string DoneStatus = "Done";
+
+        public static string WorkshopsCategory = "workshops";
+        public static string WorkersCategory = "workers";
+        public static string CustomersCategory = "customers";
     }
 }

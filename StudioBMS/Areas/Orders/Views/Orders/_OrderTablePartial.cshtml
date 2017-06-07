@@ -1,5 +1,8 @@
+@using StudioBMS.Business.DTO.Models.ViewModels
+@using StudioBMS.Messages
 @model IList<OrderModel>
 @inject IHtmlLocalizer<ModelResource> ModeLocalizer
+@inject IHtmlLocalizer<MessageResource> MessageLocalizer
 @{
     Layout = "Dashboard/_TableLayout";
 }
@@ -47,9 +50,21 @@
                 {
                     if (User.IsInRole(StringConstants.CustomerRole))
                     {
-                        <span> Sut</span>
+                        var liqPay = LiqPayViewModel.GetModel(order);
+                        liqPay.ResultUrl = Url.Action("Callback", "Orders", null, Context.Request.Scheme);
+                        liqPay.Description = MessageLocalizer["OrderDescription", order.Services.Select(i => i.Title)].Value;
+                        <form method="POST" class="text-center" accept-charset="utf-8" action="https://www.liqpay.com/api/3/checkout" style="display: inline-block">
+                            <input type="hidden" name="data" value="@liqPay.Data"/>
+                            <input type="hidden" name="signature" value="@liqPay.Signature"/>
+                            <button type="submit" class="btn btn-sm btn-primary">
+                                <i class="fa fa-money"></i>
+                            </button>
+                        </form>
                     }
-                    <a asp-area="Orders" asp-controller="Orders" asp-action="Payment" asp-route-id="@order.Id" class="btn btn-sm btn-primary"><i class="fa fa-money"></i></a>
+                    else
+                    {
+                        <a asp-area="Orders" asp-controller="Orders" asp-action="Payment" asp-route-id="@order.Id" class="btn btn-sm btn-primary"><i class="fa fa-money"></i></a>
+                    }
                 }
                 @if (!(User.IsInRole(StringConstants.CustomerRole) && !order.IsActive))
                 {

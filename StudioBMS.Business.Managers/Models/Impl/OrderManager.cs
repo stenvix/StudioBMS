@@ -8,6 +8,7 @@ using StudioBMS.Business.Managers.Models.Base.Impl;
 using StudioBMS.Business.Managers.Models.Interfaces;
 using StudioBMS.Business.Managers.Repositories.Interfaces;
 using StudioBMS.Core.Entities;
+using StudioBMS.Core.Entities.Statistics;
 
 namespace StudioBMS.Business.Managers.Models.Impl
 {
@@ -80,6 +81,27 @@ namespace StudioBMS.Business.Managers.Models.Impl
             var status = _unitOfWork.OrderStatusRepository.Done.To<OrderStatusModel>();
             model.Status = status;
             await UpdateAsync(model);
+        }
+
+        public async Task<Statistic> StatisticsByCustomer(Guid customerId, DateTime periodStart, DateTime periodEnd)
+        {
+            var customer = await _unitOfWork.PersonRepository.GetAsync(customerId);
+            var statistic = new Statistic();
+            var barStatistic = new BarStatistic
+            {
+                Label = $"{customer.LastName} {customer.FirstName}",
+                OrderItems = new List<BarStatisticOrderItem>
+                {
+                    await _unitOfWork.OrderRepository.BarOrdersByCustomer(customer, periodStart, periodEnd)
+                },
+                PaymentItems = new List<BarStatisticPaymentItem>
+                {
+                    await _unitOfWork.OrderRepository.BarPaymentByCustomer(customer, periodStart, periodEnd)
+                }
+            };
+            statistic.BarStatistics = barStatistic;
+
+            return statistic;
         }
     }
 }

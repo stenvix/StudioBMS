@@ -1,3 +1,11 @@
-﻿<div class="row">
-    <h2>Thx</h2>
+@model StudioBMS.Business.DTO.Models.OrderModel
+@inject IHtmlLocalizer<PageTitleResource> TitleLocalizer
+@{
+    var title = TitleLocalizer["Thanks"];
+
+    ViewData["Title"] = title;
+    ViewData["H1"] = title;
+}
+<div class="row">
+    @Html.Partial("ThanksForm", Model)
 </div>

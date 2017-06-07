@@ -207,7 +207,7 @@ namespace StudioBMS.Areas.Orders.Controllers
                 await _orderManager.UpdateAsync(order);
 
                 if (!User.Identity.IsAuthenticated)
-                    return RedirectToAction("Thanks", "Home");
+                    return RedirectToAction("Thanks", "Home", new{ order.Id });
                 //TODO: Success message;
                 return RedirectToAction("Index");
             }

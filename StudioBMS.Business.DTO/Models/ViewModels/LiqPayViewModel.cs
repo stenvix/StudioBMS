@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Linq;
 using System.Runtime.Serialization;
 using System.Security.Cryptography;
 using System.Text;
@@ -88,5 +89,16 @@ namespace StudioBMS.Business.DTO.Models.ViewModels
         private string SignatureString => $"{PrivateKey}{Data}{PrivateKey}";
         private byte[] SignatureSHA1 => SHA1.Create().ComputeHash(Encoding.UTF8.GetBytes(SignatureString));
         public string Signature => Convert.ToBase64String(SignatureSHA1);
+
+
+        public static LiqPayViewModel GetModel(OrderModel order)
+        {
+            return new LiqPayViewModel
+            {
+                OrderId = order.Id.ToString(),
+                PrivateKey = "tuKOtMrz1arqJd2nv9UxtuZ5W9SpFgvdpP1P5MpL",
+                Amount = order.Price
+            };
+        }
     }
 }

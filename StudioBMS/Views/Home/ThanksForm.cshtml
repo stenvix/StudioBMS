@@ -1,0 +1,11 @@
+@inject IHtmlLocalizer<MessageResource> MessageLocalizer
+@using StudioBMS.Messages
+@model StudioBMS.Business.DTO.Models.OrderModel
+@{
+    Layout = "Forms/BaseForm";
+    ViewData["FormClass"] = "order-panel";
+}
+<div class="text-center">
+    <h4>@MessageLocalizer["OrderPaymentSuccess", Model.OrderNumber]</h4>
+    <p>@MessageLocalizer["ThankYou"]</p>
+</div>

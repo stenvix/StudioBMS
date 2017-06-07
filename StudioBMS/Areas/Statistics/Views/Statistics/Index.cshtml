@@ -1,50 +1,85 @@
 @inject IHtmlLocalizer<PageTitleResource> TitleLocalizer
+@inject IHtmlLocalizer<ModelResource> ModelLocalizer
+@using StudioBMS
+@model StudioBMS.Business.DTO.Models.ViewModels.StatisticViewModel
 @{
     var workshops = ViewData["Workshops"] as IList<WorkshopModel>;
+    var workers = ViewData["Workers"] as IList<PersonModel>;
+    var customers = ViewData["Customers"] as IList<PersonModel>;
+    var customer = ViewData["Customer"] as PersonModel;
+    var category = (string)ViewData["Category"];
+    var locale = CultureInfo.CurrentCulture.Name;
     ViewData["Title"] = TitleLocalizer["Statistics"];
 }
-<div class="row" style="padding: 10px 0 0 0">
-    <div class="col-xs-12">
-        <ul class="nav nav-tabs nav-justified">
-            <li role="presentation" class="active"><a href="#">@TitleLocalizer["Workshops"]</a></li>
-            <li role="presentation"><a href="#">@TitleLocalizer["Workers"]</a></li>
-            <li role="presentation"><a href="#">@TitleLocalizer["Clients"]</a></li>
-        </ul>
+@if (!User.IsInRole(StringConstants.CustomerRole))
+{
+    <div class="row" style="padding: 10px 0 0 0">
+        <div class="col-xs-12">
+            <ul class="nav nav-tabs nav-justified">
+                @if (!User.IsInRole(StringConstants.AdministratorRole) | !User.IsInRole(StringConstants.ManagerRole))
+                {
+                    <li role="presentation" class="active"><a asp-area="Statistics" asp-controller="Statistics" asp-action="Index" asp-all-route-category="@StringConstants.WorkshopsCategory">@TitleLocalizer["Workshops"]</a></li>
+                }
+                <li role="presentation"><a asp-area="Statistics" asp-controller="Statistics" asp-action="Index" asp-all-route-category="@StringConstants.WorkersCategory">@TitleLocalizer["Workers"]</a></li>
+                <li role="presentation"><a asp-area="Statistics" asp-controller="Statistics" asp-action="Index" asp-all-route-category="@StringConstants.CustomersCategory">@TitleLocalizer["Clients"]</a></li>
+            </ul>
+        </div>
     </div>
-</div>
+}
 <div class="row">
     <div class="col-xs-12">
         <div class="panel panel-default" style="border-top: 0">
             <div class="panel-heading">
                 <div class="row">
-                    <div class="col-lg-3 col-lg-offset-2">
-                        <select class="chosen">
-                            @foreach (var workshop in workshops ?? new List<WorkshopModel>())
-                            {
-                                <option value="@workshop.Id">@workshop.TitleWithCity</option>
-                            }
+                    <input id="category" type="hidden" value="@category" />
+                    @if (category == StringConstants.WorkshopsCategory)
+                    {
+                        <div class="col-lg-3 col-lg-offset-2">
+                            <select id="filter" class="chosen" multiple="multiple">
+                                @foreach (var workshop in workshops ?? new List<WorkshopModel>())
+                                {
+                                    <option value="@workshop.Id">@workshop.TitleWithCity</option>
+                                }
+                            </select>
+                        </div>
+                    }
+                    @if (!User.IsInRole(StringConstants.CustomerRole) && (category == StringConstants.WorkersCategory || category == StringConstants.CustomersCategory))
+                    {
+                        <div class="col-lg-3 col-lg-offset-2">
+                            <select id="filter" class="chosen" multiple="multiple">
+                                @foreach (var person in workers ?? customers ?? new List<PersonModel>())
+                                {
+                                    <option value="@person.Id">@person.FullName</option>
+                                }
+                            </select>
+                        </div>
+                    }
+                    @if(User.IsInRole(StringConstants.CustomerRole))
+                    {
+                        <select id="filter" style="display: none">
+                            <option selected="selected" value="@customer.Id">@customer.FullName</option>
                         </select>
-                    </div>
+                    }
                     <div class="col-lg-2">
-                        <div class="input-group">
-                            <input class="form-control" type="text"/>
+                        <div class="input-group  datetimepicker" data-locale="@locale" data-format="YYYY-MM-DD">
+                            <input id="start" asp-for="PeriodStart" asp-format="{0:yyyy-MM-dd}" class="form-control" type="text"/>
                             <span class="input-group-addon">
                                 <i class="fa fa-calendar"></i>
                             </span>
                         </div>
                     </div>
                     <div class="col-lg-2">
-                        <div class="input-group">
-                            <input class="form-control" type="text"/>
+                        <div class="input-group  datetimepicker" data-locale="@locale" data-format="YYYY-MM-DD">
+                            <input id="end" asp-for="PeriodEnd" asp-format="{0:yyyy-MM-dd}" class="form-control" type="text" />
                             <span class="input-group-addon">
                                 <i class="fa fa-calendar"></i>
                             </span>
                         </div>
                     </div>
                     <div class="col-lg-3">
-                        <a class="btn btn-primary">
+                        <a class="btn btn-primary" onclick="getData(); return false;">
                             <i class="fa fa-filter"></i>
-                            Filter
+                            @ModelLocalizer["Show"] 
                         </a>
                     </div>
                 </div>
@@ -52,33 +87,36 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-lg-4">
-                        <table class="table table-bordered table-condensed table-hover">
+                        <table id="table" class="table table-bordered table-condensed table-hover"
+                               data-toggle="table"
+                               data-page-list="[5, 10, 25, 50, 100, ALL]"
+                               data-single-select="true"
+                               data-locale="@locale"
+                               data-classes="table table-condensed">
                             <thead>
                             <tr>
-                                <th>Майстерня</th>
-                                <th>Кількість замовлень</th>
-                                <th>Сума замовлень</th>
-                                <th>Середній чек</th>
+                                @if (category == StringConstants.CustomersCategory)
+                                {
+                                    <th data-field="label">@ModelLocalizer["LastName"] / @ModelLocalizer["FirstName"]</th>
+                                    <th data-field="active">@ModelLocalizer["Active"]</th>
+                                    <th data-field="done">@ModelLocalizer["Done"]</th>
+                                    <th data-field="declined">@ModelLocalizer["Declined"]</th>
+                                }
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td>FirstPoint (Львів)</td>
-                                <td>15 грн.</td>
-                                <td>975 грн.</td>
-                                <td>65 грн.</td>
-                            </tr>
                             </tbody>
                         </table>
                     </div>
                     <div class="col-lg-8">
                         <div class="row">
-                            <div class="col-lg-6"><canvas id="myChart"></canvas></div>
+                            <div class="col-lg-6"><canvas id="orderBarChar" data-done="@ModelLocalizer["Done"]" data-active="@ModelLocalizer["Active"]" data-declined="@ModelLocalizer["Declined"]"></canvas></div>
                             <div class="col-lg-6"><canvas id="myChart3"></canvas></div>
                         </div>
                         <div class="row">
                             <div class="col-lg-6"><canvas id="myChart2"></canvas></div>
-                            <div class="col-lg-6"><canvas id="myChart1" style="max-height: 300px; max-width: 300px;"></canvas>
+                            <div class="col-lg-6">
+                                <canvas id="myChart1" style="max-height: 300px; max-width: 300px;"></canvas>
                             </div>
                         </div>
                     </div>

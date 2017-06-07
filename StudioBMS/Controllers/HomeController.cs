@@ -104,14 +104,9 @@ namespace StudioBMS.Controllers
 
                 var order = await _orderManager.CreateAsync(model);
 
-                var liqpay = new LiqPayViewModel
-                {
-                    OrderId = order.Id.ToString(),
-                    PrivateKey = "tuKOtMrz1arqJd2nv9UxtuZ5W9SpFgvdpP1P5MpL",
-                    Amount = order.Price,
-                    ResultUrl = Url.Action("Callback", "Orders", null, Request.Scheme),
-                    Description = _messageLocalizer["OrderDescription", order.Services.Select(i => i.Title)].Value
-                };
+                var liqpay = LiqPayViewModel.GetModel(order);
+                liqpay.ResultUrl = Url.Action("Callback", "Orders", null, Request.Scheme);
+                liqpay.Description = _messageLocalizer["OrderDescription", order.Services.Select(i => i.Title)].Value;
                 await emailTask;
                 return PartialView("Payment/OrderPayment", new OrderPaymentViewModel { LiqPay = liqpay, Order = order });
             }
@@ -119,9 +114,9 @@ namespace StudioBMS.Controllers
         }
 
         [HttpGet("thanks"), AllowAnonymous]
-        public IActionResult Thanks()
+        public async Task<IActionResult> Thanks(Guid id)
         {
-            return View();
+            return View(await _orderManager.GetAsync(id));
         }
     }
 }

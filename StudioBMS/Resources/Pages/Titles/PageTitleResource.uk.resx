@@ -189,6 +189,9 @@
   <data name="Submit" xml:space="preserve">
     <value>Підтвердити</value>
   </data>
+  <data name="Thanks" xml:space="preserve">
+    <value>Дякуюємо</value>
+  </data>
   <data name="Timetable" xml:space="preserve">
     <value>Розклад</value>
   </data>

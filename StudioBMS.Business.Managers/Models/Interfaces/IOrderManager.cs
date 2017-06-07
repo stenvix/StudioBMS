@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using StudioBMS.Business.DTO.Models;
 using StudioBMS.Business.Managers.Models.Base.Interfaces;
+using StudioBMS.Core.Entities.Statistics;
 
 namespace StudioBMS.Business.Managers.Models.Interfaces
 {
@@ -15,5 +16,6 @@ namespace StudioBMS.Business.Managers.Models.Interfaces
         Task ManageBalance(PaymentViewModel payment);
         Task Deactivate(Guid id);
         Task Done(Guid id);
+        Task<Statistic> StatisticsByCustomer(Guid customerId, DateTime periodStart, DateTime periodEnd);
     }
 }

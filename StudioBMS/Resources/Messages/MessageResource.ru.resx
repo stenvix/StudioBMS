@@ -126,6 +126,9 @@
   <data name="OrderDescription" xml:space="preserve">
     <value>Оплата за услуги салона красоты</value>
   </data>
+  <data name="OrderPaymentSuccess" xml:space="preserve">
+    <value>Ваш заказ {0} успешно оплачен!</value>
+  </data>
   <data name="OrderSuccessfullyCreated" xml:space="preserve">
     <value>Заказ {0} успешно создан</value>
   </data>
@@ -143,5 +146,8 @@
   </data>
   <data name="RegistrationMessage" xml:space="preserve">
     <value>Вы успешно зарегистрированы</value>
+  </data>
+  <data name="ThankYou" xml:space="preserve">
+    <value>Спасибо что выбрали нашего сервиса. Хорошего дня!</value>
   </data>
 </root>
