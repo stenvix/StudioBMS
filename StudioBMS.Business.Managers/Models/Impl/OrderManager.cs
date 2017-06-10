@@ -83,24 +83,81 @@ namespace StudioBMS.Business.Managers.Models.Impl
             await UpdateAsync(model);
         }
 
-        public async Task<Statistic> StatisticsByCustomer(Guid customerId, DateTime periodStart, DateTime periodEnd)
+        public async Task<Statistic> StatisticsByCustomer(Guid[] customers, DateTime periodStart, DateTime periodEnd)
         {
-            var customer = await _unitOfWork.PersonRepository.GetAsync(customerId);
             var statistic = new Statistic();
-            var barStatistic = new BarStatistic
+            var orders = await _unitOfWork.OrderRepository.FindInPeriod(periodStart, periodEnd);
+            foreach (var customerId in customers)
             {
-                Label = $"{customer.LastName} {customer.FirstName}",
-                OrderItems = new List<BarStatisticOrderItem>
+                var customer = await _unitOfWork.PersonRepository.GetAsync(customerId);
+                var filterOrders = await _unitOfWork.OrderRepository.FindByCustomer(customerId, orders);
+                var barStatistic = new BarStatistic
                 {
-                    await _unitOfWork.OrderRepository.BarOrdersByCustomer(customer, periodStart, periodEnd)
-                },
-                PaymentItems = new List<BarStatisticPaymentItem>
-                {
-                    await _unitOfWork.OrderRepository.BarPaymentByCustomer(customer, periodStart, periodEnd)
-                }
-            };
-            statistic.BarStatistics = barStatistic;
+                    Label = $"{customer.LastName} {customer.FirstName[0]}.",
+                    OrderItems = await _unitOfWork.OrderRepository.BarOrdersByPerson(customer, filterOrders),
+                    PaymentItems = await _unitOfWork.OrderRepository.BarPaymentByPerson(customer, filterOrders)
+                };
 
+                statistic.BarStatistics.Add(barStatistic);
+            }
+
+            statistic.PieStatistic =
+                await _unitOfWork.OrderRepository.PieStatisticByCustomers(customers, orders);
+            statistic.AvarageBills =
+                await _unitOfWork.OrderRepository.AvarageBillsByCustomers(customers, orders, periodStart, periodEnd);
+
+            return statistic;
+        }
+
+        public async Task<Statistic> StatisticsByWorkers(Guid[] workers, DateTime periodStart, DateTime periodEnd)
+        {
+            var statistic = new Statistic();
+            var orders = await _unitOfWork.OrderRepository.FindInPeriod(periodStart, periodEnd);
+            foreach (var workerId in workers)
+            {
+                var worker = await _unitOfWork.PersonRepository.GetAsync(workerId);
+                var filterOrders = await _unitOfWork.OrderRepository.FindByPerformer(workerId, orders);
+                var barStatistic = new BarStatistic
+                {
+                    Label = $"{worker.LastName} {worker.FirstName[0]}.",
+                    OrderItems = await _unitOfWork.OrderRepository.BarOrdersByPerson(worker, filterOrders),
+                    PaymentItems = await _unitOfWork.OrderRepository.BarPaymentByPerson(worker, filterOrders)
+                };
+
+                statistic.BarStatistics.Add(barStatistic);
+            }
+
+            statistic.PieStatistic =
+                await _unitOfWork.OrderRepository.PieStatisticByWorkers(workers, orders);
+            statistic.AvarageBills =
+                await _unitOfWork.OrderRepository.AvarageBillsByWorkers(workers, orders, periodStart, periodEnd);
+
+            return statistic;
+        }
+
+        public async Task<Statistic> StatisticsByWorkshops(Guid[] workshops, DateTime periodStart, DateTime periodEnd)
+        {
+            var statistic = new Statistic();
+            var orders = await _unitOfWork.OrderRepository.FindInPeriod(periodStart, periodEnd);
+
+            foreach (var workshopId in workshops)
+            {
+                var workshop = await _unitOfWork.WorkshopRepository.GetAsync(workshopId);
+                var filterOrders = await _unitOfWork.OrderRepository.FindByWorkshop(workshopId, orders);
+                var barStatistic = new BarStatistic
+                {
+                    Label = $"{workshop.Title} ({workshop.City})",
+                    OrderItems = await _unitOfWork.OrderRepository.BarOrdersByWorkshop(workshop, filterOrders),
+                    PaymentItems = await _unitOfWork.OrderRepository.BarPaymentByWorkshop(workshop, filterOrders)
+                };
+
+                statistic.BarStatistics.Add(barStatistic);
+            }
+            
+            statistic.PieStatistic =
+                await _unitOfWork.OrderRepository.PieStatisticByWorkshop(workshops, orders);
+            statistic.AvarageBills =
+                await _unitOfWork.OrderRepository.AvarageBillsByWorkshops(workshops, orders, periodStart, periodEnd);
             return statistic;
         }
     }

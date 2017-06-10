@@ -32,37 +32,56 @@ namespace StudioBMS.Areas.Statistics.Controllers
                 PeriodEnd = DateTime.Now.Date
             };
 
+
             if (User.IsInRole(StringConstants.CustomerRole))
             {
-                if (category != StringConstants.CustomersCategory)
-                    category = StringConstants.CustomersCategory;
+                category = StringConstants.CustomersCategory;
                 ViewData["Customer"] = user;
             }
 
-            if (User.IsInRole(StringConstants.AdministratorRole))
+            if (category == StringConstants.CustomersCategory && !User.IsInRole(StringConstants.CustomerRole))
+            {
+                ViewData["Customers"] = await _personManager.GetCustomers();
+            }
+
+            if (category == StringConstants.WorkersCategory && !User.IsInRole(StringConstants.CustomerRole))
+            {
+                if (User.IsInRole(StringConstants.AdministratorRole))
+                {
+                    ViewData["Workers"] = await _personManager.GetEmployees();
+                }
+                if (User.IsInRole(StringConstants.ManagerRole))
+                {
+                    ViewData["Workshop"] = user.Workshop;
+                    ViewData["Workers"] = await _personManager.GetEmployees(user.Workshop.Id);
+                }
+            }
+            if (category == StringConstants.WorkshopsCategory && User.IsInRole(StringConstants.AdministratorRole))
             {
                 ViewData["Workshops"] = await _workshopManager.GetAsync();
-                ViewData["Workers"] = await _personManager.GetStaff();
-            }
-            if (User.IsInRole(StringConstants.ManagerRole))
-            {
-                ViewData["Workshop"] = user.Workshop;
-                ViewData["Workers"] = await _personManager.GetEmployees(user.Workshop.Id);
             }
 
             ViewData["Category"] = category;
             return View(statisticViewModel);
         }
 
-        [HttpPost("customers")]
-        public async Task<IActionResult> Customers(StatisticViewModel model)
+        [HttpPost("{category}")]
+        public async Task<IActionResult> CategoriesStatistics(string category, StatisticViewModel model)
         {
-            List<Statistic> statistic = new List<Statistic>();
-            foreach (var customer in model.Ids)
+            if (category == StringConstants.CustomersCategory)
             {
-                statistic.Add(await _orderManager.StatisticsByCustomer(customer, model.PeriodStart, model.PeriodEnd));
+                return new JsonResult(await _orderManager.StatisticsByCustomer(model.Ids, model.PeriodStart, model.PeriodEnd));
             }
-            return new JsonResult(statistic);
+            if (category == StringConstants.WorkersCategory)
+            {
+                return new JsonResult(await _orderManager.StatisticsByWorkers(model.Ids, model.PeriodStart, model.PeriodEnd));
+            }
+            if (category == StringConstants.WorkshopsCategory)
+            {
+                return new JsonResult(await _orderManager.StatisticsByWorkshops(model.Ids, model.PeriodStart, model.PeriodEnd));
+            }
+
+            return new JsonResult(new { });
         }
     }
 }

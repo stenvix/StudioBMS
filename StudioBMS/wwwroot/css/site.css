@@ -69,3 +69,8 @@
 .no-padding {
     padding: 0 !important;
 }
+
+.pieChar {
+    max-height: 255px!important;
+    max-width: 255px!important;
+}

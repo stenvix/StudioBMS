@@ -28,49 +28,196 @@ namespace StudioBMS.Repositories.Implementations
                     .ThenInclude(i => i.Service);
         }
 
-        public Task<IEnumerable<Order>> FindByPerformer(Guid performerId, DateTime date = default(DateTime))
+        public Task<IQueryable<Order>> FindByPerformer(Guid performerId, DateTime date = default(DateTime))
         {
-            return Task.Run(() => Include().Where(i => i.PerformerId == performerId && i.Date.Date == date.Date).AsEnumerable());
+            return Task.FromResult(Include().Where(i => i.PerformerId == performerId && i.Date.Date == date.Date));
         }
 
-        public Task<IEnumerable<Order>> FindByCustomer(Guid personId)
+        public Task<IQueryable<Order>> FindByPerformer(Guid personId, IQueryable<Order> orders = default(IQueryable<Order>))
         {
-            return Task.Run(() => Include().Where(i => i.CustomerId == personId).AsEnumerable());
+            if (orders != null)
+            {
+                return Task.FromResult(orders.Where(i => i.PerformerId == personId));
+            }
+
+            return Task.FromResult(Include().Where(i => i.PerformerId == personId));
         }
 
-        public Task<IEnumerable<Order>> FindByWorkshop(Guid workshopId)
+        public Task<IQueryable<Order>> FindByCustomer(Guid personId, IQueryable<Order> orders = default(IQueryable<Order>))
         {
-            return Task.Run(() => Include().Where(i => i.WorkshopId == workshopId).AsEnumerable());
+            if (orders != null)
+            {
+                return Task.FromResult(orders.Where(i => i.CustomerId == personId));
+            }
+
+            return Task.FromResult(Include().Where(i => i.CustomerId == personId));
         }
 
-        private IQueryable<Order> FindByCustomerInPeriod(Guid customerId, DateTime periodStart,
-            DateTime periodEnd)
+        public Task<IQueryable<Order>> FindByWorkshop(Guid workshopId, IQueryable<Order> orders = default(IQueryable<Order>))
         {
-            return Include().Where(i => i.CustomerId == customerId && i.Date >= periodStart && i.Date <= periodEnd);
+            if (orders != null)
+            {
+                return Task.FromResult(orders.Where(i => i.WorkshopId == workshopId));
+            }
+
+            return Task.FromResult(Include().Where(i => i.WorkshopId == workshopId));
         }
-        
-        public Task<BarStatisticOrderItem> BarOrdersByCustomer(Person customer, DateTime periodStart, DateTime periodEnd)
+
+        public Task<IQueryable<Order>> FindInPeriod(DateTime periodStart, DateTime periodEnd, IQueryable<Order> orders = default(IQueryable<Order>))
         {
-            var barItem = new BarStatisticOrderItem();
+            if (orders != null)
+            {
+                return Task.FromResult(orders.Where(i => i.Date >= periodStart.Date && i.Date <= periodEnd.Date.AddDays(1)));
+            }
 
-            var orders = FindByCustomerInPeriod(customer.Id, periodStart, periodEnd);
-            barItem.Label = $"{customer.LastName} {customer.FirstName[0]}.";
-            barItem.Active = orders.Count(i => i.Status.Name == StringConstants.ActiveStatus);
-            barItem.Done = orders.Count(i => i.Status.Name == StringConstants.DoneStatus);
-            barItem.Declined = orders.Count(i => i.Status.Name == StringConstants.DeclinedStatus);
+            return Task.FromResult(Include().Where(i => i.Date >= periodStart.Date && i.Date <= periodEnd.Date.AddDays(1)));
+        }
 
+        private IQueryable<Order> FindWithStatus(string status, IQueryable<Order> set = default(IQueryable<Order>))
+        {
+            return set.Where(i => i.Status.Name == status);
+        }
+
+
+        public Task<BarStatisticOrderItem> BarOrdersByPerson(Person person, IQueryable<Order> orders)
+        {
+            var barItem = new BarStatisticOrderItem
+            {
+                Label = $"{person.LastName} {person.FirstName[0]}.",
+                Active = orders.Count(i => i.Status.Name == StringConstants.ActiveStatus),
+                Done = orders.Count(i => i.Status.Name == StringConstants.DoneStatus),
+                Declined = orders.Count(i => i.Status.Name == StringConstants.DeclinedStatus)
+            };
             return Task.FromResult(barItem);
         }
 
-        public Task<BarStatisticPaymentItem> BarPaymentByCustomer(Person customer, DateTime periodStart, DateTime periodEnd)
+        public Task<BarStatisticPaymentItem> BarPaymentByPerson(Person person, IQueryable<Order> orders)
         {
-            var barItem = new BarStatisticPaymentItem();
-            var orders = FindByCustomerInPeriod(customer.Id, periodStart, periodEnd);
-
-            barItem.PriceAmount = orders.Select(i => i.Price).Sum();
-            barItem.BalanceAmount = orders.Select(i => i.Balance).Sum();
-
+            var barItem = new BarStatisticPaymentItem
+            {
+                Label = $"{person.LastName} {person.FirstName[0]}",
+                PriceAmount = orders.Select(i => i.Price).Sum() / 100.0,
+                BalanceAmount = orders.Select(i => i.Balance).Sum() / 100.0
+            };
             return Task.FromResult(barItem);
+        }
+
+        public Task<BarStatisticOrderItem> BarOrdersByWorkshop(Workshop workshop, IQueryable<Order> orders)
+        {
+            var barItem = new BarStatisticOrderItem
+            {
+                Label = $"{workshop.Title} ({workshop.City})",
+                Active = orders.Count(i => i.Status.Name == StringConstants.ActiveStatus),
+                Done = orders.Count(i => i.Status.Name == StringConstants.DoneStatus),
+                Declined = orders.Count(i => i.Status.Name == StringConstants.DeclinedStatus)
+            };
+            return Task.FromResult(barItem);
+        }
+
+        public Task<BarStatisticPaymentItem> BarPaymentByWorkshop(Workshop workshop, IQueryable<Order> orders)
+        {
+            var barItem = new BarStatisticPaymentItem
+            {
+                Label = $"{workshop.Title} ({workshop.City})",
+                PriceAmount = orders.Select(i => i.Price).Sum() / 100.0,
+                BalanceAmount = orders.Select(i => i.Balance).Sum() / 100.0
+            };
+            return Task.FromResult(barItem);
+        }
+
+        private Task<AvarageBillStatistic> AvarageOrdersBill(IQueryable<Order> orders, DateTime date)
+        {
+            var bill = new AvarageBillStatistic { Date = date };
+            if (orders.Any())
+            {
+                var balance = orders.Average(o => o.Balance);
+                var price = orders.Average(o => o.Price);
+                bill.Balance = balance / 100.0;
+                bill.Price = price / 100.0;
+            }
+
+            return Task.FromResult(bill);
+        }
+
+        public Task<PieStatistic> PieStatisticByCustomers(Guid[] customers, IQueryable<Order> orders)
+        {
+            orders = orders.Where(i => customers.Contains(i.CustomerId));
+            var pie = new PieStatistic
+            {
+                Active = FindWithStatus(StringConstants.ActiveStatus, orders)
+                    .Count(),
+                Declined = FindWithStatus(StringConstants.DeclinedStatus, orders)
+                    .Count(),
+                Done = FindWithStatus(StringConstants.DoneStatus, orders)
+                    .Count()
+            };
+            return Task.FromResult(pie);
+        }
+
+        public Task<PieStatistic> PieStatisticByWorkers(Guid[] workers, IQueryable<Order> orders)
+        {
+            orders = orders.Where(i => workers.Contains(i.PerformerId));
+            var pie = new PieStatistic
+            {
+                Active = FindWithStatus(StringConstants.ActiveStatus, orders)
+                    .Count(),
+                Declined = FindWithStatus(StringConstants.DeclinedStatus, orders)
+                    .Count(),
+                Done = FindWithStatus(StringConstants.DoneStatus, orders)
+                    .Count()
+            };
+            return Task.FromResult(pie);
+        }
+
+        public Task<PieStatistic> PieStatisticByWorkshop(Guid[] workshops, IQueryable<Order> orders)
+        {
+            orders = orders.Where(i => workshops.Contains(i.WorkshopId));
+            var pie = new PieStatistic
+            {
+                Active = FindWithStatus(StringConstants.ActiveStatus, orders)
+                    .Count(i => workshops.Any(c => c == i.WorkshopId)),
+                Declined = FindWithStatus(StringConstants.DeclinedStatus, orders)
+                    .Count(i => workshops.Any(c => c == i.WorkshopId)),
+                Done = FindWithStatus(StringConstants.DoneStatus, orders)
+                    .Count(i => workshops.Any(c => c == i.WorkshopId))
+            };
+            return Task.FromResult(pie);
+        }
+
+        public async Task<List<AvarageBillStatistic>> AvarageBillsByCustomers(Guid[] customers, IQueryable<Order> orders, DateTime periodStart, DateTime periodEnd)
+        {
+            var bills = new List<AvarageBillStatistic>();
+            var days = (periodEnd.AddDays(1) - periodStart).Days;
+            for (int i = 0; i < days; i++)
+            {
+                var date = periodStart.AddDays(i);
+                bills.Add(await AvarageOrdersBill((await FindInPeriod(date, date, orders)).Where(c => customers.Contains(c.CustomerId)), date));
+            }
+            return bills;
+        }
+
+        public async Task<List<AvarageBillStatistic>> AvarageBillsByWorkers(Guid[] workers, IQueryable<Order> orders, DateTime periodStart, DateTime periodEnd)
+        {
+            var bills = new List<AvarageBillStatistic>();
+            var days = (periodEnd.AddDays(1) - periodStart).Days;
+            for (int i = 0; i < days; i++)
+            {
+                var date = periodStart.AddDays(i);
+                bills.Add(await AvarageOrdersBill((await FindInPeriod(date, date, orders)).Where(c => workers.Contains(c.PerformerId)), date));
+            }
+            return bills;
+        }
+
+        public async Task<List<AvarageBillStatistic>> AvarageBillsByWorkshops(Guid[] workshops, IQueryable<Order> orders, DateTime periodStart, DateTime periodEnd)
+        {
+            var bills = new List<AvarageBillStatistic>();
+            var days = (periodEnd.AddDays(1) - periodStart).Days;
+            for (int i = 0; i < days; i++)
+            {
+                var date = periodStart.AddDays(i);
+                bills.Add(await AvarageOrdersBill((await FindInPeriod(date, date, orders)).Where(c => workshops.Contains(c.WorkshopId)), date));
+            }
+            return bills;
         }
     }
 }

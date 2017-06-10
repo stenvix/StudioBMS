@@ -18,10 +18,16 @@
             <ul class="nav nav-tabs nav-justified">
                 @if (!User.IsInRole(StringConstants.AdministratorRole) | !User.IsInRole(StringConstants.ManagerRole))
                 {
-                    <li role="presentation" class="active"><a asp-area="Statistics" asp-controller="Statistics" asp-action="Index" asp-all-route-category="@StringConstants.WorkshopsCategory">@TitleLocalizer["Workshops"]</a></li>
+                    <li role="presentation" class="@(category == StringConstants.WorkshopsCategory?"active":"")">
+                        <a asp-area="Statistics" asp-controller="Statistics" asp-action="Index" asp-route-category="@StringConstants.WorkshopsCategory">@TitleLocalizer["Workshops"]</a>
+                    </li>
                 }
-                <li role="presentation"><a asp-area="Statistics" asp-controller="Statistics" asp-action="Index" asp-all-route-category="@StringConstants.WorkersCategory">@TitleLocalizer["Workers"]</a></li>
-                <li role="presentation"><a asp-area="Statistics" asp-controller="Statistics" asp-action="Index" asp-all-route-category="@StringConstants.CustomersCategory">@TitleLocalizer["Clients"]</a></li>
+                <li role="presentation" class="@(category == StringConstants.WorkersCategory?"active":"")">
+                    <a asp-area="Statistics" asp-controller="Statistics" asp-action="Index" asp-route-category="@StringConstants.WorkersCategory">@TitleLocalizer["Workers"]</a>
+                </li>
+                <li role="presentation" class="@(category == StringConstants.CustomersCategory?"active":"")">
+                    <a asp-area="Statistics" asp-controller="Statistics" asp-action="Index" asp-route-category="@StringConstants.CustomersCategory">@TitleLocalizer["Clients"]</a>
+                </li>
             </ul>
         </div>
     </div>
@@ -49,12 +55,12 @@
                             <select id="filter" class="chosen" multiple="multiple">
                                 @foreach (var person in workers ?? customers ?? new List<PersonModel>())
                                 {
-                                    <option value="@person.Id">@person.FullName</option>
+                                    <option value="@person.Id">@person.FullNameAbbr</option>
                                 }
                             </select>
                         </div>
                     }
-                    @if(User.IsInRole(StringConstants.CustomerRole))
+                    @if (User.IsInRole(StringConstants.CustomerRole))
                     {
                         <select id="filter" style="display: none">
                             <option selected="selected" value="@customer.Id">@customer.FullName</option>
@@ -62,7 +68,7 @@
                     }
                     <div class="col-lg-2">
                         <div class="input-group  datetimepicker" data-locale="@locale" data-format="YYYY-MM-DD">
-                            <input id="start" asp-for="PeriodStart" asp-format="{0:yyyy-MM-dd}" class="form-control" type="text"/>
+                            <input id="start" asp-for="PeriodStart" asp-format="{0:yyyy-MM-dd}" class="form-control" type="text" />
                             <span class="input-group-addon">
                                 <i class="fa fa-calendar"></i>
                             </span>
@@ -79,46 +85,89 @@
                     <div class="col-lg-3">
                         <a class="btn btn-primary" onclick="getData(); return false;">
                             <i class="fa fa-filter"></i>
-                            @ModelLocalizer["Show"] 
+                            @ModelLocalizer["Show"]
                         </a>
                     </div>
                 </div>
             </div>
             <div class="panel-body">
                 <div class="row">
-                    <div class="col-lg-4">
-                        <table id="table" class="table table-bordered table-condensed table-hover"
+                    <div class="col-lg-6">
+                        <table id="orderTable" class="table table-bordered table-condensed table-hover"
                                data-toggle="table"
                                data-page-list="[5, 10, 25, 50, 100, ALL]"
                                data-single-select="true"
                                data-locale="@locale"
                                data-classes="table table-condensed">
                             <thead>
-                            <tr>
-                                @if (category == StringConstants.CustomersCategory)
-                                {
-                                    <th data-field="label">@ModelLocalizer["LastName"] / @ModelLocalizer["FirstName"]</th>
+                                <tr>
+                                    @if (category == StringConstants.CustomersCategory || category == StringConstants.WorkersCategory)
+                                    {
+                                        <th data-field="label">@ModelLocalizer["LastName"] / @ModelLocalizer["FirstName"]</th>
+
+                                    }
+                                    else
+                                    {
+                                        <th data-field="label">@ModelLocalizer["Title"]</th>
+                                    }
                                     <th data-field="active">@ModelLocalizer["Active"]</th>
                                     <th data-field="done">@ModelLocalizer["Done"]</th>
                                     <th data-field="declined">@ModelLocalizer["Declined"]</th>
-                                }
-                            </tr>
+                                </tr>
                             </thead>
-                            <tbody>
-                            </tbody>
+                            <tbody></tbody>
                         </table>
                     </div>
-                    <div class="col-lg-8">
-                        <div class="row">
-                            <div class="col-lg-6"><canvas id="orderBarChar" data-done="@ModelLocalizer["Done"]" data-active="@ModelLocalizer["Active"]" data-declined="@ModelLocalizer["Declined"]"></canvas></div>
-                            <div class="col-lg-6"><canvas id="myChart3"></canvas></div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-6"><canvas id="myChart2"></canvas></div>
-                            <div class="col-lg-6">
-                                <canvas id="myChart1" style="max-height: 300px; max-width: 300px;"></canvas>
-                            </div>
-                        </div>
+                    <div class="col-lg-6">
+                        <table id="paymentTable" class="table table-bordered table-condensed table-hover"
+                               data-toggle="table"
+                               data-page-list="[5, 10, 25, 50, 100, ALL]"
+                               data-single-select="true"
+                               data-locale="@locale"
+                               data-classes="table table-condensed">
+                            <thead>
+                                <tr>
+                                    @if (category == StringConstants.CustomersCategory || category == StringConstants.WorkersCategory)
+                                    {
+                                        <th data-field="label">@ModelLocalizer["LastName"] / @ModelLocalizer["FirstName"]</th>
+                                    }
+                                    else
+                                    {
+                                        <th data-field="label">@ModelLocalizer["Title"]</th>
+                                    }
+                                    <th data-field="balanceAmount">@ModelLocalizer["Balance"] (@ModelLocalizer["UAH"])</th>
+                                    <th data-field="priceAmount">@ModelLocalizer["Price"] (@ModelLocalizer["UAH"])</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <canvas id="orderBarChar"
+                                data-title="@ModelLocalizer["OrdersStatistics"]"
+                                data-done="@ModelLocalizer["Done"]"
+                                data-active="@ModelLocalizer["Active"]"
+                                data-declined="@ModelLocalizer["Declined"]"></canvas>
+                    </div>
+                    <div class="col-lg-6">
+                        <canvas id="pieChart" class="center-block"></canvas>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6" style="text-align: center">
+                        <canvas id="paymentBarChar"
+                                data-title="@ModelLocalizer["MoneyStatistics"]"
+                                data-balance="@ModelLocalizer["Balance"] (@ModelLocalizer["UAH"])"
+                                data-price="@ModelLocalizer["Price"] (@ModelLocalizer["UAH"])"></canvas>
+                    </div>
+                    <div class="col-lg-6">
+                        <canvas id="lineChart"
+                                data-date="@ModelLocalizer["Date"]"
+                                data-value="@ModelLocalizer["UAH"]"
+                                data-avarage-balance="@ModelLocalizer["AverageBalance"]"
+                                data-avarage-price="@ModelLocalizer["AveragePrice"]"></canvas>
                     </div>
                 </div>
             </div>

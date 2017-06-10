@@ -5,7 +5,7 @@ namespace StudioBMS.Core.Entities.Statistics
     public class BarStatistic
     {
         public string Label { get; set; }
-        public IList<BarStatisticOrderItem> OrderItems { get; set; }
-        public IList<BarStatisticPaymentItem> PaymentItems { get; set; }
+        public BarStatisticOrderItem OrderItems { get; set; }
+        public BarStatisticPaymentItem PaymentItems { get; set; }
     }
 }

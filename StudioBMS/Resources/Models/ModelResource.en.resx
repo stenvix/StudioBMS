@@ -288,4 +288,16 @@
   <data name="Pay" xml:space="preserve">
     <value>Pay</value>
   </data>
+  <data name="AverageBalance" xml:space="preserve">
+    <value>Average balance </value>
+  </data>
+  <data name="AveragePrice" xml:space="preserve">
+    <value>Average price</value>
+  </data>
+  <data name="MoneyStatistics" xml:space="preserve">
+    <value>Money statistics</value>
+  </data>
+  <data name="OrdersStatistics" xml:space="preserve">
+    <value>Orders statistics</value>
+  </data>
 </root>

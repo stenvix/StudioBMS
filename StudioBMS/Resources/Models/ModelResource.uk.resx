@@ -291,4 +291,16 @@
   <data name="Pay" xml:space="preserve">
     <value>Оплата</value>
   </data>
+  <data name="AverageBalance" xml:space="preserve">
+    <value>Середній баланс</value>
+  </data>
+  <data name="AveragePrice" xml:space="preserve">
+    <value>Середня ціна</value>
+  </data>
+  <data name="MoneyStatistics" xml:space="preserve">
+    <value>Грошова статистика</value>
+  </data>
+  <data name="OrdersStatistics" xml:space="preserve">
+    <value>Статистика замовлень</value>
+  </data>
 </root>

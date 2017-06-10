@@ -9,6 +9,7 @@ namespace StudioBMS.Business.DTO.Models
     public class PersonModel : IdentityUser<Guid, PersonModelClaims, PersonModelRole, PersonModelLogin>, IModel
     {
         public string FullName => $"{LastName} {FirstName}";
+        public string FullNameAbbr => $"{LastName} {FirstName[0]}.";
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public RoleModel Role { get; set; }

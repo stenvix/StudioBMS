@@ -61,7 +61,22 @@
                             <a asp-area="Orders" asp-controller="Orders" asp-action="Index"><i class="fa fa-shopping-cart "></i> @TitleLocalizer["Orders"]</a>
                         </li>
                         <li>
-                            <a asp-area="Statistics" asp-controller="Statistics" asp-action="Index"><i class="fa fa-bar-chart"></i> @TitleLocalizer["Statistics"]</a>
+                            @{
+                                string category;
+                                if (User.IsInRole(StringConstants.AdministratorRole)|| User.IsInRole(StringConstants.ManagerRole))
+                                {
+                                    category = StringConstants.WorkshopsCategory;
+                                }
+                                else if (!User.IsInRole(StringConstants.AdministratorRole) && !User.IsInRole(StringConstants.ManagerRole) && !User.IsInRole(StringConstants.CustomerRole))
+                                {
+                                    category = StringConstants.WorkersCategory;
+                                }
+                                else
+                                {
+                                    category = StringConstants.CustomersCategory;
+                                }
+                            }
+                            <a asp-area="Statistics" asp-controller="Statistics" asp-action="Index" asp-route-category="@category"><i class="fa fa-bar-chart"></i> @TitleLocalizer["Statistics"]</a>
                         </li>
                         @if (User.IsInRole(StringConstants.AdministratorRole) || User.IsInRole(StringConstants.ManagerRole))
                         {
