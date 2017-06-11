@@ -100,7 +100,7 @@ else
 <div class="form-group">
     <label>@ModelLocalizer["DateAndTime"]</label>
     @*data-mindate="@($"{DateTime.Now.AddMinutes(30):yyyy-MM-dd HH:mm}")" TODO: Fix bug with initialization *@
-    <div class="input-group datetimepicker" data-format="YYYY-MM-DD HH:mm" data-locale="@CultureInfo.CurrentCulture.Name">
+    <div id="orderTime" class="input-group datetimepicker" data-format="YYYY-MM-DD HH:mm" data-locale="@CultureInfo.CurrentCulture.Name">
         <input class="form-control" asp-for="Date" asp-format="{0:yyyy-MM-dd HH:mm}" />
         <span class="input-group-addon">
             <i class="fa fa-calendar"></i>

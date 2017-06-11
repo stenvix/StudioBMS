@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StudioBMS.Business.DTO.Models;
@@ -19,13 +21,15 @@ namespace StudioBMS.Areas.Workers.Controllers
         private readonly IServiceManager _serviceManager;
         private readonly IRoleManager _roleManager;
         private readonly IWorkshopManager _workshopManager;
+        private readonly IOrderManager _orderManager;
 
         public WorkersController(IPersonManager personManager,
             PersonModelManager permonModelManager,
             ITimeTableManager timeTableManager,
             IServiceManager serviceManager,
             IRoleManager roleManager,
-            IWorkshopManager workshopManager)
+            IWorkshopManager workshopManager,
+            IOrderManager orderManager)
         {
             _personManager = personManager;
             _permonModelManager = permonModelManager;
@@ -33,6 +37,7 @@ namespace StudioBMS.Areas.Workers.Controllers
             _serviceManager = serviceManager;
             _roleManager = roleManager;
             _workshopManager = workshopManager;
+            _orderManager = orderManager;
         }
         [HttpGet]
         public async Task<IActionResult> Index()
@@ -57,13 +62,6 @@ namespace StudioBMS.Areas.Workers.Controllers
                 employee.Services = await _serviceManager.FindByPerson(employee.Id);
             }
             return View(employees);
-        }
-
-        [HttpPost("json"), AllowAnonymous]
-        public async Task<IActionResult> Json(Guid workshopId)
-        {
-            var employees = await _personManager.GetEmployees(workshopId);
-            return new JsonResult(employees);
         }
 
         [HttpGet("{workerId}/time")]
@@ -149,10 +147,10 @@ namespace StudioBMS.Areas.Workers.Controllers
         {
             var personModel = await _personManager.GetAsync(model.Id);
             PersonMapping(model, personModel);
-            
+
             //TODO: Add message
             var result = await _permonModelManager.UpdateAsync(personModel);
-            
+
             if (!result.Succeeded)
                 NotFound();
 
@@ -200,6 +198,48 @@ namespace StudioBMS.Areas.Workers.Controllers
             await _personManager.DeleteAsync(id);
             return RedirectToAction("Index");
         }
+
+
+        #region JSON
+
+
+        [HttpPost("json"), AllowAnonymous]
+        public async Task<IActionResult> Json(Guid workshopId)
+        {
+            var employees = await _personManager.GetEmployees(workshopId);
+            return new JsonResult(employees);
+        }
+
+        [HttpPost("time"), AllowAnonymous]
+        public async Task<IActionResult> Time(Guid workerId)
+        {
+            var minDate = DateTime.Now.AddMinutes(30);
+            var maxDate = DateTime.Now.AddMonths(1);
+
+            var weekdays = new[] { DayOfWeek.Sunday, DayOfWeek.Monday, DayOfWeek.Tuesday, DayOfWeek.Wednesday, DayOfWeek.Thursday, DayOfWeek.Friday, DayOfWeek.Saturday };
+            var timetables = await _timeTableManager.FindByWorker(workerId);
+
+            var result = new List<Object>();
+
+            result.AddRange(await _orderManager.GetDisabledTimespans(workerId, minDate, maxDate));
+
+            var disabledDays = weekdays.Except(timetables.Select(i => i.WeekDay));
+            for (var date = minDate.Date; date.Date < maxDate.Date; date = date.AddDays(1))
+            {
+                if (disabledDays.Contains(date.DayOfWeek))
+                    continue;
+                var timetable = timetables.FirstOrDefault(i => i.WeekDay == date.DayOfWeek);
+                var start = date.AddDays(-1).AddTicks(timetable.End.Ticks).AddMinutes(-1);
+                var end = date.AddTicks(timetable.Start.Ticks);
+
+                result.Add(new { Start = start, End = end });
+
+            }
+            return new JsonResult(new { DisabledDays = disabledDays, DisabledTimespans = result });
+        }
+
+        #endregion
+
 
 
         private void PersonMapping(PersonModel newModel, PersonModel oldModel)

@@ -63,14 +63,14 @@ namespace StudioBMS.Repositories.Implementations
             return Task.FromResult(Include().Where(i => i.WorkshopId == workshopId));
         }
 
-        public Task<IQueryable<Order>> FindInPeriod(DateTime periodStart, DateTime periodEnd, IQueryable<Order> orders = default(IQueryable<Order>))
+        public IQueryable<Order> FindInPeriod(DateTime periodStart, DateTime periodEnd, IQueryable<Order> orders = default(IQueryable<Order>))
         {
             if (orders != null)
             {
-                return Task.FromResult(orders.Where(i => i.Date >= periodStart.Date && i.Date <= periodEnd.Date.AddDays(1)));
+                return orders.Where(i => i.Date >= periodStart.Date && i.Date <= periodEnd.Date.AddDays(1));
             }
 
-            return Task.FromResult(Include().Where(i => i.Date >= periodStart.Date && i.Date <= periodEnd.Date.AddDays(1)));
+            return Include().Where(i => i.Date >= periodStart.Date && i.Date <= periodEnd.Date.AddDays(1));
         }
 
         private IQueryable<Order> FindWithStatus(string status, IQueryable<Order> set = default(IQueryable<Order>))
@@ -191,7 +191,7 @@ namespace StudioBMS.Repositories.Implementations
             for (int i = 0; i < days; i++)
             {
                 var date = periodStart.AddDays(i);
-                bills.Add(await AvarageOrdersBill((await FindInPeriod(date, date, orders)).Where(c => customers.Contains(c.CustomerId)), date));
+                bills.Add(await AvarageOrdersBill((FindInPeriod(date, date, orders)).Where(c => customers.Contains(c.CustomerId)), date));
             }
             return bills;
         }
@@ -203,7 +203,7 @@ namespace StudioBMS.Repositories.Implementations
             for (int i = 0; i < days; i++)
             {
                 var date = periodStart.AddDays(i);
-                bills.Add(await AvarageOrdersBill((await FindInPeriod(date, date, orders)).Where(c => workers.Contains(c.PerformerId)), date));
+                bills.Add(await AvarageOrdersBill((FindInPeriod(date, date, orders)).Where(c => workers.Contains(c.PerformerId)), date));
             }
             return bills;
         }
@@ -215,7 +215,7 @@ namespace StudioBMS.Repositories.Implementations
             for (int i = 0; i < days; i++)
             {
                 var date = periodStart.AddDays(i);
-                bills.Add(await AvarageOrdersBill((await FindInPeriod(date, date, orders)).Where(c => workshops.Contains(c.WorkshopId)), date));
+                bills.Add(await AvarageOrdersBill((FindInPeriod(date, date, orders)).Where(c => workshops.Contains(c.WorkshopId)), date));
             }
             return bills;
         }

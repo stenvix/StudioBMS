@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using StudioBMS.Business.DTO.Extensions;
@@ -92,7 +93,7 @@ namespace StudioBMS.Business.Managers.Models.Impl
         public async Task<Statistic> StatisticsByCustomer(Guid[] customers, DateTime periodStart, DateTime periodEnd)
         {
             var statistic = new Statistic();
-            var orders = await _unitOfWork.OrderRepository.FindInPeriod(periodStart, periodEnd);
+            var orders = _unitOfWork.OrderRepository.FindInPeriod(periodStart, periodEnd);
             foreach (var customerId in customers)
             {
                 var customer = await _unitOfWork.PersonRepository.GetAsync(customerId);
@@ -118,7 +119,7 @@ namespace StudioBMS.Business.Managers.Models.Impl
         public async Task<Statistic> StatisticsByWorkers(Guid[] workers, DateTime periodStart, DateTime periodEnd)
         {
             var statistic = new Statistic();
-            var orders = await _unitOfWork.OrderRepository.FindInPeriod(periodStart, periodEnd);
+            var orders = _unitOfWork.OrderRepository.FindInPeriod(periodStart, periodEnd);
             foreach (var workerId in workers)
             {
                 var worker = await _unitOfWork.PersonRepository.GetAsync(workerId);
@@ -144,7 +145,7 @@ namespace StudioBMS.Business.Managers.Models.Impl
         public async Task<Statistic> StatisticsByWorkshops(Guid[] workshops, DateTime periodStart, DateTime periodEnd)
         {
             var statistic = new Statistic();
-            var orders = await _unitOfWork.OrderRepository.FindInPeriod(periodStart, periodEnd);
+            var orders = _unitOfWork.OrderRepository.FindInPeriod(periodStart, periodEnd);
 
             foreach (var workshopId in workshops)
             {
@@ -165,6 +166,18 @@ namespace StudioBMS.Business.Managers.Models.Impl
             statistic.AvarageBills =
                 await _unitOfWork.OrderRepository.AvarageBillsByWorkshops(workshops, orders, periodStart, periodEnd);
             return statistic;
+        }
+
+        public async Task<IList<object>> GetDisabledTimespans(Guid workerId, DateTime periodStart, DateTime periodEnd)
+        {
+            var result = new List<object>();
+            var orders = await _unitOfWork.OrderRepository.FindByPerformer(workerId, _unitOfWork.OrderRepository.FindInPeriod(periodStart, periodEnd));
+            foreach (var order in orders)
+            {
+                var duration = order.OrderServices.Select(i => i.Service.Duration).Aggregate((av, e)=> av.AddTicks(e.Ticks));
+                result.Add(new {Start = order.Date, End = order.Date.AddTicks(duration.Ticks)});
+            }
+            return result;
         }
     }
 }
