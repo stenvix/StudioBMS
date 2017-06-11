@@ -1,4 +1,5 @@
 @inject IHtmlLocalizer<ModelResource> ModeLocalizer
+@using StudioBMS
 @model IList<PersonModel>
 @{
     Layout = "Dashboard/_TableLayout";
@@ -30,7 +31,7 @@
             <td>@person.PhoneNumber</td>
             <td>@person.Email</td>
             <td>
-                <a class="btn btn-sm btn-primary"><i class="fa fa-bar-chart"></i></a>
+                <a asp-area="Statistics" asp-controller="Statistics" asp-action="Index" asp-route-category="@StringConstants.CustomersCategory" asp-route-ids="@person.Id" class="btn btn-sm btn-primary"><i class="fa fa-bar-chart"></i></a>
                 <a asp-area="Clients" asp-controller="Clients" asp-action="Edit" asp-route-id="@person.Id" class="btn btn-sm btn-primary"><i class="fa fa-pencil"></i></a>
                 <a asp-area="Clients" asp-controller="Clients" asp-action="Delete" asp-route-id="@person.Id" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a>
             </td>

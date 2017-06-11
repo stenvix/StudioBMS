@@ -6,22 +6,21 @@
     var workshops = ViewData["Workshops"] as IList<WorkshopModel>;
     var workers = ViewData["Workers"] as IList<PersonModel>;
     var customers = ViewData["Customers"] as IList<PersonModel>;
-    var customer = ViewData["Customer"] as PersonModel;
+    var personModel = ViewData["Person"] as PersonModel;
+    var workshopModel = ViewData["Workshop"] as WorkshopModel;
     var category = (string)ViewData["Category"];
     var locale = CultureInfo.CurrentCulture.Name;
     ViewData["Title"] = TitleLocalizer["Statistics"];
+    var ids = ViewData["Ids"] as Guid[];
 }
-@if (!User.IsInRole(StringConstants.CustomerRole))
+@if (!User.IsInRole(StringConstants.CustomerRole) && (User.IsInRole(StringConstants.AdministratorRole) || User.IsInRole(StringConstants.ManagerRole)))
 {
     <div class="row" style="padding: 10px 0 0 0">
         <div class="col-xs-12">
             <ul class="nav nav-tabs nav-justified">
-                @if (!User.IsInRole(StringConstants.AdministratorRole) | !User.IsInRole(StringConstants.ManagerRole))
-                {
-                    <li role="presentation" class="@(category == StringConstants.WorkshopsCategory?"active":"")">
-                        <a asp-area="Statistics" asp-controller="Statistics" asp-action="Index" asp-route-category="@StringConstants.WorkshopsCategory">@TitleLocalizer["Workshops"]</a>
-                    </li>
-                }
+                <li role="presentation" class="@(category == StringConstants.WorkshopsCategory?"active":"")">
+                    <a asp-area="Statistics" asp-controller="Statistics" asp-action="Index" asp-route-category="@StringConstants.WorkshopsCategory">@TitleLocalizer["Workshops"]</a>
+                </li>
                 <li role="presentation" class="@(category == StringConstants.WorkersCategory?"active":"")">
                     <a asp-area="Statistics" asp-controller="Statistics" asp-action="Index" asp-route-category="@StringConstants.WorkersCategory">@TitleLocalizer["Workers"]</a>
                 </li>
@@ -38,33 +37,54 @@
             <div class="panel-heading">
                 <div class="row">
                     <input id="category" type="hidden" value="@category" />
+
                     @if (category == StringConstants.WorkshopsCategory)
                     {
-                        <div class="col-lg-3 col-lg-offset-2">
-                            <select id="filter" class="chosen" multiple="multiple">
-                                @foreach (var workshop in workshops ?? new List<WorkshopModel>())
-                                {
-                                    <option value="@workshop.Id">@workshop.TitleWithCity</option>
-                                }
+                        if (User.IsInRole(StringConstants.AdministratorRole))
+                        {
+                            <div class="col-lg-3 col-lg-offset-2">
+                                <select id="filter" class="chosen" multiple="multiple">
+                                    @foreach (var workshop in workshops ?? new List<WorkshopModel>())
+                                    {
+                                        <option value="@workshop.Id">@workshop.TitleWithCity</option>
+                                    }
+                                </select>
+                            </div>
+                        }
+                        else
+                        {
+                            <select id="filter" style="display: none">
+                                <option selected="selected" value="@workshopModel.Id">@workshopModel.TitleWithCity</option>
                             </select>
-                        </div>
+                        }
                     }
-                    @if (!User.IsInRole(StringConstants.CustomerRole) && (category == StringConstants.WorkersCategory || category == StringConstants.CustomersCategory))
+
+                    @if (category == StringConstants.WorkersCategory || category == StringConstants.CustomersCategory)
                     {
-                        <div class="col-lg-3 col-lg-offset-2">
-                            <select id="filter" class="chosen" multiple="multiple">
-                                @foreach (var person in workers ?? customers ?? new List<PersonModel>())
-                                {
-                                    <option value="@person.Id">@person.FullNameAbbr</option>
-                                }
+                        if (User.IsInRole(StringConstants.AdministratorRole) || User.IsInRole(StringConstants.ManagerRole))
+                        {
+                            <div class="col-lg-3 col-lg-offset-2">
+                                <select id="filter" class="chosen" multiple="multiple">
+                                    @foreach (var person in workers ?? customers ?? new List<PersonModel>())
+                                    {
+                                        if (ids != null && ids.Contains(person.Id))
+                                        {
+                                            <option selected="selected" value="@person.Id">@person.FullNameAbbr</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@person.Id">@person.FullNameAbbr</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        }
+                        else
+                        {
+                            <select id="filter" style="display: none">
+                                <option selected="selected" value="@personModel.Id">@personModel.FullName</option>
                             </select>
-                        </div>
-                    }
-                    @if (User.IsInRole(StringConstants.CustomerRole))
-                    {
-                        <select id="filter" style="display: none">
-                            <option selected="selected" value="@customer.Id">@customer.FullName</option>
-                        </select>
+                        }
                     }
                     <div class="col-lg-2">
                         <div class="input-group  datetimepicker" data-locale="@locale" data-format="YYYY-MM-DD">
@@ -104,7 +124,6 @@
                                     @if (category == StringConstants.CustomersCategory || category == StringConstants.WorkersCategory)
                                     {
                                         <th data-field="label">@ModelLocalizer["LastName"] / @ModelLocalizer["FirstName"]</th>
-
                                     }
                                     else
                                     {

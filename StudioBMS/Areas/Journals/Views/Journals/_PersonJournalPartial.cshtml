@@ -1,14 +1,27 @@
 @model PersonModel
 @inject IHtmlLocalizer<ModelResource> ModelLocalizer
+@{
+    var date = ViewData["Date"] as DateTime?;
+    date = date ?? DateTime.Now;
+    var isWorker = (bool)ViewData["IsWorker"];
+}
 <div class="panel panel-default">
     <div class="panel-heading">
         <h4 class="panel-title">
-            <span>@Model.LastName @Model.FirstName[0].</span>
-            <span class="pull-right">@ModelLocalizer[Model.Role.Name]</span>
+            @if (isWorker)
+            {
+                <span>@CultureInfo.CurrentCulture.DateTimeFormat.GetDayName(date.Value.DayOfWeek)</span>
+                <span class="pull-right">@date.Value.ToString("d")</span>
+            }
+            else
+            {
+                <span>@Model.LastName @Model.FirstName[0].</span>
+                <span class="pull-right">@ModelLocalizer[Model.Role.Name]</span>
+            }
         </h4>
     </div>
     <div class="panel-body pre-scrollable" style="min-height: calc(100vh - 180px); overflow-y: auto">
-        @foreach (var order in Model.Orders)
+        @foreach (var order in Model.Orders.Where(i=>i.Date.Date == date.Value.Date))
         {
             @Html.Partial("_OrderJournalPartial", order)
         }

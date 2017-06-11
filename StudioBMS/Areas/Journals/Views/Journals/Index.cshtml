@@ -7,6 +7,7 @@
     var journalModel = ViewData["JournalModel"] as JournalViewModel;
     var date = ViewData["Date"] as DateTime?;
     date = date ?? DateTime.Now;
+    var isWorker = (bool)ViewData["IsWorker"];
 }
 <div class="row" style="padding: 10px 0;">
     <div class="col-lg-1">
@@ -23,8 +24,21 @@
 <div class="row">
     @foreach (var worker in Model.Take(4))
     {
-        <div class="col-lg-3">
-            @Html.Partial("_PersonJournalPartial", worker)
-        </div>
+        if (isWorker)
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                ViewData["Date"] = date.Value.AddDays(i);
+                <div class="col-lg-3">
+                    @Html.Partial("_PersonJournalPartial", worker,ViewData)
+                </div>
+            }
+        }
+        else
+        {
+            <div class="col-lg-3">
+                @Html.Partial("_PersonJournalPartial", worker)
+            </div>
+        }
     }
 </div>

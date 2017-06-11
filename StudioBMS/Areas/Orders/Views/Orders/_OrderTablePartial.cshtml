@@ -39,7 +39,7 @@
             <td>@order.Date.ToString("g")</td>
             <td>@order.Price/@order.Balance<br />(@ModeLocalizer[order.PaidStatus])</td>
             <td>
-                @if (User.IsInRole(StringConstants.AdministratorRole) || User.IsInRole(StringConstants.ManagerRole))
+                @if (User.IsInRole(StringConstants.AdministratorRole) || User.IsInRole(StringConstants.ManagerRole) || !User.IsInRole(StringConstants.CustomerRole))
                 {
                     if (order.Status.Name != StringConstants.DoneStatus && order.Status.Name != StringConstants.DeclinedStatus)
                     {
@@ -61,7 +61,7 @@
                             </button>
                         </form>
                     }
-                    else
+                    else if(User.IsInRole(StringConstants.AdministratorRole) || User.IsInRole(StringConstants.ManagerRole))
                     {
                         <a asp-area="Orders" asp-controller="Orders" asp-action="Payment" asp-route-id="@order.Id" class="btn btn-sm btn-primary"><i class="fa fa-fw fa-money"></i></a>
                     }

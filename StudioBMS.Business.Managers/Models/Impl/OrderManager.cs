@@ -60,6 +60,12 @@ namespace StudioBMS.Business.Managers.Models.Impl
             return result.To<OrderModel>();
         }
 
+        public async Task<IList<OrderModel>> FindByWorker(Guid workerId)
+        {
+            var result = await _unitOfWork.OrderRepository.FindByPerformer(workerId, default(DateTime));
+            return result.To<OrderModel>();
+        }
+
         public async Task ManageBalance(PaymentViewModel payment)
         {
             var model = await GetAsync(payment.Id);

@@ -30,7 +30,7 @@ namespace StudioBMS.Repositories.Implementations
 
         public Task<IQueryable<Order>> FindByPerformer(Guid performerId, DateTime date = default(DateTime))
         {
-            return Task.FromResult(Include().Where(i => i.PerformerId == performerId && i.Date.Date == date.Date));
+            return Task.FromResult(Include().Where(i => i.PerformerId == performerId && (date == default(DateTime) || i.Date.Date == date.Date)));
         }
 
         public Task<IQueryable<Order>> FindByPerformer(Guid personId, IQueryable<Order> orders = default(IQueryable<Order>))

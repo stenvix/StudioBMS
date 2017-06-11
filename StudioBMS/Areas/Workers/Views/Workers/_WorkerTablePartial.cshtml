@@ -53,9 +53,12 @@
             @if (User.IsInRole(StringConstants.AdministratorRole) || User.IsInRole(StringConstants.ManagerRole))
             {
                 <td>
-                    <a class="btn btn-sm btn-primary"><i class="fa fa-bar-chart fa-fw"></i></a>
+                    @if (worker.IsWorker)
+                    {
+                        <a asp-area="Statistics" asp-controller="Statistics" asp-action="Index" asp-route-category="@StringConstants.WorkersCategory" asp-route-ids="@worker.Id" class="btn btn-sm btn-primary"><i class="fa fa-fw fa-bar-chart"></i></a>
+                    }
                     <a asp-area="Workers" asp-controller="Workers" asp-action="TimeIndex" asp-route-workerid="@worker.Id" class="btn btn-sm btn-primary"><i class="fa fa-clock-o fa-fw"></i></a>
-                    @if( !(await PersonManager.IsInRole(worker.Id, StringConstants.AdministratorRole)| await PersonManager.IsInRole(worker.Id, StringConstants.ManagerRole)))
+                    @if (!(await PersonManager.IsInRole(worker.Id, StringConstants.AdministratorRole) | await PersonManager.IsInRole(worker.Id, StringConstants.ManagerRole)))
                     {
                         <a asp-area="Workers" asp-controller="Workers" asp-action="ServiceIndex" asp-route-workerid="@worker.Id" class="btn btn-sm btn-primary"><i class="fa fa-briefcase fa-fw"></i></a>
                     }

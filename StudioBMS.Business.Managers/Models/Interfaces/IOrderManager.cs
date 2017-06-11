@@ -13,6 +13,7 @@ namespace StudioBMS.Business.Managers.Models.Interfaces
         Task<IList<OrderStatusModel>> GetStatuses();
         Task<IList<OrderModel>> FindByCustomer(Guid personId);
         Task<IList<OrderModel>> FindByWorkshop(Guid workshopId);
+        Task<IList<OrderModel>> FindByWorker(Guid workerId);
         Task ManageBalance(PaymentViewModel payment);
         Task Deactivate(Guid id);
         Task Done(Guid id);

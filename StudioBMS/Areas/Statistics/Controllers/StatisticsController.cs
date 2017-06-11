@@ -22,7 +22,7 @@ namespace StudioBMS.Areas.Statistics.Controllers
             _personManager = personManager;
         }
         [HttpGet("{category}")]
-        public async Task<IActionResult> Index(string category = "workshop")
+        public async Task<IActionResult> Index(string category = "workshop", Guid[] ids = default(Guid[]))
         {
             var user = await _personManager.FindByName(User.Identity.Name);
             var statisticViewModel = new StatisticViewModel
@@ -32,11 +32,19 @@ namespace StudioBMS.Areas.Statistics.Controllers
                 PeriodEnd = DateTime.Now.Date
             };
 
-
             if (User.IsInRole(StringConstants.CustomerRole))
             {
                 category = StringConstants.CustomersCategory;
-                ViewData["Customer"] = user;
+                ViewData["Person"] = user;
+            }
+            else if (User.IsInRole(StringConstants.ManagerRole))
+            {
+                ViewData["Workshop"] = user.Workshop;
+            }
+            else if(!User.IsInRole(StringConstants.AdministratorRole))
+            {
+                category = StringConstants.WorkersCategory;
+                ViewData["Person"] = user;
             }
 
             if (category == StringConstants.CustomersCategory && !User.IsInRole(StringConstants.CustomerRole))
@@ -60,7 +68,7 @@ namespace StudioBMS.Areas.Statistics.Controllers
             {
                 ViewData["Workshops"] = await _workshopManager.GetAsync();
             }
-
+            ViewData["Ids"] = ids;
             ViewData["Category"] = category;
             return View(statisticViewModel);
         }

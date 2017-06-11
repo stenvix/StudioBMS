@@ -49,6 +49,11 @@ namespace StudioBMS.Areas.Orders.Controllers
                 var manager = await _personManager.FindByName(User.Identity.Name);
                 orders = await _orderManager.FindByWorkshop(manager.Workshop.Id);
             }
+            else if (!User.IsInRole(StringConstants.AdministratorRole))
+            {
+                var worker = await _personManager.FindByName(User.Identity.Name);
+                orders = await _orderManager.FindByWorker(worker.Id);
+            }
             else
             {
                 orders = await _orderManager.GetAsync();

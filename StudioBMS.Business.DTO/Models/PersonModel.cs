@@ -8,6 +8,8 @@ namespace StudioBMS.Business.DTO.Models
 {
     public class PersonModel : IdentityUser<Guid, PersonModelClaims, PersonModelRole, PersonModelLogin>, IModel
     {
+        public bool IsWorker => Role.Name != StringConstants.CustomerRole && Role.Name != StringConstants.AdministratorRole && Role.Name != StringConstants.ManagerRole;
+
         public string FullName => $"{LastName} {FirstName}";
         public string FullNameAbbr => $"{LastName} {FirstName[0]}.";
         public string FirstName { get; set; }
