@@ -27,6 +27,7 @@ namespace StudioBMS.Areas.Journals.Controllers
             DateTime filterDate;
             filterDate = date ?? DateTime.Now;
             ViewData["Date"] = filterDate;
+            bool isWorker = false;
 
             List<Guid> ids = new List<Guid>();
 
@@ -48,16 +49,15 @@ namespace StudioBMS.Areas.Journals.Controllers
                         }
                     }
                 }
-                ViewData["IsWorker"] = false;
             }
             else
             {
-                ViewData["IsWorker"] = true;
+                isWorker = true;
                 var id = Guid.Parse(User.Claims.FirstOrDefault(i => i.Type == ClaimTypes.NameIdentifier).Value);
                 ids.Add(id);
             }
-
-            return View(await _personManager.GetWithPerformerOrders(ids.ToArray(), filterDate));
+            ViewData["IsWorker"] = isWorker;
+            return View(await _personManager.GetWithPerformerOrders(ids.ToArray(), filterDate, isWorker));
         }
 
         [HttpPost]

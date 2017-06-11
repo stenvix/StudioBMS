@@ -4,24 +4,31 @@
     var workshops = ViewData["Workshops"] as IList<WorkshopModel>;
     var workers = ViewData["Workers"] as IList<PersonModel>;
     var date = ViewData["Date"] as DateTime?;
+    var isWorker = (bool)ViewData["IsWorker"];
     date = date ?? DateTime.Now;
 }
 <form class="row" asp-area="Journals" asp-controller="Journals" asp-action="Index" asp-route-date="">
     <div class="col-lg-3">
-        <select class="chosen">
-            @foreach (var workshop in workshops ?? new List<WorkshopModel>())
-            {
-                <option>@workshop.Title (@workshop.City)</option>
-            }
-        </select>
+        @if (!isWorker)
+        {
+            <select class="chosen">
+                @foreach (var workshop in workshops ?? new List<WorkshopModel>())
+                {
+                    <option>@workshop.Title (@workshop.City)</option>
+                }
+            </select>
+        }
     </div>
     <div class="col-lg-6">
-        <select class="chosen" multiple="multiple" data-selmax="4" asp-for="WorkerIds">
-            @foreach (var worker in workers ?? new List<PersonModel>())
-            {
-                <option value="@worker.Id">@worker.LastName @worker.FirstName[0]. (@ModeLocalizer[worker.Role.Name]) </option>
-            }
-        </select>
+        @if (!isWorker)
+        {
+            <select class="chosen" multiple="multiple" data-selmax="4" asp-for="WorkerIds">
+                @foreach (var worker in workers ?? new List<PersonModel>())
+                {
+                    <option value="@worker.Id">@worker.LastName @worker.FirstName[0]. (@ModeLocalizer[worker.Role.Name]) </option>
+                }
+            </select>
+        }
     </div>
     <div class="col-lg-2">
         <div id="journal-picker" class="input-group datetimepicker" data-locale="@CultureInfo.CurrentCulture.Name" data-format="YYYY-MM-DD">

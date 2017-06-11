@@ -12,7 +12,7 @@ namespace StudioBMS.Business.Managers.Models.Interfaces
         Task<IList<PersonModel>> GetCustomers();
         Task<IList<PersonModel>> GetEmployees(Guid workshopId = default(Guid));
         Task<IList<PersonModel>> GetStaff();
-        Task<IList<PersonModel>> GetWithPerformerOrders(Guid[] ids, DateTime date = default(DateTime));
+        Task<IList<PersonModel>> GetWithPerformerOrders(Guid[] ids, DateTime date = default(DateTime), bool isWorker = false);
         Task<PersonModel> FindByName(string username);
         Task<bool> IsInRole(Guid personId, string roleName);
     }

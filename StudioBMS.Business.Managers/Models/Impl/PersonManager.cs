@@ -53,7 +53,7 @@ namespace StudioBMS.Business.Managers.Models.Impl
             return result.To<PersonModel>();
         }
 
-        public async Task<IList<PersonModel>> GetWithPerformerOrders(Guid[] ids, DateTime date = default(DateTime))
+        public async Task<IList<PersonModel>> GetWithPerformerOrders(Guid[] ids, DateTime date = default(DateTime), bool isWorker = false)
         {
             List<PersonModel> performers = new List<PersonModel>();
             foreach (var performerId in ids)
@@ -61,7 +61,17 @@ namespace StudioBMS.Business.Managers.Models.Impl
                 var performer = await _unitOfWork.PersonRepository.GetAsync(performerId);
                 if(performer==null)
                     continue;
-                var orders = await _unitOfWork.OrderRepository.FindByPerformer(performerId, date);
+
+                IQueryable<Order> orders;
+                if (isWorker)
+                {
+                    var periodOrders = await _unitOfWork.OrderRepository.FindInPeriod(date, date.AddDays(4));
+                    orders = await _unitOfWork.OrderRepository.FindByPerformer(performerId, periodOrders);
+                }
+                else
+                {
+                    orders = await _unitOfWork.OrderRepository.FindByPerformer(performerId, date);
+                }
                 var performerModel = performer.To<PersonModel>();
                 performerModel.Orders = orders.To<OrderModel>();
                 performers.Add(performerModel);

@@ -15,7 +15,7 @@
 <input class="ignore" type="hidden" asp-for="Id" />
 @if (User.Identity.IsAuthenticated)
 {
-    if (!User.IsInRole(StringConstants.CustomerRole))
+    if (!User.IsInRole(StringConstants.CustomerRole) && !Model.IsPaid)
     {
         <div class="form-group">
             <label>@ModelLocalizer["Customer"]</label>
@@ -77,7 +77,7 @@ else
 {
     <input class="ignore" type="hidden" asp-for="PerformerId" />
 }
-@if (!User.Identity.IsAuthenticated || User.IsInRole(StringConstants.CustomerRole) && !Model.IsPaid || User.IsInRole(StringConstants.ManagerRole) || User.IsInRole(StringConstants.AdministratorRole))
+@if (!User.Identity.IsAuthenticated || !Model.IsPaid || User.IsInRole(StringConstants.ManagerRole) || User.IsInRole(StringConstants.AdministratorRole))
 {
     <div class="form-group">
         <label>@ModelLocalizer["Services"]</label>

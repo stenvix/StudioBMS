@@ -1,3 +1,4 @@
+@using StudioBMS
 @model OrderModel
 @inject IHtmlLocalizer<ModelResource> ModelLocalizer
 @{
@@ -18,14 +19,20 @@
             </div>
             @if (Model.IsActive)
             {
-                <div class="col-xs-4 col-actions">
-                    <div class="btn-group text-center">
-                        <a asp-area="Orders" asp-controller="Orders" asp-action="Done" asp-route-id="@Model.Id" asp-route-redirectUrl="@Context.Request.Path" class="btn btn-success btn-sm">
-                            <i class="fa fa-check fa-fw"></i>
-                        </a>
+                <div class="col-xs-4 col-actions text-right">
+                    <div class="btn-group">
+                        @if (User.IsInRole(StringConstants.AdministratorRole) || User.IsInRole(StringConstants.ManagerRole) || !User.IsInRole(StringConstants.CustomerRole) && Model.Date.Date == DateTime.Now.Date)
+                        {
+                            if (Model.IsActive)
+                            {
+                                <a asp-area="Orders" asp-controller="Orders" asp-action="Done" asp-route-id="@Model.Id" asp-route-redirectUrl="@Context.Request.Path" class="btn btn-success btn-sm">
+                                    <i class="fa fa-check fa-fw"></i>
+                                </a>
+                            }
+                        }
                         <a asp-area="Orders" asp-controller="Orders" asp-action="Edit" asp-route-id="@Model.Id" asp-route-redirectUrl="@Context.Request.Path" class="btn btn-info btn-sm">
-                        <i class="fa fa-pencil fa-fw"></i>
-                    </a>
+                            <i class="fa fa-pencil fa-fw"></i>
+                        </a>
                         <a asp-area="Orders" asp-controller="Orders" asp-action="Decline" asp-route-id="@Model.Id" asp-route-redirectUrl="@Context.Request.Path" class="btn btn-danger btn-sm">
                             <i class="fa fa-close fa-fw"></i>
                         </a>
