@@ -14,7 +14,7 @@ namespace StudioBMS.Repositories.Interfaces
         Task<IQueryable<Order>> FindByPerformer(Guid personId, IQueryable<Order> orders = default(IQueryable<Order>));
         Task<IQueryable<Order>> FindByCustomer(Guid personId, IQueryable<Order> orders = default(IQueryable<Order>));
         Task<IQueryable<Order>> FindByWorkshop(Guid workshopId, IQueryable<Order> orders = default(IQueryable<Order>));
-        Task<IQueryable<Order>> FindInPeriod(DateTime periodStart, DateTime periodEnd, IQueryable<Order> orders = default(IQueryable<Order>));
+        IQueryable<Order> FindInPeriod(DateTime periodStart, DateTime periodEnd, IQueryable<Order> orders = default(IQueryable<Order>));
 
         Task<BarStatisticOrderItem> BarOrdersByPerson(Person customer, IQueryable<Order> orders);
         Task<BarStatisticPaymentItem> BarPaymentByPerson(Person customer, IQueryable<Order> orders);

@@ -75,6 +75,17 @@ function InitOrderForm() {
                 });
                 $(services).trigger("chosen:updated");
             });
+        $.post('/workers/time', { "workerId": workerId }).success(function(data) {
+            //$('#orderTime')
+            console.log(data);
+            var disabledTimespans = [];
+            $(data.disabledTimespans).each(function(i, e) {
+                disabledTimespans.push([moment(e.start), moment(e.end)]);
+            });
+            var picker = $("#orderTime").data("DateTimePicker");
+            picker.daysOfWeekDisabled(data.disabledDays);
+            picker.disabledTimeIntervals(disabledTimespans);
+        });
     });
 }
 if ($.validator) {

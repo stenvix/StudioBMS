@@ -20,5 +20,7 @@ namespace StudioBMS.Business.Managers.Models.Interfaces
         Task<Statistic> StatisticsByCustomer(Guid[] customers, DateTime periodStart, DateTime periodEnd);
         Task<Statistic> StatisticsByWorkers(Guid[] workers, DateTime periodStart, DateTime periodEnd);
         Task<Statistic> StatisticsByWorkshops(Guid[] workshops, DateTime periodStart, DateTime periodEnd);
+
+        Task<IList<object>> GetDisabledTimespans(Guid workerId, DateTime periodStart, DateTime periodEnd);
     }
 }

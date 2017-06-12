@@ -65,7 +65,7 @@ namespace StudioBMS.Business.Managers.Models.Impl
                 IQueryable<Order> orders;
                 if (isWorker)
                 {
-                    var periodOrders = await _unitOfWork.OrderRepository.FindInPeriod(date, date.AddDays(4));
+                    var periodOrders = _unitOfWork.OrderRepository.FindInPeriod(date, date.AddDays(4));
                     orders = await _unitOfWork.OrderRepository.FindByPerformer(performerId, periodOrders);
                 }
                 else
