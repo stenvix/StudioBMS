@@ -8,10 +8,10 @@ namespace StudioBMS.Services.Impl
 {
     public class EmailSender: IEmailSender
     {
-        public static string SERVER_EMAIL = "stenvix@gmail.com";
-        public static string SERVER_EMAIL_PASSWORD = "s9lieqGe58vm";
-        public static string SMTP = "smtp.gmail.com";
-        public static int SMTP_PORT = 587;
+        public static string SERVER_EMAIL = "stepanov-valentin@ukr.net";
+        public static string SERVER_EMAIL_PASSWORD = "dfkbrqwe181994";
+        public static string SMTP = "smtp.ukr.net";
+        public static int SMTP_PORT = 465;
 
         public EmailSender()
         {
