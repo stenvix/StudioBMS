@@ -14,12 +14,17 @@ function UpdateDatetimePickers() {
     $(".datetimepicker").each(function (i, e) {
         var datepicker = $(e);
         var locale = $(e).data("locale");
-        var mindate = $(e).data("mindate");
+        var minDate = $(e).data("min-date");
+        var maxDate = $(e).data("max-date");
         var format = $(e).data("format");
 
         var momentMinDate = null;
-        if (mindate) {
-            momentMinDate = moment(mindate);
+        var momentMaxDate = null;
+        if (minDate) {
+            momentMinDate = moment(minDate);
+        }
+        if (maxDate) {
+            momentMaxDate = moment(maxDate);
         }
 
         var config = {};
@@ -28,7 +33,27 @@ function UpdateDatetimePickers() {
         if (moment.isMoment(momentMinDate))
             config.minDate = momentMinDate;
 
+        if (moment.isMoment(momentMaxDate)) {
+            config.maxDate = momentMaxDate;
+        }
+
         datepicker.datetimepicker(config);
+
+        var dayOfWeek = $("#dayofweek");
+        dayOfWeek.on("change", function() {
+            var selected = dayOfWeek.find(":selected");
+            
+            var minDate = selected.data("min-date");
+            var maxDate = selected.data("max-date");
+            console.log(minDate);
+            console.log(maxDate);
+            if (minDate && maxDate) {
+                $('#startTime').data("DateTimePicker").minDate(minDate);
+                $('#endTime').data("DateTimePicker").minDate(minDate);
+                $('#startTime').data("DateTimePicker").maxDate(maxDate);
+                $('#endTime').data("DateTimePicker").maxDate(maxDate);
+            }
+        });
 
         //if (datepicker.is("#journal-picker")) {
         //    datepicker.on("dp.change",

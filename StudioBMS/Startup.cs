@@ -98,7 +98,6 @@ namespace StudioBMS
                 SupportedCultures = supportedCultures,
                 SupportedUICultures = supportedCultures
             });
-
             //var locOptions = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>();
             //app.UseRequestLocalization(locOptions.Value);
             Initializer.DbInitialize(context, manager);

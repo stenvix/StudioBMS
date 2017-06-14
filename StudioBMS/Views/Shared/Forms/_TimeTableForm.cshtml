@@ -1,42 +1,93 @@
 @using System.Globalization
 @using StudioBMS.Business.DTO.Models
 @model TimeTableModel
-@inject IHtmlLocalizer<ModelResource> ModeLocalizer
-
+@inject IHtmlLocalizer<ModelResource> ModelLocalizer
+@{
+    var values = ViewData["Blocked"];
+    var blocked = values == null ? Enumerable.Empty<DayOfWeek>() : (IEnumerable<DayOfWeek>)values;
+    var workshopTime = ViewData["WorkshopTime"] as IList<TimeTableModel>;
+}
 <div class="row">
     <div class="form-group col-xs-4">
-        
         @if (Model == null)
         {
-            <select asp-for="WeekDay" class=" form-control">
+            <select id="dayofweek" asp-for="WeekDay" class=" form-control">
+                <option disabled selected value="">@ModelLocalizer["SelectAnOption"]</option>
                 @foreach (var day in Enum.GetValues(typeof(DayOfWeek)))
                 {
-                    <option value="@((int)day)">@CultureInfo.CurrentCulture.DateTimeFormat.GetDayName((DayOfWeek) day)</option>
+                    if (blocked.Any())
+                    {
+                        if (!blocked.Contains((DayOfWeek) day))
+                        {
+                            if (workshopTime != null)
+                            {
+                                var time = workshopTime.FirstOrDefault(i => i.WeekDay == (DayOfWeek) day);
+                                if (time != null)
+                                {
+                                    <option value="@((int) day)" data-min-date="@($"{time.Start:t}")" data-max-date="@($"{time.End.AddMinutes(1):t}")">@CultureInfo.CurrentCulture.DateTimeFormat.GetDayName((DayOfWeek) day)</option>
+                                }
+                            }
+                            else
+                            {
+                                <option value="@((int) day)">@CultureInfo.CurrentCulture.DateTimeFormat.GetDayName((DayOfWeek)day)</option>
+                            }
+
+                        }
+                    }
+                    else
+                    {
+                        <option value="@((int) day)">@CultureInfo.CurrentCulture.DateTimeFormat.GetDayName((DayOfWeek) day)</option>
+                    }
                 }
             </select>
         }
         else
         {
             <input type="hidden" name="Id" value="@Model.Id" />
-            <select asp-for="WeekDay" class=" form-control">
+            <select id="dayofweek" asp-for="WeekDay" class=" form-control" disabled="disabled">
                 @foreach (var day in Enum.GetValues(typeof(DayOfWeek)))
                 {
-                    <option value="@((int)day)">@CultureInfo.CurrentCulture.DateTimeFormat.GetDayName((DayOfWeek) day)</option>
+                    //var time = workshopTime.FirstOrDefault(i => i.WeekDay == (DayOfWeek)day);
+                    //if (time != null)
+                    //{
+                    <option value="@((int)day)">@CultureInfo.CurrentCulture.DateTimeFormat.GetDayName((DayOfWeek)day)</option>
+                    //}
                 }
             </select>
         }
     </div>
     <div class="form-group col-xs-3">
-        <div class="input-group datetimepicker" data-format="HH:mm" data-locale="@CultureInfo.CurrentCulture.Name">
-            <input asp-for="Start" asp-format="{0:t}" placeholder="@ModeLocalizer[nameof(Model.Start)]" class="form-control" />
+        @{
+            string minStart = string.Empty;
+            string minEnd = string.Empty;
+            var start = workshopTime?.FirstOrDefault(i => i.WeekDay == Model?.WeekDay)?.Start;
+            var end = workshopTime?.FirstOrDefault(i => i.WeekDay == Model?.WeekDay)?.End;
+            if (start.HasValue)
+            {
+                minStart = DateTime.Today.AddTicks(start.Value.Ticks).ToString("yyyy-MM-dd HH:mm");
+            }
+
+            if (end.HasValue)
+            {
+                minEnd = DateTime.Today.AddTicks(end.Value.Ticks).ToString("yyyy-MM-dd HH:mm");
+            }
+        }
+        <div id="startTime" class="input-group datetimepicker"
+             data-format="HH:mm"
+             data-locale="@CultureInfo.CurrentCulture.Name"
+             data-min-date="@minStart"
+             data-max-date="@minEnd">
+            <input asp-for="Start" asp-format="{0:t}" placeholder="@ModelLocalizer[nameof(Model.Start)]" class="form-control"/>
             <span class="input-group-addon">
                 <span class="fa fa-calendar"></span>
             </span>
         </div>
     </div>
     <div class="form-group col-xs-3">
-        <div class="input-group datetimepicker" data-format="HH:mm" data-locale="@CultureInfo.CurrentCulture.Name">
-            <input asp-for="End" asp-format="{0:t}" placeholder="@ModeLocalizer[nameof(Model.End)]" class="form-control" />
+        <div id="endTime" class="input-group datetimepicker" data-format="HH:mm" data-locale="@CultureInfo.CurrentCulture.Name"
+             data-min-date="@minStart"
+             data-max-date="@minEnd">
+             <input asp-for="End" asp-format="{0:t}" placeholder="@ModelLocalizer[nameof(Model.End)]" class="form-control"/>
             <span class="input-group-addon">
                 <span class="fa fa-calendar"></span>
             </span>

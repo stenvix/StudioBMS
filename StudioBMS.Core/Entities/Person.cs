@@ -10,6 +10,7 @@ namespace StudioBMS.Core.Entities
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string Language { get; set; }
         public DateTime Birthday { get; set; }
         public Guid WorkshopId { get; set; }
         public Workshop Workshop { get; set; }

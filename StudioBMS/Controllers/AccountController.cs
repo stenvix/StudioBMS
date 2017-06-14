@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
@@ -76,6 +77,7 @@ namespace StudioBMS.Controllers
                     false);
                 if (result.Succeeded)
                 {
+                    Response.Cookies.Append(CookieRequestCultureProvider.DefaultCookieName, $"c={user.Language}|uic={user.Language}");
                     _logger.LogInformation(1, "User logged in.");
                     if (returnUrl == null)
                     {

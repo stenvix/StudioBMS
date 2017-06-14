@@ -303,4 +303,7 @@
   <data name="OrdersStatistics" xml:space="preserve">
     <value>Статистика замовлень</value>
   </data>
+  <data name="SelectAnOption" xml:space="preserve">
+    <value>Виберіть опцію</value>
+  </data>
 </root>

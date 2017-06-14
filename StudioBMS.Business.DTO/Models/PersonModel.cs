@@ -14,6 +14,7 @@ namespace StudioBMS.Business.DTO.Models
         public string FullNameAbbr => $"{LastName} {FirstName[0]}.";
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string Language { get; set; }
         public RoleModel Role { get; set; }
         public DateTime Birthday { get; set; }
         public WorkshopModel Workshop { get; set; }

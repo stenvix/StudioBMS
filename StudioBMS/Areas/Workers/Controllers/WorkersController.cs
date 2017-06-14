@@ -67,6 +67,8 @@ namespace StudioBMS.Areas.Workers.Controllers
         [HttpGet("{workerId}/time")]
         public async Task<IActionResult> TimeIndex(Guid workerId)
         {
+            var worker = await _personManager.GetAsync(workerId);
+            ViewData["WorkshopTime"] = await _workshopManager.GetTimeTables(worker.Workshop.Id);
             ViewData["workerId"] = workerId;
             return View(await _timeTableManager.FindByWorker(workerId));
         }
@@ -79,6 +81,8 @@ namespace StudioBMS.Areas.Workers.Controllers
             {
                 model = await _timeTableManager.GetAsync(timetableId.Value);
             }
+            var worker = await _personManager.GetAsync(id);
+            ViewData["WorkshopTime"] = await _workshopManager.GetTimeTables(worker.Workshop.Id);
             return PartialView("WorkerTimeForm", model);
         }
         [HttpPost("{workerId}/time")]

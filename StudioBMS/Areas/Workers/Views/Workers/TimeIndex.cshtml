@@ -5,6 +5,7 @@
     var title = TitleLocalizer["Timetable"];
     ViewData["Title"] = title;
     ViewData["H1"] = title;
+    ViewData["Blocked"] = Model.Select(i => i.WeekDay);
 }
 <div class="row">
     <div class="col-lg-8 col-lg-offset-2">

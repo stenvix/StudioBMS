@@ -74,7 +74,8 @@ namespace StudioBMS.Business.Infrastructure
                     LastName = "Stepanov",
                     PhoneNumber = "0998877332",
                     Birthday = new DateTime(1994, 9, 18),
-                    Workshop = workshop
+                    Workshop = workshop,
+                    Language = "uk"
                 };
                 var result = await manager.CreateAsync(person, password);
 
@@ -118,7 +119,8 @@ namespace StudioBMS.Business.Infrastructure
                         UserName = email,
                         Email = email,
                         PhoneNumber = "0991122334",
-                        Workshop = workshop
+                        Workshop = workshop,
+                        Language = "uk"
                     };
 
                     await manager.CreateAsync(person, password);
