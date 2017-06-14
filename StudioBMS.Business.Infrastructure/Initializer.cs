@@ -125,7 +125,7 @@ namespace StudioBMS.Business.Infrastructure
                     person = new PersonModel
                     {
                         FirstName = Names[random.Next(0, Names.Length)],
-                        LastName = LastNames[random.Next(0, Names.Length)],
+                        LastName = LastNames[random.Next(0, LastNames.Length)],
                         Birthday = new DateTime(random.Next(1965, 1985), random.Next(1, 12), random.Next(1, 28)),
                         UserName = email,
                         Email = email,

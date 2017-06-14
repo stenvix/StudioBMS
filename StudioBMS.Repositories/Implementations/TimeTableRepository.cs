@@ -15,6 +15,20 @@ namespace StudioBMS.Repositories.Implementations
         {
         }
 
+        public override Task<Timetable> CreateAsync(Timetable entity, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            entity.Start = new DateTime().AddHours(entity.Start.Hour).AddMinutes(entity.Start.Minute);
+            entity.End = new DateTime().AddHours(entity.End.Hour).AddMinutes(entity.End.Minute);
+            return base.CreateAsync(entity, cancellationToken);
+        }
+
+        public override Task<Timetable> Update(Timetable entity, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            entity.Start = new DateTime().AddHours(entity.Start.Hour).AddMinutes(entity.Start.Minute);
+            entity.End = new DateTime().AddHours(entity.End.Hour).AddMinutes(entity.End.Minute);
+            return base.Update(entity, cancellationToken);
+        }
+
         public Task<IQueryable<Timetable>> ByWorkshop(Guid workshopId, CancellationToken cancellationToken = default(CancellationToken))
         {
             return Task.Run(() => Context.WorkshopTimetables.Where(i => i.WorkshopId == workshopId).Select(i => i.Timetable), cancellationToken);

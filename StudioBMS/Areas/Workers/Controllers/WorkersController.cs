@@ -32,7 +32,7 @@ namespace StudioBMS.Areas.Workers.Controllers
             IServiceManager serviceManager,
             IRoleManager roleManager,
             IWorkshopManager workshopManager,
-            IOrderManager orderManager, 
+            IOrderManager orderManager,
             IHtmlLocalizer<ModelResource> modelLocalizer)
         {
             _personManager = personManager;
@@ -91,7 +91,7 @@ namespace StudioBMS.Areas.Workers.Controllers
                 ViewData["Blocked"] = (await _timeTableManager.FindByWorker(id)).Select(i => i.WeekDay);
             }
             var worker = await _personManager.GetAsync(id);
-            
+
             ViewData["WorkshopTime"] = await _workshopManager.GetTimeTables(worker.Workshop.Id);
             return PartialView("WorkerTimeForm", model);
         }
@@ -247,11 +247,13 @@ namespace StudioBMS.Areas.Workers.Controllers
                 if (disabledDays.Contains(date.DayOfWeek))
                     continue;
                 var timetable = timetables.FirstOrDefault(i => i.WeekDay == date.DayOfWeek);
-                var start = date.AddDays(-1).AddTicks(timetable.End.Ticks).AddMinutes(-1);
-                var end = date.AddTicks(timetable.Start.Ticks);
 
+                var start = date.Date;
+                var end = date.Date.AddTicks(timetable.Start.Ticks);
                 result.Add(new { Start = start, End = end });
-
+                start = date.Date.AddTicks(timetable.End.Ticks);
+                end = date.Date.AddDays(1);
+                result.Add(new { Start = start, End = end });
             }
             return new JsonResult(new { DisabledDays = disabledDays, DisabledTimespans = result });
         }
