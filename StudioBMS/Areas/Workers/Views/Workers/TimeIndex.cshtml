@@ -21,7 +21,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach (var time in Model)
+                    @foreach (var time in Model.OrderBy(i=>i.WeekDay))
                     {
                         <tr>
                             <td>@CultureInfo.CurrentCulture.DateTimeFormat.DayNames[(byte)time.WeekDay]</td>

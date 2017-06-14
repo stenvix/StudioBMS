@@ -5,9 +5,11 @@ using System.Threading.Tasks;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Localization;
 using StudioBMS.Business.DTO.Models;
 using StudioBMS.Business.Managers.Identity;
 using StudioBMS.Business.Managers.Models.Interfaces;
+using StudioBMS.Models;
 
 namespace StudioBMS.Areas.Workers.Controllers
 {
@@ -22,6 +24,7 @@ namespace StudioBMS.Areas.Workers.Controllers
         private readonly IRoleManager _roleManager;
         private readonly IWorkshopManager _workshopManager;
         private readonly IOrderManager _orderManager;
+        private readonly IHtmlLocalizer<ModelResource> _modelLocalizer;
 
         public WorkersController(IPersonManager personManager,
             PersonModelManager permonModelManager,
@@ -29,7 +32,8 @@ namespace StudioBMS.Areas.Workers.Controllers
             IServiceManager serviceManager,
             IRoleManager roleManager,
             IWorkshopManager workshopManager,
-            IOrderManager orderManager)
+            IOrderManager orderManager, 
+            IHtmlLocalizer<ModelResource> modelLocalizer)
         {
             _personManager = personManager;
             _permonModelManager = permonModelManager;
@@ -38,6 +42,7 @@ namespace StudioBMS.Areas.Workers.Controllers
             _roleManager = roleManager;
             _workshopManager = workshopManager;
             _orderManager = orderManager;
+            _modelLocalizer = modelLocalizer;
         }
         [HttpGet]
         public async Task<IActionResult> Index()
@@ -81,7 +86,12 @@ namespace StudioBMS.Areas.Workers.Controllers
             {
                 model = await _timeTableManager.GetAsync(timetableId.Value);
             }
+            else
+            {
+                ViewData["Blocked"] = (await _timeTableManager.FindByWorker(id)).Select(i => i.WeekDay);
+            }
             var worker = await _personManager.GetAsync(id);
+            
             ViewData["WorkshopTime"] = await _workshopManager.GetTimeTables(worker.Workshop.Id);
             return PartialView("WorkerTimeForm", model);
         }
@@ -211,6 +221,10 @@ namespace StudioBMS.Areas.Workers.Controllers
         public async Task<IActionResult> Json(Guid workshopId)
         {
             var employees = await _personManager.GetEmployees(workshopId);
+            foreach (var employee in employees)
+            {
+                employee.Role.LocalizedName = _modelLocalizer[employee.Role.Name].Value;
+            }
             return new JsonResult(employees);
         }
 

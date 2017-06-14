@@ -7,5 +7,6 @@ namespace StudioBMS.Business.DTO.Models
 {
     public class RoleModel : IdentityRole<Guid, PersonModelRole, RoleModelClaims>, IModel
     {
+        public string LocalizedName { get; set; }
     }
 }

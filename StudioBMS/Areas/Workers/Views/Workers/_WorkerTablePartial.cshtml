@@ -45,7 +45,7 @@
             <td>@worker.Workshop.TitleWithCity</td>
             <td>@worker.PhoneNumber</td>
             <td>
-                @foreach (var time in worker.TimeTables)
+                @foreach (var time in worker.TimeTables.OrderBy(i=>i.WeekDay))
                 {
                     @Html.Raw($"{CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedDayName(time.WeekDay)} {time.Start:t} - {time.End:t}<br />")
                 }

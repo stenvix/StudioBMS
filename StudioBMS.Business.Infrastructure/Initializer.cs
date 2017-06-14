@@ -126,11 +126,11 @@ namespace StudioBMS.Business.Infrastructure
                     {
                         FirstName = Names[random.Next(0, Names.Length)],
                         LastName = LastNames[random.Next(0, Names.Length)],
-                        Birthday = new DateTime(random.Next(1965, 1985), random.Next(1, 12), random.Next(1,31)),
+                        Birthday = new DateTime(random.Next(1965, 1985), random.Next(1, 12), random.Next(1, 28)),
                         UserName = email,
                         Email = email,
-                        PhoneNumber = $"099112{random.Next(0,9)}334",
-                        Workshop = roleIndex%2==1?workshop: workshop2,
+                        PhoneNumber = $"099112{random.Next(0, 9)}334",
+                        Workshop = roleIndex % 2 == 1 ? workshop : workshop2,
                         Language = "uk"
                     };
 
@@ -194,35 +194,66 @@ namespace StudioBMS.Business.Infrastructure
 
                     context.SaveChanges();
                     roleIndex++;
+                    if (roleIndex == 1)
+                        continue;
+                    //Create user that use services
+
+                    email = $"client{roleIndex}@test.com";
+                    password = "Client123!";
+                    var client = new PersonModel
+                    {
+                        FirstName = Names[random.Next(0, Names.Length)],
+                        LastName = LastNames[random.Next(0, LastNames.Length)],
+                        Birthday = new DateTime(random.Next(1950, 1995), random.Next(1, 12), random.Next(1, 28)),
+                        UserName = email,
+                        Email = email,
+                        PhoneNumber = $"099{roleIndex}944888",
+                        Workshop = roleIndex % 2 == 1 ? workshop : workshop2
+                    };
+
+                    result = await manager.CreateAsync(client, password);
+                    if (!result.Succeeded)
+                        throw new ArgumentException($"Database fail to initialize person: {nameof(context)}");
+
+                    client = await manager.FindByEmailAsync(email);
+                    result = await manager.AddToRoleAsync(client, StringConstants.CustomerRole);
+
+                    if (!result.Succeeded)
+                        throw new ArgumentNullException($"Database fail to initialize person role:{nameof(context)}");
+
+                    for (int j = 0; j < random.Next(3, 5); j++)
+                    {
+                        var status = j % 2 == 1
+                            ? context.OrderStatuses.First(s => s.Name == StringConstants.DoneStatus)
+                            : context.OrderStatuses.First(s => s.Name == StringConstants.DeclinedStatus);
+
+                        var order = new Order
+                        {
+                            CustomerId = client.Id,
+                            Date = DateTime.Today.AddDays(random.Next(1, 30) * -1).AddHours(random.Next(9, 16)),
+                            OrderNumber = context.Orders.Count() + 1,
+                            StatusId = status.Id,
+                            PerformerId = person.Id,
+                            WorkshopId = person.Workshop.Id
+                        };
+                        context.Orders.Add(order);
+                        context.SaveChanges();
+                        var service = context.PersonServices.Where(s => s.PersonId == person.Id).Select(sr => sr.Service).First();
+                        context.OrderServices.Add(new OrderService { OrderId = order.Id, ServiceId = service.Id });
+                        context.SaveChanges();
+                        if (j % 2 == 1)
+                        {
+                            order.Price = service.Price;
+                            order.Balance = service.Price;
+                            order.IsPaid = true;
+                        }
+                        else
+                        {
+                            order.Price = service.Price;
+                        }
+                        context.SaveChanges();
+                    }
                 }
-
-                //Init clients
-                //for (int i = 0; i < 5; i++)
-                //{
-                //    roleName = "client";
-                //    email = $"client{i}@test.com";
-                //    password = "Client123!";
-                //    person = new PersonModel
-                //    {
-                //        FirstName = $"Client{i}",
-                //        LastName = $"LastClient{i}",
-                //        Birthday = new DateTime(1987, 01, 21),
-                //        UserName = email,
-                //        Email = email,
-                //        PhoneNumber = "0999944888",
-                //        Workshop = workshop
-                //    };
-
-                //    result = await manager.CreateAsync(person, password);
-                //    if (!result.Succeeded)
-                //        throw new ArgumentException($"Database fail to initialize person: {nameof(context)}");
-
-                //    person = await manager.FindByEmailAsync(email);
-                //    result = await manager.AddToRoleAsync(person, roleName);
-
-                //    if (!result.Succeeded)
-                //        throw new ArgumentNullException($"Database fail to initialize person role:{nameof(context)}");
-                //}
             });
         }
     }

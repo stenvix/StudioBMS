@@ -18,31 +18,22 @@ function UpdateDatetimePickers() {
         var maxDate = $(e).data("max-date");
         var format = $(e).data("format");
 
-        var momentMinDate = null;
-        var momentMaxDate = null;
-        if (minDate) {
-            momentMinDate = moment(minDate);
-        }
-        if (maxDate) {
-            momentMaxDate = moment(maxDate);
-        }
-
         var config = {};
         config.format = format;
         config.locale = locale;
-        if (moment.isMoment(momentMinDate))
-            config.minDate = momentMinDate;
-
-        if (moment.isMoment(momentMaxDate)) {
-            config.maxDate = momentMaxDate;
-        }
 
         datepicker.datetimepicker(config);
 
+        if (minDate) {
+            $(e).data("DateTimePicker").minDate(moment(minDate));
+        }
+        if (maxDate) {
+            $(e).data("DateTimePicker").maxDate(moment(maxDate));
+        }
+
         var dayOfWeek = $("#dayofweek");
-        dayOfWeek.on("change", function() {
+        dayOfWeek.on("change", function () {
             var selected = dayOfWeek.find(":selected");
-            
             var minDate = selected.data("min-date");
             var maxDate = selected.data("max-date");
             console.log(minDate);
@@ -54,13 +45,6 @@ function UpdateDatetimePickers() {
                 $('#endTime').data("DateTimePicker").maxDate(maxDate);
             }
         });
-
-        //if (datepicker.is("#journal-picker")) {
-        //    datepicker.on("dp.change",
-        //        function(date, oldDate) {
-        //            window.location.replace("/journals/"+date);
-        //        });
-        //}
     });
 }
 
@@ -69,12 +53,12 @@ function InitOrderForm() {
     var services = "#services";
     $("#workshops").change(function () {
         var workshopId = $(this).find(":selected").val();
-        if (workshopId!=="None") {
-            $.post('/workers/json', { "workshopId": workshopId }).success(function(data) {
+        if (workshopId !== "None") {
+            $.post('/workers/json', { "workshopId": workshopId }).success(function (data) {
                 $(workers).empty();
                 $(services).empty();
-                $(data).each(function(i, e) {
-                    $(workers).append($("<option>").attr("value", e.id).text(e.fullName));
+                $(data).each(function (i, e) {
+                    $(workers).append($("<option>").attr("value", e.id).text(e.fullName + " ("+ e.role.localizedName+")"));
                 });
                 $(workers).trigger("chosen:updated");
                 $(workers).val("");
@@ -100,11 +84,11 @@ function InitOrderForm() {
                 });
                 $(services).trigger("chosen:updated");
             });
-        $.post('/workers/time', { "workerId": workerId }).success(function(data) {
+        $.post('/workers/time', { "workerId": workerId }).success(function (data) {
             //$('#orderTime')
             console.log(data);
             var disabledTimespans = [];
-            $(data.disabledTimespans).each(function(i, e) {
+            $(data.disabledTimespans).each(function (i, e) {
                 disabledTimespans.push([moment(e.start), moment(e.end)]);
             });
             var picker = $("#orderTime").data("DateTimePicker");
@@ -142,8 +126,8 @@ $(document).ready(function () {
             placeholder_text_multiple: "Виберіть декілька позицій",
             placeholder_text_single: "Виберіть дані"
         });
-        
-        if (select==="None") {
+
+        if (select === "None") {
             $(e).val("");
             $(e).trigger("chosen:updated");
         }

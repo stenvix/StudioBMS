@@ -44,14 +44,17 @@
         else
         {
             <input type="hidden" name="Id" value="@Model.Id" />
-            <select id="dayofweek" asp-for="WeekDay" class=" form-control" disabled="disabled">
+            <select id="dayofweek" asp-for="WeekDay" class=" form-control">
                 @foreach (var day in Enum.GetValues(typeof(DayOfWeek)))
                 {
-                    //var time = workshopTime.FirstOrDefault(i => i.WeekDay == (DayOfWeek)day);
-                    //if (time != null)
-                    //{
-                    <option value="@((int)day)">@CultureInfo.CurrentCulture.DateTimeFormat.GetDayName((DayOfWeek)day)</option>
-                    //}
+                    if ((DayOfWeek) day == Model.WeekDay)
+                    {
+                        <option selected="selected" value="@((int) day)">@CultureInfo.CurrentCulture.DateTimeFormat.GetDayName((DayOfWeek) day)</option>
+                    }
+                    else
+                    {
+                        <option disabled="disabled" value="@((int)day)">@CultureInfo.CurrentCulture.DateTimeFormat.GetDayName((DayOfWeek)day)</option>
+                    }
                 }
             </select>
         }
@@ -77,17 +80,19 @@
              data-locale="@CultureInfo.CurrentCulture.Name"
              data-min-date="@minStart"
              data-max-date="@minEnd">
-            <input asp-for="Start" asp-format="{0:t}" placeholder="@ModelLocalizer[nameof(Model.Start)]" class="form-control"/>
+            <input asp-for="Start" asp-format="{0:HH:mm}" placeholder="@ModelLocalizer[nameof(Model.Start)]" class="form-control"/>
             <span class="input-group-addon">
                 <span class="fa fa-calendar"></span>
             </span>
         </div>
     </div>
     <div class="form-group col-xs-3">
-        <div id="endTime" class="input-group datetimepicker" data-format="HH:mm" data-locale="@CultureInfo.CurrentCulture.Name"
+        <div id="endTime" class="input-group datetimepicker"
+             data-format="HH:mm"
+             data-locale="@CultureInfo.CurrentCulture.Name"
              data-min-date="@minStart"
              data-max-date="@minEnd">
-             <input asp-for="End" asp-format="{0:t}" placeholder="@ModelLocalizer[nameof(Model.End)]" class="form-control"/>
+             <input asp-for="End" asp-format="{0:HH:mm}" placeholder="@ModelLocalizer[nameof(Model.End)]" class="form-control"/>
             <span class="input-group-addon">
                 <span class="fa fa-calendar"></span>
             </span>
