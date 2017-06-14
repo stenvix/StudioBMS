@@ -35,6 +35,15 @@ namespace StudioBMS.Areas.Clients.Controllers
         public async Task<IActionResult> Create()
         {
             ViewData["Workshops"] = await _workshopManager.GetAsync();
+            if (User.IsInRole(StringConstants.ManagerRole))
+            {
+                var manager = await _personManager.FindByName(User.Identity.Name);
+                PersonModel model = new PersonModel
+                {
+                    Workshop = manager.Workshop
+                };
+                return View(model);
+            }
             return View();
         }
 

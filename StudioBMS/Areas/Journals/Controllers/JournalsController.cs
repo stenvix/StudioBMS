@@ -21,7 +21,7 @@ namespace StudioBMS.Areas.Journals.Controllers
             _personManager = personManager;
         }
 
-        [HttpGet,HttpGet("{date}")]
+        [HttpGet, HttpGet("{date}")]
         public async Task<IActionResult> Index(DateTime? date = null)
         {
             DateTime filterDate;
@@ -34,8 +34,15 @@ namespace StudioBMS.Areas.Journals.Controllers
             if (User.IsInRole(StringConstants.AdministratorRole) || User.IsInRole(StringConstants.ManagerRole))
             {
                 ViewData["Workshops"] = await _workshopManager.GetAsync();
-                ViewData["Workers"] = await _personManager.GetEmployees();
-
+                if (User.IsInRole(StringConstants.AdministratorRole))
+                {
+                    ViewData["Workers"] = await _personManager.GetEmployees();
+                }
+                else
+                {
+                   var person = await _personManager.FindByName(User.Identity.Name);
+                    ViewData["Workers"] = await _personManager.GetEmployees(person.Workshop.Id);
+                }
                 if (HttpContext.Request.Cookies.ContainsKey("journal"))
                 {
                     string cookie = HttpContext.Request.Cookies["journal"];
@@ -72,7 +79,7 @@ namespace StudioBMS.Areas.Journals.Controllers
             {
                 Response.Cookies.Append("journal", "");
             }
-            return RedirectToAction("Index", new {date = model.Date.ToString("yyyy-MM-dd")});
+            return RedirectToAction("Index", new { date = model.Date.ToString("yyyy-MM-dd") });
         }
     }
 }

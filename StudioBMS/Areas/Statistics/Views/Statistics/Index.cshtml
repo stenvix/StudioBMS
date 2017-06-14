@@ -9,7 +9,19 @@
     var personModel = ViewData["Person"] as PersonModel;
     var workshopModel = ViewData["Workshop"] as WorkshopModel;
     var category = (string)ViewData["Category"];
-    var locale = CultureInfo.CurrentCulture.Name;
+    var locale = CultureInfo.CurrentCulture.TwoLetterISOLanguageName;
+    if (locale == "uk")
+    {
+        locale = $"{locale}-UA";
+    }
+    if (locale == "ru")
+    {
+        locale = $"{locale}-RU";
+    }
+    if (locale == "en")
+    {
+        locale = $"{locale}-US";
+    }
     ViewData["Title"] = TitleLocalizer["Statistics"];
     var ids = ViewData["Ids"] as Guid[];
 }
@@ -142,8 +154,8 @@
                                data-toggle="table"
                                data-page-list="[5, 10, 25, 50, 100, ALL]"
                                data-single-select="true"
-                               data-locale="@locale"
-                               data-classes="table table-condensed">
+                               data-classes="table table-condensed"
+                               data-locale="@locale">
                             <thead>
                                 <tr>
                                     @if (category == StringConstants.CustomersCategory || category == StringConstants.WorkersCategory)

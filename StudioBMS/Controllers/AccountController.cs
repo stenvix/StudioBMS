@@ -142,6 +142,7 @@ namespace StudioBMS.Controllers
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
+            Response.Cookies.Delete("journal");
             _logger.LogInformation(4, "User logged out.");
             return RedirectToAction(nameof(AccountController.Login), "Account");
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Autofac;
@@ -23,6 +24,15 @@ namespace StudioBMS.Business.Infrastructure
 {
     public class Initializer
     {
+        public static string[] Names =
+        {
+            "Августа", "Агата","Агнесса","Лейла", "Сандра","Софья", "Таисия", "Моника", "Надежда", "Роза"
+        };
+
+        public static string[] LastNames =
+        {
+            "Баранова", "Беляева", "Денисова","Зайцев", "Карпова", "Котова", "Петрова", "Самойлова", "Тихонова", "Фадеева"
+        };
         public static IServiceProvider InitServices(IServiceCollection services)
         {
             services.AddAutoMapper(typeof(PersonProfile));
@@ -61,6 +71,7 @@ namespace StudioBMS.Business.Infrastructure
                 await context.Initialize();
 
                 var workshop = context.Workshops.First().To<WorkshopModel>();
+                var workshop2 = context.Workshops.Skip(1).First().To<WorkshopModel>();
 
                 //Init admin
                 var roleName = "administrator";
@@ -78,7 +89,6 @@ namespace StudioBMS.Business.Infrastructure
                     Language = "uk"
                 };
                 var result = await manager.CreateAsync(person, password);
-
 
                 if (!result.Succeeded)
                     throw new ArgumentNullException($"Database fail to initialize person:{nameof(context)}");
@@ -105,21 +115,22 @@ namespace StudioBMS.Business.Infrastructure
                     context.PersonTimetables.Add(new PersonTimetable { TimetableId = timeTable.Id, PersonId = person.Id });
                     context.SaveChanges();
                 }
-
+                var random = new Random();
+                var roleIndex = 0;
                 //Init employees
-                foreach (var role in context.Roles.Skip(1).ToList())
+                foreach (var role in context.Roles.Skip(2).ToList())
                 {
-                    email = $"{role.Name}1@test.com";
+                    email = $"{role.Name.ToLower()}@test.com";
                     password = "Worker123!";
                     person = new PersonModel
                     {
-                        FirstName = $"{role.Name}First",
-                        LastName = $"{role.Name}Last",
-                        Birthday = new DateTime(1978, 5, 12),
+                        FirstName = Names[random.Next(0, Names.Length)],
+                        LastName = LastNames[random.Next(0, Names.Length)],
+                        Birthday = new DateTime(random.Next(1965, 1985), random.Next(1, 12), random.Next(1,31)),
                         UserName = email,
                         Email = email,
-                        PhoneNumber = "0991122334",
-                        Workshop = workshop,
+                        PhoneNumber = $"099112{random.Next(0,9)}334",
+                        Workshop = roleIndex%2==1?workshop: workshop2,
                         Language = "uk"
                     };
 
@@ -144,40 +155,74 @@ namespace StudioBMS.Business.Infrastructure
                     }
                     await context.SaveChangesAsync();
 
-                    foreach (var service in context.Services)
+                    ///SERVICES
+                    if (roleIndex == 1)
                     {
-                        context.PersonServices.Add(new PersonService { PersonId = person.Id, ServiceId = service.Id });
+                        foreach (var service in context.Services.Take(7))
+                        {
+                            context.PersonServices.Add(new PersonService { PersonId = person.Id, ServiceId = service.Id });
+                        }
                     }
+                    if (roleIndex == 2)
+                    {
+                        foreach (var service in context.Services.Skip(7).Take(3))
+                        {
+                            context.PersonServices.Add(new PersonService { PersonId = person.Id, ServiceId = service.Id });
+                        }
+                    }
+                    if (roleIndex == 3)
+                    {
+                        foreach (var service in context.Services.Skip(10).Take(2))
+                        {
+                            context.PersonServices.Add(new PersonService { PersonId = person.Id, ServiceId = service.Id });
+                        }
+                    }
+                    if (roleIndex == 4)
+                    {
+                        foreach (var service in context.Services.Skip(12).Take(3))
+                        {
+                            context.PersonServices.Add(new PersonService { PersonId = person.Id, ServiceId = service.Id });
+                        }
+                    }
+                    if (roleIndex == 5)
+                    {
+                        foreach (var service in context.Services.Skip(15).Take(2))
+                        {
+                            context.PersonServices.Add(new PersonService { PersonId = person.Id, ServiceId = service.Id });
+                        }
+                    }
+
                     context.SaveChanges();
+                    roleIndex++;
                 }
 
                 //Init clients
-                for (int i = 0; i < 5; i++)
-                {
-                    roleName = "client";
-                    email = $"client{i}@test.com";
-                    password = "Client123!";
-                    person = new PersonModel
-                    {
-                        FirstName = $"Client{i}",
-                        LastName = $"LastClient{i}",
-                        Birthday = new DateTime(1987, 01, 21),
-                        UserName = email,
-                        Email = email,
-                        PhoneNumber = "0999944888",
-                        Workshop = workshop
-                    };
+                //for (int i = 0; i < 5; i++)
+                //{
+                //    roleName = "client";
+                //    email = $"client{i}@test.com";
+                //    password = "Client123!";
+                //    person = new PersonModel
+                //    {
+                //        FirstName = $"Client{i}",
+                //        LastName = $"LastClient{i}",
+                //        Birthday = new DateTime(1987, 01, 21),
+                //        UserName = email,
+                //        Email = email,
+                //        PhoneNumber = "0999944888",
+                //        Workshop = workshop
+                //    };
 
-                    result = await manager.CreateAsync(person, password);
-                    if (!result.Succeeded)
-                        throw new ArgumentException($"Database fail to initialize person: {nameof(context)}");
+                //    result = await manager.CreateAsync(person, password);
+                //    if (!result.Succeeded)
+                //        throw new ArgumentException($"Database fail to initialize person: {nameof(context)}");
 
-                    person = await manager.FindByEmailAsync(email);
-                    result = await manager.AddToRoleAsync(person, roleName);
+                //    person = await manager.FindByEmailAsync(email);
+                //    result = await manager.AddToRoleAsync(person, roleName);
 
-                    if (!result.Succeeded)
-                        throw new ArgumentNullException($"Database fail to initialize person role:{nameof(context)}");
-                }
+                //    if (!result.Succeeded)
+                //        throw new ArgumentNullException($"Database fail to initialize person role:{nameof(context)}");
+                //}
             });
         }
     }

@@ -20,7 +20,7 @@
         <div class="form-group">
             <label>@ModelLocalizer["Customer"]</label>
             <select class="chosen" asp-for="CustomerId">
-                <option val="">@ModelLocalizer["None"]</option>
+                <option val="">@ModelLocalizer["SelectAnOption"]</option>
                 @foreach (var customer in customers)
                 {
                     if (customer.Id == Model.CustomerId)
@@ -45,7 +45,7 @@
     <div class="form-group">
         <label>@ModelLocalizer["Workshop"]</label>
         <select id="workshops" class="chosen" asp-for="WorkshopId">
-            <option val="">@ModelLocalizer["None"]</option>
+            <option val="">@ModelLocalizer["SelectAnOption"]</option>
             @foreach (var workshop in workshops)
             {
                 <option value="@workshop.Id">@workshop.Title (@workshop.City)</option>
@@ -62,7 +62,7 @@ else
     <div class="form-group">
         <label>@ModelLocalizer["Master"]</label>
         <select id="workers" class="chosen" asp-for="PerformerId">
-            <option val="">@ModelLocalizer["None"]</option>
+            <option val="">@ModelLocalizer["SelectAnOption"]</option>
             @if (Model.WorkshopId != Guid.Empty)
             {
                 foreach (var performer in performers)
